@@ -11,16 +11,34 @@ import {CharacterService} from "../character.service";
 export class CharacterFormComponent implements OnInit {
 
   modalRef: BsModalRef;
+
+  // name: string;
+  // description: string;
+
   character: Character;
+
   loading: boolean = false;
 
   @Input()
   edit: boolean;
 
-  constructor(private modalService: BsModalService, private charService: CharacterService) { }
+  @Input()
+  editId: number;
+
+  constructor(private modalService: BsModalService, private charService: CharacterService) {
+  }
 
   ngOnInit() {
     this.character = new Character();
+
+    if (this.edit) {
+      this.loading = true;
+      this.charService.getCharacter(this.editId)
+        .subscribe(resp => {
+          Object.assign(this.character, resp.data.getCharacter);
+          this.loading = false;
+        });
+    }
   }
 
   openModal(template: TemplateRef<any>) {
@@ -28,11 +46,21 @@ export class CharacterFormComponent implements OnInit {
   }
 
   save() {
-    if((this.edit || false) === false) {
+    if ((this.edit || false) === false) {
       this.charService.createCharacter(this.character)
         .subscribe(res => {
           this.modalRef.hide();
         }, e => console.log(e));
+    } else {
+
+      this.charService.editCharacter(this.character)
+        .subscribe(() => {
+          this.modalRef.hide();
+        }, console.error);
     }
+  }
+
+  get mode() {
+    return this.edit ? 'Edit' : 'Create';
   }
 }

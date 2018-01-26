@@ -30,8 +30,16 @@ const GET_CHARACTER_QUERY = gql`
       name
       description
     }
-  }
-`;
+  }`;
+
+const EDIT_CHARACTER_MUTATION = gql`
+  mutation EditCharacter($id: ID!, $input: CharacterInput!) {
+    editCharacter(id: $id, input: $input) {
+      id
+      name
+      description
+    }
+  }`;
 
 @Injectable()
 export class CharacterService {
@@ -45,16 +53,16 @@ export class CharacterService {
   }
 
   getCharacter(id: number) {
-    return this.apollo.query<GetCharacterResponse>({
+    return this.apollo.watchQuery<GetCharacterResponse>({
       query: GET_CHARACTER_QUERY,
 
       variables: {
         id
       }
-    });
+    }).valueChanges;
   }
 
-  createCharacter(character: Character) {
+  createCharacter(character: any) {
     return this.apollo.mutate<CreateCharacterResponse>({
       mutation: CREATE_CHARACTER_MUTATION,
 
@@ -68,6 +76,20 @@ export class CharacterService {
         existingStuffs.me.characters.push(data.createCharacter);
 
         store.writeQuery({query: MY_CHARACTERS_QUERY, data: existingStuffs});
+      }
+    });
+  }
+
+  editCharacter(character: Character) {
+    return this.apollo.mutate<EditCharacterResponse>({
+      mutation: EDIT_CHARACTER_MUTATION,
+
+      variables: {
+        id: character.id,
+        input: {
+          name: character.name,
+          description: character.description
+        }
       }
     });
   }
@@ -89,4 +111,8 @@ type CreateCharacterResponse = {
 
 type GetCharacterResponse = {
   getCharacter: Character;
+}
+
+type EditCharacterResponse = {
+  editCharacter: Character;
 }
