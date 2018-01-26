@@ -7,7 +7,11 @@ import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './register/register.component';
 import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 import {ToastrModule} from "ngx-toastr";
-import { AppRoutingModule } from './/app-routing.module';
+import { AppRoutingModule } from './app-routing.module';
+import {HttpClientModule} from "@angular/common/http";
+import {Apollo, ApolloModule} from "apollo-angular";
+import {HttpLink, HttpLinkModule} from "apollo-angular-link-http";
+import {InMemoryCache} from "apollo-cache-inmemory";
 
 
 @NgModule({
@@ -21,9 +25,22 @@ import { AppRoutingModule } from './/app-routing.module';
     AlertModule.forRoot(),
     BrowserAnimationsModule,
     ToastrModule.forRoot(),
-    AppRoutingModule
+    AppRoutingModule,
+    HttpClientModule,
+    ApolloModule,
+    HttpLinkModule
   ],
   providers: [],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {
+  constructor(apollo: Apollo, httpLink: HttpLink) {
+    apollo.create({
+      link: httpLink.create({
+        uri: 'http://localhost/graphql',
+        withCredentials: true
+      }),
+      cache: new InMemoryCache()
+    })
+  }
+}
