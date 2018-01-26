@@ -12,13 +12,23 @@ import {HttpClientModule} from "@angular/common/http";
 import {Apollo, ApolloModule} from "apollo-angular";
 import {HttpLink, HttpLinkModule} from "apollo-angular-link-http";
 import {InMemoryCache} from "apollo-cache-inmemory";
+import { SpinnerComponent } from './spinner/spinner.component';
+import {FormsModule, NgForm} from "@angular/forms";
+import {AuthService} from "./auth.service";
+import { AuthGuard } from './auth.guard';
+import { IndexComponent } from './index/index.component';
+import { TokenService } from './token.service';
+import { LogoutComponent } from './logout/logout.component';
 
 
 @NgModule({
   declarations: [
     AppComponent,
     LoginComponent,
-    RegisterComponent
+    RegisterComponent,
+    SpinnerComponent,
+    IndexComponent,
+    LogoutComponent
   ],
   imports: [
     BrowserModule,
@@ -28,9 +38,10 @@ import {InMemoryCache} from "apollo-cache-inmemory";
     AppRoutingModule,
     HttpClientModule,
     ApolloModule,
-    HttpLinkModule
+    HttpLinkModule,
+    FormsModule
   ],
-  providers: [],
+  providers: [AuthService, AuthGuard, TokenService],
   bootstrap: [AppComponent]
 })
 export class AppModule {
