@@ -11,6 +11,15 @@
     typescript "~2.6.2"
     webpack-sources "^1.0.1"
 
+"@angular-devkit/core@0.0.29":
+  version "0.0.29"
+  resolved "https://registry.yarnpkg.com/@angular-devkit/core/-/core-0.0.29.tgz#6fb319b45a62eff172318cbe256fdb24ef20af2b"
+  dependencies:
+    ajv "~5.5.1"
+    chokidar "^1.7.0"
+    rxjs "^5.5.6"
+    source-map "^0.5.6"
+
 "@angular-devkit/schematics@~0.0.42":
   version "0.0.52"
   resolved "https://registry.yarnpkg.com/@angular-devkit/schematics/-/schematics-0.0.52.tgz#cbd2f42778b50d6422a254ffaec05ad4ef3cb6c0"
@@ -109,7 +118,7 @@
   dependencies:
     tslib "^1.7.1"
 
-"@angular/core@^5.0.0":
+"@angular/core@^5.2.2":
   version "5.2.2"
   resolved "https://registry.yarnpkg.com/@angular/core/-/core-5.2.2.tgz#54950023b971d9e01f6f6fdbc30d2b68e4d05eb2"
   dependencies:
@@ -260,7 +269,7 @@ ajv@^4.9.1:
     co "^4.6.0"
     json-stable-stringify "^1.0.1"
 
-ajv@^5.0.0, ajv@^5.1.0, ajv@^5.1.5:
+ajv@^5.0.0, ajv@^5.1.0, ajv@^5.1.5, ajv@~5.5.1:
   version "5.5.2"
   resolved "https://registry.yarnpkg.com/ajv/-/ajv-5.5.2.tgz#73b5eeca3fab653e3d3f9422b341ad42205dc965"
   dependencies:
@@ -661,6 +670,10 @@ boom@5.x.x:
   resolved "https://registry.yarnpkg.com/boom/-/boom-5.2.0.tgz#5dd9da6ee3a5f302077436290cb717d3f4a54e02"
   dependencies:
     hoek "4.x.x"
+
+bootstrap@^4.0.0:
+  version "4.0.0"
+  resolved "https://registry.yarnpkg.com/bootstrap/-/bootstrap-4.0.0.tgz#ceb03842c145fcc1b9b4e15da2a05656ba68469a"
 
 brace-expansion@^1.1.7:
   version "1.1.8"
@@ -3602,6 +3615,14 @@ ncname@1.0.x:
 negotiator@0.6.1:
   version "0.6.1"
   resolved "https://registry.yarnpkg.com/negotiator/-/negotiator-0.6.1.tgz#2b327184e8992101177b28563fb5e7102acd0ca9"
+
+ngx-bootstrap@^2.0.2:
+  version "2.0.2"
+  resolved "https://registry.yarnpkg.com/ngx-bootstrap/-/ngx-bootstrap-2.0.2.tgz#6862b2ee4764bb6cfd34c66528873d0d050c2faa"
+
+ngx-toastr@^8.1.1:
+  version "8.1.1"
+  resolved "https://registry.yarnpkg.com/ngx-toastr/-/ngx-toastr-8.1.1.tgz#f34a57c8dfadf49392978bfb37019247700458b1"
 
 no-case@^2.2.0:
   version "2.3.2"
