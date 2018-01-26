@@ -2,7 +2,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 
 import { AppComponent } from './app.component';
-import {AlertModule} from "ngx-bootstrap";
+import {AlertModule, BsModalService, ModalModule} from "ngx-bootstrap";
 import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './register/register.component';
 import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
@@ -19,6 +19,11 @@ import { AuthGuard } from './auth.guard';
 import { IndexComponent } from './index/index.component';
 import { TokenService } from './token.service';
 import { LogoutComponent } from './logout/logout.component';
+import { NavbarComponent } from './navbar/navbar.component';
+import { IndexCharacterListComponent } from './index-character-list/index-character-list.component';
+import {CharacterService} from "./character.service";
+import { CharacterFormComponent } from './character-form/character-form.component';
+import { CharacterViewComponent } from './character-view/character-view.component';
 
 
 @NgModule({
@@ -28,7 +33,11 @@ import { LogoutComponent } from './logout/logout.component';
     RegisterComponent,
     SpinnerComponent,
     IndexComponent,
-    LogoutComponent
+    LogoutComponent,
+    NavbarComponent,
+    IndexCharacterListComponent,
+    CharacterFormComponent,
+    CharacterViewComponent
   ],
   imports: [
     BrowserModule,
@@ -39,9 +48,10 @@ import { LogoutComponent } from './logout/logout.component';
     HttpClientModule,
     ApolloModule,
     HttpLinkModule,
-    FormsModule
+    FormsModule,
+    ModalModule.forRoot()
   ],
-  providers: [AuthService, AuthGuard, TokenService],
+  providers: [AuthService, AuthGuard, TokenService, CharacterService],
   bootstrap: [AppComponent]
 })
 export class AppModule {

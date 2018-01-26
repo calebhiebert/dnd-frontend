@@ -1,7 +1,6 @@
 import {Injectable} from '@angular/core';
 import {CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot, Router} from '@angular/router';
 import {Observable} from 'rxjs/Observable';
-import {Apollo} from "apollo-angular";
 import {AuthService} from "./auth.service";
 
 @Injectable()
@@ -18,6 +17,8 @@ export class AuthGuard implements CanActivate {
           if(!loggedIn) {
             this.router.navigate(['login']);
           }
+
+          this.auth.setLoginStatus(loggedIn);
 
           resolve(loggedIn);
 

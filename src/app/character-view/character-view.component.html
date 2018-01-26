@@ -1,0 +1,5 @@
+<div *ngIf="loading === false">
+  <h4>{{ character.name }}</h4>
+  <p>{{ character.description }}</p>
+</div>
+<app-spinner *ngIf="loading === true"></app-spinner>

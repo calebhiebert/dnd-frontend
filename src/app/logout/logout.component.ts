@@ -16,6 +16,7 @@ export class LogoutComponent implements OnInit {
       this.auth.logout()
         .subscribe(res => {
           this.router.navigate(['']);
+          this.auth.setLoginStatus(false);
         });
     }, 500);
   }

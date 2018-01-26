@@ -4,3 +4,9 @@ export class User {
   characters: Array<any>;
   campaigns: Array<any>;
 }
+
+export class Character {
+  id: number;
+  name: string;
+  description: string;
+}

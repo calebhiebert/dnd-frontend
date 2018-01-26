@@ -1,0 +1,25 @@
+<button type="button" class="btn btn-outline-primary btn-sm" (click)="openModal(template)">Create</button>
+
+<ng-template #template>
+  <div class="modal-header">
+    <h4 class="modal-title float-left">Create Character</h4>
+    <button type="button" class="close float-right" (click)="modalRef.hide()">
+      <span>&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <app-spinner *ngIf="loading"></app-spinner>
+    <div class="form-group">
+      <label>Name</label>
+      <input [(ngModel)]="character.name" type="text" class="form-control" placeholder="Character Name">
+    </div>
+    <div class="form-group">
+      <label>Description</label>
+      <textarea [(ngModel)]="character.description" class="form-control" placeholder="Character Description"></textarea>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-secondary" (click)="modalRef.hide()">Cancel</button>
+    <button type="button" class="btn btn-primary" (click)="save()">Create</button>
+  </div>
+</ng-template>

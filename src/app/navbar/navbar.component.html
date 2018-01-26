@@ -1,0 +1,13 @@
+<nav class="navbar navbar-expand navbar-dark bg-primary">
+  <a routerLink="/" class="navbar-brand">PT</a>
+  <div class="navbar-collapse collapse">
+    <ul class="navbar-nav pt-1">
+      <li class="nav-item" *ngIf="loggedIn === false">
+        <a class="nav-link" routerLink="/login">Login</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" routerLink="/logout" *ngIf="loggedIn === true">Logout</a>
+      </li>
+    </ul>
+  </div>
+</nav>

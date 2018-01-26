@@ -1,0 +1,20 @@
+<div class="card">
+  <div class="card-header">
+    <app-character-form class="float-right"></app-character-form>
+    <span class="float-left">Characters</span>
+  </div>
+  <div class="list-group list-group-flush mb-2"
+       *ngIf="characters !== undefined && characters.length > 0; else noCharacters">
+    <div class="list-group-item list-group-item-action" *ngFor="let character of characters"
+         (click)="selectCharacter(character)">
+      {{character.name}}
+    </div>
+  </div>
+  <app-spinner *ngIf="loading === true"></app-spinner>
+</div>
+
+<ng-template #noCharacters>
+  <alert type="dark">
+    You have no characters!
+  </alert>
+</ng-template>

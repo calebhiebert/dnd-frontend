@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import {Apollo} from "apollo-angular";
 import gql from "graphql-tag";
 import {User} from "./types";
+import {BehaviorSubject} from "rxjs/BehaviorSubject";
 
 const LOGIN_MUTATION = gql`
   mutation LogIn($username: String!, $password: String!) {
@@ -31,7 +32,8 @@ const IS_LOGGED_IN_QUERY = gql`
 @Injectable()
 export class AuthService {
 
-  private token: string;
+  loggedIn$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
+  loggedIn: boolean = false;
 
   constructor(private apollo: Apollo) { }
 
@@ -67,6 +69,11 @@ export class AuthService {
 
       fetchPolicy: 'network-only'
     });
+  }
+
+  public setLoginStatus(loggedIn: boolean) {
+    this.loggedIn = loggedIn;
+    this.loggedIn$.next(loggedIn);
   }
 }
 

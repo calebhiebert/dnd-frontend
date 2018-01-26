@@ -27,6 +27,7 @@ export class RegisterComponent implements OnInit {
         this.loading = false;
         this.token.save(res.data.register.token);
         this.router.navigate(['']);
+        this.auth.setLoginStatus(true);
 
       }, e => console.error);
   }

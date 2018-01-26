@@ -29,8 +29,10 @@ export class LoginComponent implements OnInit {
         this.loading = false;
         this.token.save(res.data.login.token);
         this.router.navigate(['']);
+        this.auth.setLoginStatus(true);
       }, err => {
         this.error = err;
+        this.auth.setLoginStatus(false);
       });
   }
 
