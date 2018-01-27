@@ -1,7 +1,7 @@
-import { Component, OnInit } from '@angular/core';
-import {CharacterService} from "../character.service";
-import {Character} from "../types";
-import {Router} from "@angular/router";
+import {Component, OnInit} from '@angular/core';
+import {CharacterService} from '../character.service';
+import {Character} from '../types';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-index-character-list',
@@ -11,9 +11,10 @@ import {Router} from "@angular/router";
 export class IndexCharacterListComponent implements OnInit {
 
   characters: Array<any>;
-  loading: boolean = false;
+  loading = false;
 
-  constructor(private character: CharacterService, private router: Router) { }
+  constructor(private character: CharacterService, private router: Router) {
+  }
 
   ngOnInit() {
     this.loadCharacters();
@@ -29,6 +30,6 @@ export class IndexCharacterListComponent implements OnInit {
   }
 
   selectCharacter(character: Character) {
-    this.router.navigate(['character', character.id])
+    this.router.navigate(['character', character.id]);
   }
 }

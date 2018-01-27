@@ -24,6 +24,9 @@ import { IndexCharacterListComponent } from './index-character-list/index-charac
 import {CharacterService} from "./character.service";
 import { CharacterFormComponent } from './character-form/character-form.component';
 import { CharacterViewComponent } from './character-view/character-view.component';
+import { IndexCampaignListComponent } from './index-campaign-list/index-campaign-list.component';
+import { CampaignFormComponent } from './campaign-form/campaign-form.component';
+import { CampaignService } from './campaign.service';
 
 
 @NgModule({
@@ -37,7 +40,9 @@ import { CharacterViewComponent } from './character-view/character-view.componen
     NavbarComponent,
     IndexCharacterListComponent,
     CharacterFormComponent,
-    CharacterViewComponent
+    CharacterViewComponent,
+    IndexCampaignListComponent,
+    CampaignFormComponent
   ],
   imports: [
     BrowserModule,
@@ -51,7 +56,7 @@ import { CharacterViewComponent } from './character-view/character-view.componen
     FormsModule,
     ModalModule.forRoot()
   ],
-  providers: [AuthService, AuthGuard, TokenService, CharacterService],
+  providers: [AuthService, AuthGuard, TokenService, CharacterService, CampaignService],
   bootstrap: [AppComponent]
 })
 export class AppModule {
