@@ -1,0 +1,7 @@
+<app-spinner *ngIf="loading === true"></app-spinner>
+<div *ngIf="campaign">
+  <button routerLink="/campaign/edit/{{ campaign.id }}" *ngIf="campaign.mine === true" class="btn btn-outline-primary btn-sm float-right ml-2">Edit</button>
+  <button type="button" class="btn btn-outline-dark btn-sm float-right">Join</button>
+  <h4>{{ campaign.name }}</h4>
+  <p>{{ campaign.description }}</p>
+</div>

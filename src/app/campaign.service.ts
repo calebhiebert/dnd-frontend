@@ -1,27 +1,54 @@
 import { Injectable } from '@angular/core';
 import {Apollo} from 'apollo-angular';
-import gql from 'graphql-tag';
 import {Campaign} from './types';
+import gql from 'graphql-tag';
+
+const CAMPAIGN_FRAGMENT = gql`
+  fragment CampaignFields on Campaign {
+    id
+    name
+    description
+    mine
+  }
+`;
 
 const MY_CAMPAIGNS_QUERY = gql`
   query GetMyCampaigns {
     me {
       campaigns {
-        id
-        name
-        description
+        ...CampaignFields
       }
     }
-  }`;
+  }
+
+  ${CAMPAIGN_FRAGMENT}`;
 
 const GET_CAMPAIGN_QUERY = gql`
   query GetCampaign($id: ID!) {
     getCampaign(id: $id) {
-      id
-      name
-      description
+      ...CampaignFields
     }
-  }`;
+  }
+
+  ${CAMPAIGN_FRAGMENT}`;
+
+const CREATE_CAMPAIGN_MUTATION = gql`
+  mutation CreateCampaign($input: CampaignInput!) {
+    createCampaign(input: $input) {
+      ...CampaignFields
+    }
+  }
+
+  ${CAMPAIGN_FRAGMENT}`;
+
+const EDIT_CAMPAIGN_MUTATION = gql`
+  mutation EditCampaign($id: ID!, $input: CampaignInput!) {
+    editCampaign(id: $id, input: $input) {
+      ...CampaignFields
+    }
+  }
+
+  ${CAMPAIGN_FRAGMENT}`;
 
 @Injectable()
 export class CampaignService {
@@ -30,7 +57,7 @@ export class CampaignService {
 
 
   getMyCampaigns() {
-    return this.apollo.watchQuery<GetMyCampaignsResponse>({
+    return this.apollo.watchQuery<MyCampaignsResponse>({
       query: MY_CAMPAIGNS_QUERY
     }).valueChanges;
   }
@@ -44,14 +71,50 @@ export class CampaignService {
       }
     }).valueChanges;
   }
+
+  createCampaign(campaign: Campaign) {
+    return this.apollo.mutate<CreateCampaignResponse>({
+      mutation: CREATE_CAMPAIGN_MUTATION,
+
+      variables: {
+        input: campaign
+      },
+
+      update(store, {data}) {
+        store.writeQuery({query: GET_CAMPAIGN_QUERY, data: {getCampaign: data.createCampaign}, variables: {id: data.createCampaign.id}});
+      }
+    });
+  }
+
+  editCampaign(campaign: Campaign) {
+    return this.apollo.mutate<EditCampaignResponse>({
+      mutation: EDIT_CAMPAIGN_MUTATION,
+
+      variables: {
+        id: campaign.id,
+        input: {
+          name: campaign.name,
+          description: campaign.description
+        }
+      }
+    });
+  }
 }
 
 interface GetCampaignResponse {
   getCampaign: Campaign;
 }
 
-interface GetMyCampaignsResponse {
+interface MyCampaignsResponse {
   me: {
     campaigns: Array<Campaign>;
   };
+}
+
+interface CreateCampaignResponse {
+  createCampaign: Campaign;
+}
+
+interface EditCampaignResponse {
+  editCampaign: Campaign;
 }

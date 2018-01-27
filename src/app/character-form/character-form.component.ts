@@ -1,7 +1,7 @@
 import {Component, Input, OnInit, TemplateRef} from '@angular/core';
-import {BsModalRef, BsModalService} from "ngx-bootstrap";
-import {Character} from "../types";
-import {CharacterService} from "../character.service";
+import {BsModalRef, BsModalService} from 'ngx-bootstrap';
+import {Character} from '../types';
+import {CharacterService} from '../character.service';
 
 @Component({
   selector: 'app-character-form',
@@ -12,12 +12,9 @@ export class CharacterFormComponent implements OnInit {
 
   modalRef: BsModalRef;
 
-  // name: string;
-  // description: string;
-
   character: Character;
 
-  loading: boolean = false;
+  loading = false;
 
   @Input()
   edit: boolean;

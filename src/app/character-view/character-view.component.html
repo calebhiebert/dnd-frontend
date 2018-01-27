@@ -1,5 +1,4 @@
 <div *ngIf="loading === false">
-  <!--<button class="btn btn-outline-secondary btn-sm float-right">Edit</button>-->
   <app-character-form class="float-right" [edit]="true" [editId]="character.id"></app-character-form>
   <h4>{{ character.name }}</h4>
   <p>{{ character.description }}</p>

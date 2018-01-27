@@ -27,6 +27,8 @@ import { CharacterViewComponent } from './character-view/character-view.componen
 import { IndexCampaignListComponent } from './index-campaign-list/index-campaign-list.component';
 import { CampaignFormComponent } from './campaign-form/campaign-form.component';
 import { CampaignService } from './campaign.service';
+import { CampaignViewComponent } from './campaign-view/campaign-view.component';
+import { CharacterSelectionListComponent } from './character-selection-list/character-selection-list.component';
 
 
 @NgModule({
@@ -42,7 +44,9 @@ import { CampaignService } from './campaign.service';
     CharacterFormComponent,
     CharacterViewComponent,
     IndexCampaignListComponent,
-    CampaignFormComponent
+    CampaignFormComponent,
+    CampaignViewComponent,
+    CharacterSelectionListComponent
   ],
   imports: [
     BrowserModule,

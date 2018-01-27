@@ -1,9 +1,12 @@
 <div class="card">
   <div class="card-header">
     <h4 class="float-left">Campaigns</h4>
-    <button class="btn btn-outline-primary btn-sm float-right">Create</button>
+    <button routerLink="/campaign/create" class="btn btn-outline-primary btn-sm float-right">Create</button>
     <button class="btn btn-outline-dark btn-sm float-right mr-2">Join</button>
   </div>
-  <div class="card-body">
+  <div class="list-group list-group-flush">
+    <button type="button" routerLink="/campaign/{{ campaign.id }}" class="list-group-item list-group-item-action" *ngFor="let campaign of campaigns">
+      {{ campaign.name }}
+    </button>
   </div>
 </div>

@@ -15,4 +15,5 @@ export class Campaign {
   id: number;
   name: string;
   description: string;
+  mine: boolean;
 }

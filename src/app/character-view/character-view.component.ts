@@ -11,7 +11,7 @@ import {Character} from "../types";
 export class CharacterViewComponent implements OnInit {
 
   character: Character;
-  loading: boolean = false;
+  loading = false;
 
   constructor(private route: ActivatedRoute, private charService: CharacterService) { }
 
