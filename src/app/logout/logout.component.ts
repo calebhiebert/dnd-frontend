@@ -14,7 +14,7 @@ export class LogoutComponent implements OnInit {
   ngOnInit() {
     setTimeout(() => {
       this.auth.logout()
-        .subscribe(res => {
+        .subscribe(() => {
           this.router.navigate(['']);
           this.auth.setLoginStatus(false);
         });

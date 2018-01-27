@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
-import {Apollo} from "apollo-angular";
-import gql from "graphql-tag";
-import {User} from "./types";
-import {BehaviorSubject} from "rxjs/BehaviorSubject";
+import {Apollo} from 'apollo-angular';
+import gql from 'graphql-tag';
+import {User} from './types';
+import {BehaviorSubject} from 'rxjs/BehaviorSubject';
 
 const LOGIN_MUTATION = gql`
   mutation LogIn($username: String!, $password: String!) {
@@ -33,7 +33,7 @@ const IS_LOGGED_IN_QUERY = gql`
 export class AuthService {
 
   loggedIn$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
-  loggedIn: boolean = false;
+  loggedIn = false;
 
   constructor(private apollo: Apollo) { }
 
@@ -44,7 +44,8 @@ export class AuthService {
       variables: {
         username, password
       }
-    });
+    })
+      .map(resp => resp.data.login);
   }
 
   public register(username: string, password: string) {
@@ -54,13 +55,13 @@ export class AuthService {
       variables: {
         username, password
       }
-    });
+    }).map(resp => resp.data.register);
   }
 
   public logout() {
     return this.apollo.mutate({
       mutation: LOGOUT_MUTATION
-    });
+    }).map(resp => resp.data.logout);
   }
 
   public isLoggedIn() {
@@ -68,7 +69,8 @@ export class AuthService {
       query: IS_LOGGED_IN_QUERY,
 
       fetchPolicy: 'network-only'
-    });
+    })
+      .map(resp => resp.data.isLoggedIn);
   }
 
   public setLoginStatus(loggedIn: boolean) {
@@ -77,20 +79,20 @@ export class AuthService {
   }
 }
 
-type IsLoggedInResponse = {
+interface IsLoggedInResponse {
   isLoggedIn: boolean;
-};
+}
 
-type LoginResponse = {
+interface LoginResponse {
   login: {
     token: string;
     user: any;
-  }
-};
+  };
+}
 
-type RegisterResponse = {
+interface RegisterResponse {
   register: {
     token: string;
     user: any;
-  }
+  };
 }

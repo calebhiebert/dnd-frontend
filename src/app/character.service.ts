@@ -59,7 +59,7 @@ export class CharacterService {
   getMyCharacters() {
     return this.apollo.watchQuery<MyCharactersResponse>({
       query: MY_CHARACTERS_QUERY
-    }).valueChanges;
+    }).valueChanges.map(resp => resp.data.me.characters);
   }
 
   getCharacter(id: number) {
@@ -69,7 +69,7 @@ export class CharacterService {
       variables: {
         id
       }
-    }).valueChanges;
+    }).valueChanges.map(resp => resp.data.getCharacter);
   }
 
   createCharacter(character: any) {
@@ -87,7 +87,7 @@ export class CharacterService {
 
         store.writeQuery({query: MY_CHARACTERS_QUERY, data: existingStuffs});
       }
-    });
+    }).map(resp => resp.data.createCharacter);
   }
 
   editCharacter(character: Character) {
@@ -101,11 +101,17 @@ export class CharacterService {
           description: character.description
         }
       }
-    });
+    }).map(resp => resp.data.editCharacter);
   }
 
   getCharactersForUser(userId: number) {
-    return this.apollo.mutate<>()
+    return this.apollo.query<UserCharactersResponse>({
+      query: USER_CHARACTERS_QUERY,
+
+      variables: {
+        userId: userId
+      }
+    }).map(resp => resp.data.user.characters);
   }
 }
 
@@ -132,5 +138,7 @@ interface EditCharacterResponse {
 }
 
 interface UserCharactersResponse {
-
+  user: {
+    characters: Array<Character>
+  };
 }

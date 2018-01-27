@@ -18,10 +18,9 @@ export class IndexCampaignListComponent implements OnInit {
   ngOnInit() {
     this.loading = true;
     this.campService.getMyCampaigns()
-      .subscribe(resp => {
-        this.campaigns = resp.data.me.campaigns;
+      .subscribe(campaigns => {
+        this.campaigns = campaigns;
         this.loading = false;
       });
   }
-
 }

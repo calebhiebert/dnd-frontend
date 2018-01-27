@@ -1,7 +1,7 @@
-import { Component, OnInit } from '@angular/core';
-import {ActivatedRoute} from "@angular/router";
-import {CharacterService} from "../character.service";
-import {Character} from "../types";
+import {Component, OnInit} from '@angular/core';
+import {ActivatedRoute} from '@angular/router';
+import {CharacterService} from '../character.service';
+import {Character} from '../types';
 
 @Component({
   selector: 'app-character-view',
@@ -13,7 +13,8 @@ export class CharacterViewComponent implements OnInit {
   character: Character;
   loading = false;
 
-  constructor(private route: ActivatedRoute, private charService: CharacterService) { }
+  constructor(private route: ActivatedRoute, private charService: CharacterService) {
+  }
 
   ngOnInit() {
     this.route.params.subscribe(params => {
@@ -24,8 +25,8 @@ export class CharacterViewComponent implements OnInit {
   loadCharacter(id: number) {
     this.loading = true;
     this.charService.getCharacter(id)
-      .subscribe(resp => {
-        this.character = resp.data.getCharacter;
+      .subscribe(character => {
+        this.character = character;
         this.loading = false;
       });
   }

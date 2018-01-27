@@ -31,8 +31,8 @@ export class CharacterFormComponent implements OnInit {
     if (this.edit) {
       this.loading = true;
       this.charService.getCharacter(this.editId)
-        .subscribe(resp => {
-          Object.assign(this.character, resp.data.getCharacter);
+        .subscribe(character => {
+          Object.assign(this.character, character);
           this.loading = false;
         });
     }
@@ -45,7 +45,7 @@ export class CharacterFormComponent implements OnInit {
   save() {
     if ((this.edit || false) === false) {
       this.charService.createCharacter(this.character)
-        .subscribe(res => {
+        .subscribe(() => {
           this.modalRef.hide();
         }, e => console.log(e));
     } else {

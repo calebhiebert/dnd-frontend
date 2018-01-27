@@ -59,7 +59,7 @@ export class CampaignService {
   getMyCampaigns() {
     return this.apollo.watchQuery<MyCampaignsResponse>({
       query: MY_CAMPAIGNS_QUERY
-    }).valueChanges;
+    }).valueChanges.map(resp => resp.data.me.campaigns);
   }
 
   getCampaign(id: number) {
@@ -69,7 +69,7 @@ export class CampaignService {
       variables: {
         id
       }
-    }).valueChanges;
+    }).valueChanges.map(resp => resp.data.getCampaign);
   }
 
   createCampaign(campaign: Campaign) {
@@ -83,7 +83,8 @@ export class CampaignService {
       update(store, {data}) {
         store.writeQuery({query: GET_CAMPAIGN_QUERY, data: {getCampaign: data.createCampaign}, variables: {id: data.createCampaign.id}});
       }
-    });
+    })
+      .map(resp => resp.data.createCampaign);
   }
 
   editCampaign(campaign: Campaign) {
@@ -97,7 +98,8 @@ export class CampaignService {
           description: campaign.description
         }
       }
-    });
+    })
+      .map(resp => resp.data.editCampaign);
   }
 }
 

@@ -23,8 +23,8 @@ export class IndexCharacterListComponent implements OnInit {
   loadCharacters() {
     this.loading = true;
     this.character.getMyCharacters()
-      .subscribe(resp => {
-        this.characters = resp.data.me.characters;
+      .subscribe(characters => {
+        this.characters = characters;
         this.loading = false;
       });
   }

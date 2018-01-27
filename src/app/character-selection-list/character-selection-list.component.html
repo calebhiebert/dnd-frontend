@@ -1,3 +1,8 @@
-<p>
-  character-selection-list works!
-</p>
+<div *ngIf="characters">
+  <div class="list-group">
+    <button type="button" class="list-group-item list-group-item-action" *ngFor="let character of characters">
+      {{ character.name }}
+    </button>
+  </div>
+</div>
+<app-spinner *ngIf="loading === true"></app-spinner>

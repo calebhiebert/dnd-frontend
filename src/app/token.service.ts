@@ -5,11 +5,11 @@ export class TokenService {
 
   constructor() { }
 
-  public save(token: string) {
+  public static save(token: string) {
     localStorage.setItem('auth-token', token);
   }
 
-  public get() {
+  public static get() {
     return localStorage.getItem('auth-token');
   }
 }

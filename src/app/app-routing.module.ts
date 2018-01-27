@@ -15,8 +15,8 @@ const routes = [
   {path: 'register', component: RegisterComponent},
   {path: 'logout', component: LogoutComponent},
   {path: 'character/:id', component: CharacterViewComponent, canActivate: [AuthGuard]},
-  {path: 'campaign/:id', component: CampaignViewComponent, canActivate: [AuthGuard]},
   {path: 'campaign/create', component: CampaignFormComponent, canActivate: [AuthGuard]},
+  {path: 'campaign/:id', component: CampaignViewComponent, canActivate: [AuthGuard]},
   {path: 'campaign/edit/:id', component: CampaignFormComponent, canActivate: [AuthGuard]},
   {path: '**', component: IndexComponent, canActivate: [AuthGuard]},
 ];
