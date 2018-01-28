@@ -9,7 +9,7 @@
   </div>
   <fieldset [disabled]="loading === true">
     <div class="modal-body">
-      <app-spinner *ngIf="loading"></app-spinner>
+      <app-spinner *ngIf="loading === true"></app-spinner>
       <div class="form-group">
         <label>Name</label>
         <input [(ngModel)]="character.name" type="text" class="form-control" placeholder="Character Name">

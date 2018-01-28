@@ -4,15 +4,16 @@
     <span class="float-left">Characters</span>
   </div>
   <div class="list-group list-group-flush"
-       *ngIf="characters !== undefined && characters.length > 0; else noCharacters">
+       *ngIf="characters !== undefined && characters.length > 0">
     <button type="button" class="list-group-item list-group-item-action" *ngFor="let character of characters"
          (click)="selectCharacter(character)">
       {{character.name}}
     </button>
   </div>
-  <app-spinner *ngIf="loading === true"></app-spinner>
+  <div class="card-body" *ngIf="characters !== undefined && characters.length === 0">
+    <span class="text-muted">You have no characters!</span>
+  </div>
+  <div class="card-body" *ngIf="loading === true">
+    <app-spinner></app-spinner>
+  </div>
 </div>
-
-<ng-template #noCharacters>
-  <span class="text-muted p-3">You have no characters!</span>
-</ng-template>

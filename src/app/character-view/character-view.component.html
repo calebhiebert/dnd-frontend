@@ -1,5 +1,5 @@
 <div *ngIf="loading === false">
-  <app-character-form class="float-right" [edit]="true" [editId]="character.id"></app-character-form>
+  <app-character-form class="float-right" [edit]="true" [editId]="character.id" *ngIf="character.mine"></app-character-form>
   <h4>{{ character.name }}</h4>
   <p>{{ character.description }}</p>
 </div>

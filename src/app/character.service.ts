@@ -117,11 +117,7 @@ export class CharacterService {
 
 interface MyCharactersResponse {
   me: {
-    characters: Array<{
-      id: number;
-      name: string;
-      descriptions: string;
-    }>;
+    characters: Array<Character>;
   };
 }
 

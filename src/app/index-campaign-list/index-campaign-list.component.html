@@ -1,15 +1,18 @@
 <div class="card">
-  <app-spinner *ngIf="loading === true"></app-spinner>
   <div class="card-header">
     <h4 class="float-left">Campaigns</h4>
     <button routerLink="/campaign/create" class="btn btn-outline-primary btn-sm float-right">Create</button>
     <button class="btn btn-outline-dark btn-sm float-right mr-2">Join</button>
   </div>
+  <div class="card-body" *ngIf="loading === true">
+    <app-spinner></app-spinner>
+  </div>
   <div class="card-body" *ngIf="campaigns && campaigns.length === 0">
     You don't have any campaigns :(
   </div>
   <div class="list-group list-group-flush">
-    <button type="button" routerLink="/campaign/{{ campaign.id }}" class="list-group-item list-group-item-action" *ngFor="let campaign of campaigns">
+    <button type="button" routerLink="/campaign/{{ campaign.id }}" class="list-group-item list-group-item-action"
+            *ngFor="let campaign of campaigns">
       {{ campaign.name }}
     </button>
   </div>

@@ -1,7 +1,30 @@
 <app-spinner *ngIf="loading === true"></app-spinner>
 <div *ngIf="campaign">
-  <button routerLink="/campaign/edit/{{ campaign.id }}" *ngIf="campaign.mine === true" class="btn btn-outline-primary btn-sm float-right ml-2">Edit</button>
-  <button type="button" class="btn btn-outline-dark btn-sm float-right">Join</button>
+  <button routerLink="/campaign/edit/{{ campaign.id }}" *ngIf="campaign.mine === true"
+          class="btn btn-outline-primary btn-sm float-right ml-2">Edit
+  </button>
+  <button type="button" class="btn btn-outline-dark btn-sm float-right" (click)="openModal(characterSelector)">Join
+  </button>
   <h4>{{ campaign.name }}</h4>
   <p>{{ campaign.description }}</p>
+
+  <div class="card">
+    <span class="card-header">Characters</span>
+    <div class="list-group list-group-flush">
+      <a routerLink="/character/{{ character.id }}" *ngFor="let character of campaign.characters"
+              class="list-group-item list-group-item-action flex-column align-items-start">
+        <div class="d-flex w-100 justify-content-between">
+          <h5 class="mb-1">{{character.name}}</h5>
+          <small>{{character.creator.username}}</small>
+        </div>
+      </a>
+    </div>
+  </div>
 </div>
+
+<ng-template #characterSelector>
+  <div class="modal-header">Select a Character</div>
+  <div class="modal-body">
+    <app-character-selection-list (selection)="onCharacterSelected($event)"></app-character-selection-list>
+  </div>
+</ng-template>

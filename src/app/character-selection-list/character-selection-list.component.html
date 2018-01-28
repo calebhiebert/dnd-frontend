@@ -1,6 +1,7 @@
 <div *ngIf="characters">
   <div class="list-group">
-    <button type="button" class="list-group-item list-group-item-action" *ngFor="let character of characters">
+    <button type="button" class="list-group-item list-group-item-action"
+            (click)="selection.next(character)" *ngFor="let character of selectableCharacters">
       {{ character.name }}
     </button>
   </div>

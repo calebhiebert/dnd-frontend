@@ -9,6 +9,8 @@ export class Character {
   id: number;
   name: string;
   description: string;
+  campaign: Campaign;
+  creator: User;
 }
 
 export class Campaign {
@@ -16,4 +18,6 @@ export class Campaign {
   name: string;
   description: string;
   mine: boolean;
+  characters: Array<Character>;
+  creator: User;
 }

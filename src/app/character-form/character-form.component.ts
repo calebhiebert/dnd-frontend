@@ -43,16 +43,20 @@ export class CharacterFormComponent implements OnInit {
   }
 
   save() {
+    this.loading = true;
+
     if ((this.edit || false) === false) {
       this.charService.createCharacter(this.character)
         .subscribe(() => {
           this.modalRef.hide();
+          this.loading = false;
         }, e => console.log(e));
     } else {
 
       this.charService.editCharacter(this.character)
         .subscribe(() => {
           this.modalRef.hide();
+          this.loading = false;
         }, console.error);
     }
   }
