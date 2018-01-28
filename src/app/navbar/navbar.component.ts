@@ -1,5 +1,6 @@
-import { Component, OnInit } from '@angular/core';
-import {AuthService} from "../auth.service";
+import {Component, OnInit} from '@angular/core';
+import {AuthService} from '../auth.service';
+import {NotificationService} from '../notification.service';
 
 @Component({
   selector: 'app-navbar',
@@ -8,9 +9,18 @@ import {AuthService} from "../auth.service";
 })
 export class NavbarComponent implements OnInit {
 
-  constructor(private auth: AuthService) { }
+  notificationCount: (string | number) = '?';
+
+  constructor(private auth: AuthService, private notifService: NotificationService) {
+  }
 
   ngOnInit() {
+    this.loadNotificationCount();
+  }
+
+  loadNotificationCount() {
+    this.notifService.loadNotifications()
+      .subscribe(notifications => this.notificationCount = notifications.length);
   }
 
   get loggedIn() {

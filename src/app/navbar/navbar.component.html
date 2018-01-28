@@ -1,13 +1,29 @@
-<nav class="navbar navbar-expand navbar-dark bg-primary">
-  <a routerLink="/" class="navbar-brand">PT</a>
-  <div class="navbar-collapse collapse">
-    <ul class="navbar-nav pt-1">
-      <li class="nav-item" *ngIf="loggedIn === false">
-        <a class="nav-link" routerLink="/login">Login</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" routerLink="/logout" *ngIf="loggedIn === true">Logout</a>
-      </li>
-    </ul>
+<nav class="navbar navbar-expand navbar-light bg-light">
+  <div class="container">
+    <a routerLink="/" class="navbar-brand">Home</a>
+    <div class="navbar-collapse collapse">
+      <ul class="navbar-nav pt-1">
+        <li class="nav-item" *ngIf="loggedIn === false">
+          <a class="nav-link" routerLink="/login">Login</a>
+        </li>
+      </ul>
+    </div>
+    <button type="button" class="btn btn-primary float-right btn-sm" *ngIf="loggedIn === true"
+            [popover]="notifications" popoverTitle="Notifications" placement="bottom">
+      🔔 <span class="badge badge-pill badge-light">{{ notificationCount }}</span>
+    </button>
+    <div class="btn-group" dropdown placement="bottom right" *ngIf="loggedIn === true">
+      <button dropdownToggle type="button" class="btn btn-outline-dark btn-sm float-right ml-2 dropdown-toggle">
+        Me
+        <span class="caret"></span>
+      </button>
+      <ul *dropdownMenu class="dropdown-menu dropdown-menu-right" role="menu">
+        <li role="menuitem"><a routerLink="/logout" class="dropdown-item" *ngIf="loggedIn === true">Logout</a></li>
+      </ul>
+    </div>
   </div>
 </nav>
+
+<ng-template #notifications>
+  <app-notifications></app-notifications>
+</ng-template>

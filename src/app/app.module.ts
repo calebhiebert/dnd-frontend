@@ -2,7 +2,7 @@ import {BrowserModule} from '@angular/platform-browser';
 import {NgModule} from '@angular/core';
 
 import {AppComponent} from './app.component';
-import {AlertModule, BsModalService, ModalModule} from 'ngx-bootstrap';
+import {AlertModule, BsDropdownModule, BsModalService, ModalModule, PopoverModule} from 'ngx-bootstrap';
 import {LoginComponent} from './login/login.component';
 import {RegisterComponent} from './register/register.component';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
@@ -29,6 +29,8 @@ import {CampaignFormComponent} from './campaign-form/campaign-form.component';
 import {CampaignService} from './campaign.service';
 import {CampaignViewComponent} from './campaign-view/campaign-view.component';
 import {CharacterSelectionListComponent} from './character-selection-list/character-selection-list.component';
+import { NotificationsComponent } from './notifications/notifications.component';
+import { NotificationService } from './notification.service';
 
 
 @NgModule({
@@ -46,7 +48,8 @@ import {CharacterSelectionListComponent} from './character-selection-list/charac
     IndexCampaignListComponent,
     CampaignFormComponent,
     CampaignViewComponent,
-    CharacterSelectionListComponent
+    CharacterSelectionListComponent,
+    NotificationsComponent
   ],
   imports: [
     BrowserModule,
@@ -58,9 +61,11 @@ import {CharacterSelectionListComponent} from './character-selection-list/charac
     ApolloModule,
     HttpLinkModule,
     FormsModule,
-    ModalModule.forRoot()
+    ModalModule.forRoot(),
+    BsDropdownModule.forRoot(),
+    PopoverModule.forRoot()
   ],
-  providers: [AuthService, AuthGuard, TokenService, CharacterService, CampaignService],
+  providers: [AuthService, AuthGuard, TokenService, CharacterService, CampaignService, NotificationService],
   bootstrap: [AppComponent]
 })
 export class AppModule {

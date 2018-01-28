@@ -14,6 +14,7 @@ export class LoginComponent implements OnInit {
   username: string;
   password: string;
   loading = false;
+
   error: any = null;
 
   constructor(private auth: AuthService, private token: TokenService, private router: Router) { }
@@ -23,20 +24,18 @@ export class LoginComponent implements OnInit {
 
   login() {
     this.error = null;
+
     this.loading = true;
+
     this.auth.login(this.username, this.password)
       .subscribe(login => {
-        this.loading = false;
-        TokenService.save(login.token);
-        this.router.navigate(['']);
         this.auth.setLoginStatus(true);
+        this.router.navigate(['']);
+        TokenService.save(login.token);
+        this.loading = false;
       }, err => {
         this.error = err;
         this.auth.setLoginStatus(false);
       });
-  }
-
-  get isLoading() {
-    return this.loading === true;
   }
 }
