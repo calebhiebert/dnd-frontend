@@ -2,6 +2,8 @@ import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
 import {CharacterService} from '../character.service';
 import {Character} from '../types';
+import {Apollo} from 'apollo-angular';
+import gql from 'graphql-tag';
 
 @Component({
   selector: 'app-character-view',
@@ -13,7 +15,7 @@ export class CharacterViewComponent implements OnInit {
   character: Character;
   loading = false;
 
-  constructor(private route: ActivatedRoute, private charService: CharacterService) {
+  constructor(private route: ActivatedRoute, private charService: CharacterService, private apollo: Apollo) {
   }
 
   ngOnInit() {
@@ -24,10 +26,33 @@ export class CharacterViewComponent implements OnInit {
 
   loadCharacter(id: number) {
     this.loading = true;
-    this.charService.getCharacter(id)
-      .subscribe(character => {
-        this.character = character;
-        this.loading = false;
-      });
+
+    this.apollo.query({
+      query: gql`
+        query GetCharacterView($id: Int!) {
+          getCharacter(id: $id) {
+            id
+            name
+            description
+            mine
+            attributes {
+              id
+              key
+              dataType
+              nValue
+              sValue
+            }
+          }
+        }`,
+
+      variables: {
+        id
+      }
+    })
+    .map((resp: any) => resp.data.getCharacter)
+    .subscribe(character => {
+      this.character = character;
+      this.loading = false;
+    });
   }
 }

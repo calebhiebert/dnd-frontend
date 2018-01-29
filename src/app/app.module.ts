@@ -31,6 +31,7 @@ import {CampaignViewComponent} from './campaign-view/campaign-view.component';
 import {CharacterSelectionListComponent} from './character-selection-list/character-selection-list.component';
 import { NotificationsComponent } from './notifications/notifications.component';
 import { NotificationService } from './notification.service';
+import { AttributeEditorComponent } from './attribute-editor/attribute-editor.component';
 
 
 @NgModule({
@@ -49,7 +50,8 @@ import { NotificationService } from './notification.service';
     CampaignFormComponent,
     CampaignViewComponent,
     CharacterSelectionListComponent,
-    NotificationsComponent
+    NotificationsComponent,
+    AttributeEditorComponent
   ],
   imports: [
     BrowserModule,
