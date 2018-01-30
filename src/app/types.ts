@@ -11,6 +11,7 @@ export class Character {
   description: string;
   campaign: Campaign;
   creator: User;
+  attributes: Array<Attribute>;
 }
 
 export class Campaign {
@@ -20,4 +21,12 @@ export class Campaign {
   mine: boolean;
   characters: Array<Character>;
   creator: User;
+}
+
+export class Attribute {
+  id: number;
+  dataType: string;
+  key: string;
+  sValue: string;
+  nValue: number;
 }

@@ -27,7 +27,7 @@ export class CharacterViewComponent implements OnInit {
   loadCharacter(id: number) {
     this.loading = true;
 
-    this.apollo.query({
+    this.apollo.watchQuery({
       query: gql`
         query GetCharacterView($id: Int!) {
           getCharacter(id: $id) {
@@ -48,7 +48,7 @@ export class CharacterViewComponent implements OnInit {
       variables: {
         id
       }
-    })
+    }).valueChanges
     .map((resp: any) => resp.data.getCharacter)
     .subscribe(character => {
       this.character = character;

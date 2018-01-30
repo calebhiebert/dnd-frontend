@@ -82,9 +82,7 @@ export class CharacterService {
 
       update(store, {data}) {
         const existingStuffs = store.readQuery<MyCharactersResponse>({query: MY_CHARACTERS_QUERY});
-
         existingStuffs.me.characters.push(data.createCharacter);
-
         store.writeQuery({query: MY_CHARACTERS_QUERY, data: existingStuffs});
       }
     }).map(resp => resp.data.createCharacter);

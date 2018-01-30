@@ -1,31 +1,21 @@
 <h4 *ngIf="character !== undefined">Edit attributes for {{ character.name }}</h4>
 <div class="list-group" *ngIf="character !== undefined">
   <div class="list-group-item" *ngFor="let attr of character.attributes">
-    <div [ngSwitch]="attr.dataType">
-      <fieldset>
-        <div class="input-group">
-          <input placeholder="Type" type="text" class="form-control" [(ngModel)]="attr.key">
-          <input placeholder="{{ attr.key }}" type="text" class="form-control" *ngIf="attr.dataType === 'NUMBER'"
-                 [(ngModel)]="attr.nValue">
-          <input placeholder="{{ attr.key }}" type="text" class="form-control" *ngIf="attr.dataType === 'STRING'"
-                 [(ngModel)]="attr.sValue">
-          <div class="input-group-append">
-            <button type="button" class="btn btn-outline-dark btn-sm">💾</button>
-            <button type="button" class="btn btn-outline-dark btn-sm">❌</button>
-          </div>
-        </div>
-      </fieldset>
-    </div>
+    <app-attribute-edit-row [attribute]="attr" [charId]="characterId"></app-attribute-edit-row>
   </div>
   <div class="list-group-item" *ngIf="showCreationBox === true">
-    <div class="input-group">
-      <input type="text" placeholder="Key" class="form-control" [(ngModel)]="newAttr.key">
-      <input type="text" placeholder="{{ (newAttr.key || 'Value') }}" class="form-control" [(ngModel)]="newAttr.value">
-      <div class="input-group-append">
-        <button type="button" class="btn btn-outline-dark btn-sm">💾️</button>
-        <button type="button" class="btn btn-outline-dark btn-sm" (click)="showCreationBox = false">Cancel</button>
+    <fieldset [disabled]="editorLoading === true">
+      <app-spinner *ngIf="editorLoading === true"></app-spinner>
+      <div class="input-group">
+        <input type="text" placeholder="Key" class="form-control" [(ngModel)]="newAttr.key">
+        <input type="text" placeholder="{{ (newAttr.key || 'Value') }}" class="form-control"
+               [(ngModel)]="newAttr.value">
+        <div class="input-group-append">
+          <button type="button" class="btn btn-outline-dark btn-sm" (click)="saveNewAttribute()">💾️</button>
+          <button type="button" class="btn btn-outline-dark btn-sm" (click)="showCreationBox = false">Cancel</button>
+        </div>
       </div>
-    </div>
+    </fieldset>
   </div>
 </div>
 <button type="button" class="btn btn-outline-dark btn-sm float-right mt-2 ml-2" (click)="showCreationBox = true">Add

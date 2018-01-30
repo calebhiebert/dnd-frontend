@@ -3,6 +3,21 @@ import {Apollo} from 'apollo-angular';
 import gql from 'graphql-tag';
 import {Character} from '../types';
 
+export const DATA_QUERY = gql`
+  query AttributeEditorQuery($charId: Int!) {
+    getCharacter(id: $charId) {
+      id
+      name
+      attributes {
+        id
+        key
+        dataType
+        nValue
+        sValue
+      }
+    }
+  }`;
+
 @Component({
   selector: 'app-attribute-editor',
   templateUrl: './attribute-editor.component.html',
@@ -16,6 +31,7 @@ export class AttributeEditorComponent implements OnInit {
   character: Character;
 
   loading = false;
+  editorLoading = false;
 
   newAttr: any = {
     key: '',
@@ -34,26 +50,13 @@ export class AttributeEditorComponent implements OnInit {
   loadData() {
     this.loading = true;
 
-    this.apollo.query({
-      query: gql`
-        query AttributeEditorQuery($charId: Int!) {
-          getCharacter(id: $charId) {
-            id
-            name
-            attributes {
-              id
-              key
-              dataType
-              nValue
-              sValue
-            }
-          }
-        }`,
+    this.apollo.watchQuery({
+      query: DATA_QUERY,
 
       variables: {
         charId: this.characterId
       }
-    }).map((resp: any) => resp.data.getCharacter)
+    }).valueChanges.map((resp: any) => resp.data.getCharacter)
     .subscribe(character => {
       this.character = character;
       this.loading = false;

@@ -32,6 +32,7 @@ import {CharacterSelectionListComponent} from './character-selection-list/charac
 import { NotificationsComponent } from './notifications/notifications.component';
 import { NotificationService } from './notification.service';
 import { AttributeEditorComponent } from './attribute-editor/attribute-editor.component';
+import { AttributeEditRowComponent } from './attribute-edit-row/attribute-edit-row.component';
 
 
 @NgModule({
@@ -51,7 +52,8 @@ import { AttributeEditorComponent } from './attribute-editor/attribute-editor.co
     CampaignViewComponent,
     CharacterSelectionListComponent,
     NotificationsComponent,
-    AttributeEditorComponent
+    AttributeEditorComponent,
+    AttributeEditRowComponent
   ],
   imports: [
     BrowserModule,
