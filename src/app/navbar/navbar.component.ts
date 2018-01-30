@@ -9,18 +9,10 @@ import {NotificationService} from '../notification.service';
 })
 export class NavbarComponent implements OnInit {
 
-  notificationCount: (string | number) = '?';
-
   constructor(private auth: AuthService, private notifService: NotificationService) {
   }
 
   ngOnInit() {
-    this.loadNotificationCount();
-  }
-
-  loadNotificationCount() {
-    this.notifService.loadNotifications()
-      .subscribe(notifications => this.notificationCount = notifications.length);
   }
 
   get loggedIn() {

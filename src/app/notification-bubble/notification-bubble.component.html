@@ -1,0 +1,8 @@
+<button type="button" class="btn btn-primary float-right btn-sm"
+        [popover]="notifications" popoverTitle="Notifications" placement="bottom">
+  🔔 <span class="badge badge-pill badge-light">{{ notificationCount }}</span>
+</button>
+
+<ng-template #notifications>
+  <app-notifications></app-notifications>
+</ng-template>

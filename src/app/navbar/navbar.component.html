@@ -8,10 +8,7 @@
         </li>
       </ul>
     </div>
-    <button type="button" class="btn btn-primary float-right btn-sm" *ngIf="loggedIn === true"
-            [popover]="notifications" popoverTitle="Notifications" placement="bottom">
-      🔔 <span class="badge badge-pill badge-light">{{ notificationCount }}</span>
-    </button>
+    <app-notification-bubble *ngIf="loggedIn === true"></app-notification-bubble>
     <div class="btn-group" dropdown placement="bottom right" *ngIf="loggedIn === true">
       <button dropdownToggle type="button" class="btn btn-outline-dark btn-sm float-right ml-2 dropdown-toggle">
         Me
@@ -23,7 +20,3 @@
     </div>
   </div>
 </nav>
-
-<ng-template #notifications>
-  <app-notifications></app-notifications>
-</ng-template>

@@ -33,6 +33,8 @@ import { NotificationsComponent } from './notifications/notifications.component'
 import { NotificationService } from './notification.service';
 import { AttributeEditorComponent } from './attribute-editor/attribute-editor.component';
 import { AttributeEditRowComponent } from './attribute-edit-row/attribute-edit-row.component';
+import { NotificationBubbleComponent } from './notification-bubble/notification-bubble.component';
+import { CampaignJoinRequestViewComponent } from './campaign-join-request-view/campaign-join-request-view.component';
 
 
 @NgModule({
@@ -53,7 +55,9 @@ import { AttributeEditRowComponent } from './attribute-edit-row/attribute-edit-r
     CharacterSelectionListComponent,
     NotificationsComponent,
     AttributeEditorComponent,
-    AttributeEditRowComponent
+    AttributeEditRowComponent,
+    NotificationBubbleComponent,
+    CampaignJoinRequestViewComponent
   ],
   imports: [
     BrowserModule,
