@@ -3,7 +3,7 @@ import {Apollo} from 'apollo-angular';
 import gql from 'graphql-tag';
 import {Character} from '../types';
 
-export const DATA_QUERY = gql`
+export const CHARACTER_ATTR_DATA_QUERY = gql`
   query AttributeEditorQuery($charId: Int!) {
     getCharacter(id: $charId) {
       id
@@ -51,7 +51,7 @@ export class AttributeEditorComponent implements OnInit {
     this.loading = true;
 
     this.apollo.watchQuery({
-      query: DATA_QUERY,
+      query: CHARACTER_ATTR_DATA_QUERY,
 
       variables: {
         charId: this.characterId
@@ -60,6 +60,43 @@ export class AttributeEditorComponent implements OnInit {
     .subscribe(character => {
       this.character = character;
       this.loading = false;
+    });
+  }
+
+  saveNewAttribute() {
+    this.editorLoading = true;
+
+    this.apollo.mutate({
+      mutation: gql`
+        mutation CreateAttribute($charId: ID!, $input: AttributeInput!) {
+          createAttribute(characterId: $charId, input: $input) {
+            id
+            key
+            dataType
+            sValue
+            nValue
+          }
+        }`,
+
+      variables: {
+        charId: this.characterId,
+        input: this.newAttr
+      },
+
+      update: (store, {data: {createAttribute}}) => {
+        const storeData: any = store.readQuery({query: CHARACTER_ATTR_DATA_QUERY, variables: {charId: this.characterId}});
+
+        storeData.getCharacter.attributes.push(createAttribute);
+
+        store.writeQuery({query: CHARACTER_ATTR_DATA_QUERY, variables: {charId: this.characterId}, data: storeData});
+      }
+    }).subscribe(resp => {
+      this.newAttr = {
+        key: '',
+        value: ''
+      };
+      this.editorLoading = false;
+      this.showCreationBox = false;
     });
   }
 }

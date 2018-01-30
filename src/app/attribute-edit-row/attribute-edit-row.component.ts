@@ -1,7 +1,7 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {Apollo} from 'apollo-angular';
 import gql from 'graphql-tag';
-import {DATA_QUERY} from '../attribute-editor/attribute-editor.component';
+import {CHARACTER_ATTR_DATA_QUERY} from '../attribute-editor/attribute-editor.component';
 
 @Component({
   selector: 'app-attribute-edit-row',
@@ -33,6 +33,8 @@ export class AttributeEditRowComponent implements OnInit {
   }
 
   save() {
+    console.log(this.attr);
+
     this.loading = true;
 
     this.apollo.mutate({
@@ -56,7 +58,7 @@ export class AttributeEditRowComponent implements OnInit {
       },
 
       update: (store, {data}) => {
-        const storeData = store.readQuery({query: DATA_QUERY, variables: {charId: this.charId}});
+        const storeData = store.readQuery({query: CHARACTER_ATTR_DATA_QUERY, variables: {charId: this.charId}});
 
         console.log(data);
 
@@ -66,9 +68,34 @@ export class AttributeEditRowComponent implements OnInit {
           }
         });
 
-        store.writeQuery({query: DATA_QUERY, variables: {charId: this.charId}, data: storeData});
+        store.writeQuery({query: CHARACTER_ATTR_DATA_QUERY, variables: {charId: this.charId}, data: storeData});
       }
     }).map((resp: any) => resp.data.editAttribute)
     .subscribe(resp => console.log(resp));
+  }
+
+  delete() {
+    this.apollo.mutate({
+      mutation: gql`
+        mutation DeleteAttribute($id: ID!) {
+          deleteAttribute(id: $id)
+        }
+      `,
+
+      variables: {
+        id: this.attribute.id
+      },
+
+      update: (store, {data: {deleteAttribute}}) => {
+        const storeData: any = store.readQuery({query: CHARACTER_ATTR_DATA_QUERY, variables: {charId: this.charId}});
+
+        storeData.getCharacter.attributes = storeData.getCharacter.attributes
+          .filter(attr => {
+            return attr.id !== this.attribute.id;
+          });
+
+        store.writeQuery({query: CHARACTER_ATTR_DATA_QUERY, variables: {charId: this.charId}, data: storeData});
+      }
+    }).subscribe(() => {});
   }
 }

@@ -3,13 +3,19 @@
                       *ngIf="character.mine"></app-character-form>
   <h4>{{ character.name }}</h4>
   <p>{{ character.description }}</p>
-  <h5 class="mt-3">Attributes <button class="btn btn-outline-dark btn-sm" *ngIf="character.mine">Edit</button></h5>
+  <h5 class="mt-3">Attributes <button class="btn btn-outline-dark btn-sm" (click)="openModal(attrModal)" *ngIf="character.mine">Edit</button></h5>
   <div class="list-group">
     <div class="list-group-item" *ngFor="let attr of character.attributes">
       <h6 class="text-muted float-right">{{ (attr.sValue || attr.nValue) }}</h6>
       <h5>{{ attr.key }}</h5>
     </div>
   </div>
-  <app-attribute-editor [characterId]="character.id"></app-attribute-editor>
 </div>
 <app-spinner *ngIf="loading === true"></app-spinner>
+
+<ng-template #attrModal>
+  <div class="modal-header">Attributes</div>
+  <div class="modal-body">
+    <app-attribute-editor [characterId]="character.id"></app-attribute-editor>
+  </div>
+</ng-template>

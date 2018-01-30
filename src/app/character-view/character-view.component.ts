@@ -1,9 +1,10 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, TemplateRef} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
 import {CharacterService} from '../character.service';
 import {Character} from '../types';
 import {Apollo} from 'apollo-angular';
 import gql from 'graphql-tag';
+import {BsModalRef, BsModalService} from 'ngx-bootstrap';
 
 @Component({
   selector: 'app-character-view',
@@ -14,14 +15,20 @@ export class CharacterViewComponent implements OnInit {
 
   character: Character;
   loading = false;
+  attrModalRef: BsModalRef;
 
-  constructor(private route: ActivatedRoute, private charService: CharacterService, private apollo: Apollo) {
+  constructor(private route: ActivatedRoute, private charService: CharacterService,
+              private apollo: Apollo, private modalService: BsModalService) {
   }
 
   ngOnInit() {
     this.route.params.subscribe(params => {
       this.loadCharacter(+params['id']);
     });
+  }
+
+  openModal(template: TemplateRef<any>) {
+    this.attrModalRef = this.modalService.show(template);
   }
 
   loadCharacter(id: number) {

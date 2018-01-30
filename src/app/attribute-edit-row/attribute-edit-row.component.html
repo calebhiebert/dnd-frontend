@@ -1,10 +1,10 @@
 <fieldset>
   <div class="input-group">
     <input placeholder="Type" type="text" class="form-control" [(ngModel)]="attr.key">
-    <input placeholder="{{ attr.key }}" type="text" class="form-control" [(ngModel)]="attr.value">
+    <input placeholder="{{ (attr.key || 'Value') }}" type="text" class="form-control" [(ngModel)]="attr.value">
     <div class="input-group-append">
       <button type="button" class="btn btn-outline-dark btn-sm" (click)="save()">💾</button>
-      <button type="button" class="btn btn-outline-dark btn-sm" (click)="deleteAttribute(attr)">❌</button>
+      <button type="button" class="btn btn-outline-dark btn-sm" (click)="delete()">❌</button>
     </div>
   </div>
 </fieldset>
