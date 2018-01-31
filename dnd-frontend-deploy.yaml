@@ -1,0 +1,29 @@
+apiVersion: apps/v1beta1
+kind: Deployment
+metadata:
+  name: dnd-frontend-deployment
+spec:
+  replicas: 2
+  template:
+    metadata:
+      labels:
+        app: dndf
+    spec:
+      containers:
+        - name: dndf
+          image: panchem/dnd-frontend
+          ports:
+            - containerPort: 80
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: dnd-frontend-service
+  labels:
+    app: dndf
+spec:
+  selector:
+    app: dndf
+  ports:
+    - port: 80
+  type: LoadBalancer
