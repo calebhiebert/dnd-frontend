@@ -29,12 +29,13 @@ import {CampaignFormComponent} from './campaign-form/campaign-form.component';
 import {CampaignService} from './campaign.service';
 import {CampaignViewComponent} from './campaign-view/campaign-view.component';
 import {CharacterSelectionListComponent} from './character-selection-list/character-selection-list.component';
-import { NotificationsComponent } from './notifications/notifications.component';
-import { NotificationService } from './notification.service';
-import { AttributeEditorComponent } from './attribute-editor/attribute-editor.component';
-import { AttributeEditRowComponent } from './attribute-edit-row/attribute-edit-row.component';
-import { NotificationBubbleComponent } from './notification-bubble/notification-bubble.component';
-import { CampaignJoinRequestViewComponent } from './campaign-join-request-view/campaign-join-request-view.component';
+import {NotificationsComponent} from './notifications/notifications.component';
+import {NotificationService} from './notification.service';
+import {AttributeEditorComponent} from './attribute-editor/attribute-editor.component';
+import {AttributeEditRowComponent} from './attribute-edit-row/attribute-edit-row.component';
+import {NotificationBubbleComponent} from './notification-bubble/notification-bubble.component';
+import {CampaignJoinRequestViewComponent} from './campaign-join-request-view/campaign-join-request-view.component';
+import {environment} from '../environments/environment';
 
 
 @NgModule({
@@ -80,7 +81,7 @@ export class AppModule {
   constructor(apollo: Apollo, httpLink: HttpLink) {
     apollo.create({
       link: httpLink.create({
-        uri: 'http://localhost/graphql',
+        uri: `http://${environment.apiSource}/graphql`,
         withCredentials: true
       }),
       cache: new InMemoryCache()
