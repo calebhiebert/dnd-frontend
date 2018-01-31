@@ -2,7 +2,7 @@ import {BrowserModule} from '@angular/platform-browser';
 import {NgModule} from '@angular/core';
 
 import {AppComponent} from './app.component';
-import {AlertModule, BsDropdownModule, BsModalService, ModalModule, PopoverModule} from 'ngx-bootstrap';
+import {AlertModule, BsDropdownModule, ModalModule, PopoverModule} from 'ngx-bootstrap';
 import {LoginComponent} from './login/login.component';
 import {RegisterComponent} from './register/register.component';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
@@ -13,7 +13,7 @@ import {Apollo, ApolloModule} from 'apollo-angular';
 import {HttpLink, HttpLinkModule} from 'apollo-angular-link-http';
 import {InMemoryCache} from 'apollo-cache-inmemory';
 import {SpinnerComponent} from './spinner/spinner.component';
-import {FormsModule, NgForm} from '@angular/forms';
+import {FormsModule} from '@angular/forms';
 import {AuthService} from './auth.service';
 import {AuthGuard} from './auth.guard';
 import {IndexComponent} from './index/index.component';

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {AuthService} from '../auth.service';
 import {Router} from '@angular/router';
 import {TokenService} from '../token.service';
@@ -13,14 +13,17 @@ export class RegisterComponent implements OnInit {
   username: string;
   password: string;
   loading = false;
+  error: any = null;
 
-  constructor(private auth: AuthService, private router: Router, private token: TokenService) { }
+  constructor(private auth: AuthService, private router: Router, private token: TokenService) {
+  }
 
   ngOnInit() {
   }
 
   register() {
     this.loading = true;
+    this.error = null;
 
     this.auth.register(this.username, this.password)
       .subscribe(register => {
@@ -29,6 +32,9 @@ export class RegisterComponent implements OnInit {
         this.router.navigate(['']);
         this.auth.setLoginStatus(true);
 
-      }, e => console.error);
+      }, e => {
+        this.loading = false;
+        this.error = e;
+      });
   }
 }
