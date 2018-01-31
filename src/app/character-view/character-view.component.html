@@ -1,9 +1,13 @@
 <div *ngIf="loading === false">
-  <app-character-form class="float-right" [edit]="true" [editId]="character.id"
+  <app-character-form class="float-right ml-2" [edit]="true" [editId]="character.id"
                       *ngIf="character.mine"></app-character-form>
+  <button class="btn btn-outline-dark btn-sm float-right" routerLink="/campaign/{{ character.campaign.id }}"
+          *ngIf="character.campaign !== null">{{ character.campaign.name }}</button>
   <h4>{{ character.name }}</h4>
   <p>{{ character.description }}</p>
-  <h5 class="mt-3">Attributes <button class="btn btn-outline-dark btn-sm" (click)="openModal(attrModal)" *ngIf="character.mine">Edit</button></h5>
+  <h5 class="mt-3">Attributes
+    <button class="btn btn-outline-dark btn-sm" (click)="openModal(attrModal)" *ngIf="character.mine">Edit</button>
+  </h5>
   <div class="list-group">
     <div class="list-group-item" *ngFor="let attr of character.attributes">
       <h6 class="text-muted float-right">{{ (attr.sValue || attr.nValue) }}</h6>

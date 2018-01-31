@@ -1,6 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {AuthService} from '../auth.service';
 import {Router} from '@angular/router';
+import {Apollo} from 'apollo-angular';
 
 @Component({
   selector: 'app-logout',
@@ -9,12 +10,13 @@ import {Router} from '@angular/router';
 })
 export class LogoutComponent implements OnInit {
 
-  constructor(private auth: AuthService, private router: Router) {
+  constructor(private auth: AuthService, private router: Router, private apollo: Apollo) {
   }
 
   ngOnInit() {
     this.auth.logout()
       .subscribe(() => {
+        this.apollo.getClient().resetStore();
         this.router.navigate(['']);
         this.auth.setLoginStatus(false);
       });

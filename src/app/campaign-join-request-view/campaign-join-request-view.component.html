@@ -1,3 +1,6 @@
-<p>
-  campaign-join-request-view works!
-</p>
+<app-spinner *ngIf="loading === true"></app-spinner>
+<div *ngIf="campaign">
+  <div class="list-group">
+    <app-join-request-row-view [request]="req" *ngFor="let req of campaign.joinRequests"></app-join-request-row-view>
+  </div>
+</div>

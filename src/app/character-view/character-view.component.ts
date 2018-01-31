@@ -49,6 +49,10 @@ export class CharacterViewComponent implements OnInit {
               nValue
               sValue
             }
+            campaign {
+              id
+              name
+            }
           }
         }`,
 
@@ -58,6 +62,7 @@ export class CharacterViewComponent implements OnInit {
     }).valueChanges
     .map((resp: any) => resp.data.getCharacter)
     .subscribe(character => {
+      console.log(character);
       this.character = character;
       this.loading = false;
     });

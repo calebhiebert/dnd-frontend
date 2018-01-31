@@ -20,6 +20,13 @@
       </a>
     </div>
   </div>
+
+  <div class="card mt-2" *ngIf="campaign.mine === true">
+    <span class="card-header">Join Requests</span>
+    <div class="card-body">
+      <app-campaign-join-request-view [campaignId]="campaign.id"></app-campaign-join-request-view>
+    </div>
+  </div>
 </div>
 
 <ng-template #characterSelector>

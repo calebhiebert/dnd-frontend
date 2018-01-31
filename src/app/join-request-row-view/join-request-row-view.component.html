@@ -1,0 +1,10 @@
+<div class="list-group-item">
+  <app-spinner *ngIf="loading === true"></app-spinner>
+  <span>{{ request.character.name }} ({{ request.character.creator.username }})</span>
+  <div class="btn-group float-right">
+    <fieldset [disabled]="loading === true">
+      <button class="btn btn-success btn-sm" (click)="operate('APPROVE')">Approve</button>
+      <button class="btn btn-outline-danger btn-sm" (click)="operate('DENY')">Deny</button>
+    </fieldset>
+  </div>
+</div>
