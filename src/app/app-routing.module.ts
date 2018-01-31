@@ -18,7 +18,8 @@ const routes = [
   {path: 'campaign/create', component: CampaignFormComponent, canActivate: [AuthGuard]},
   {path: 'campaign/:id', component: CampaignViewComponent, canActivate: [AuthGuard]},
   {path: 'campaign/edit/:id', component: CampaignFormComponent, canActivate: [AuthGuard]},
-  {path: '**', component: IndexComponent, canActivate: [AuthGuard]},
+  {path: '', component: IndexComponent, canActivate: [AuthGuard]},
+  // {path: '**', component: IndexComponent, canActivate: [AuthGuard]},
 ];
 
 @NgModule({

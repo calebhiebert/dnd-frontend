@@ -18,5 +18,9 @@
     </fieldset>
   </div>
 </div>
-<button type="button" class="btn btn-outline-dark btn-sm float-right mt-2 ml-2" (click)="showCreationBox = true">Add
+<button type="button" class="btn btn-outline-dark btn-sm float-right mt-2 ml-2" (click)="showCreationBox = true"
+        *ngIf="showCreationBox === false">Add
+</button>
+<button type="button" class="btn btn-outline-dark btn-sm float-right mt-2 ml-2" (click)="saveNewAttribute()"
+        *ngIf="showCreationBox === true">Save
 </button>
