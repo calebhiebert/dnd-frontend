@@ -1,5 +1,5 @@
 <div class="input-group">
-  <input type="text" class="form-control" placeholder="Search" [(ngModel)]="searchTerm" (keyup)="onSearchType($event)">
+  <input type="text" class="form-control" placeholder="Search" [(ngModel)]="searchTerm" (keyup)="onSearchType()">
   <div class="input-group-append">
     <span class="input-group-text">
       <span *ngIf="loading === false">Search</span>

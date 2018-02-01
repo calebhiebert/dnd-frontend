@@ -69,7 +69,7 @@ import {CampaignIndexComponent} from './campaign-index/campaign-index.component'
     CampaignIndexComponent
   ],
   imports: [
-    BrowserModule,
+    BrowserModule.withServerTransition({appId: 'dnd'}),
     AlertModule.forRoot(),
     BrowserAnimationsModule,
     ToastrModule.forRoot(),

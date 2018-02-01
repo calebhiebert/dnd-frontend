@@ -8,7 +8,11 @@
     "build": "ng build --prod",
     "test": "ng test",
     "lint": "ng lint",
-    "e2e": "ng e2e"
+    "e2e": "ng e2e",
+    "build:ssr": "npm run build:client-and-server-bundles && npm run webpack:server",
+    "serve:ssr": "node dist/server.js",
+    "build:client-and-server-bundles": "ng build --prod && ng build --prod --app 1 --output-hashing=false",
+    "webpack:server": "webpack --config webpack.server.config.js --progress --colors"
   },
   "private": true,
   "dependencies": {
@@ -21,7 +25,9 @@
     "@angular/http": "^5.0.0",
     "@angular/platform-browser": "^5.0.0",
     "@angular/platform-browser-dynamic": "^5.0.0",
+    "@angular/platform-server": "^5.2.3",
     "@angular/router": "^5.0.0",
+    "@nguniversal/module-map-ngfactory-loader": "^5.0.0-beta.5",
     "apollo-angular": "^1.0.1",
     "apollo-angular-link-http": "^1.0.2-beta.0",
     "apollo-cache-inmemory": "^1.1.5",
@@ -34,6 +40,7 @@
     "ngx-bootstrap": "^2.0.2",
     "ngx-toastr": "^8.1.1",
     "rxjs": "^5.5.2",
+    "ts-loader": "^3.4.0",
     "zone.js": "^0.8.14"
   },
   "devDependencies": {
