@@ -45,15 +45,16 @@ export class CampaignJoinRequestViewComponent implements OnInit {
   loadData() {
     this.loading = true;
 
-    this.apollo.query({
+    this.apollo.watchQuery({
       query: JOIN_REQUEST_QUERY,
 
       variables: {
         id: this.campaignId
       }
-    }).map((resp: any) => resp.data.getCampaign)
+    }).valueChanges.map((resp: any) => resp.data.getCampaign)
       .subscribe(campaign => {
         this.campaign = campaign;
+        this.joinRequests = campaign.joinRequests;
         this.loading = false;
       });
   }

@@ -3,6 +3,7 @@
   <button routerLink="/campaign/edit/{{ campaign.id }}" *ngIf="campaign.mine === true"
           class="btn btn-outline-primary btn-sm float-right ml-2">Edit
   </button>
+  <button *ngIf="campaign.mine === true" class="btn btn-outline-danger btn-sm float-right ml-2" (click)="delete()">Delete</button>
   <button type="button" class="btn btn-outline-dark btn-sm float-right" (click)="openModal(characterSelector)">Join
   </button>
   <h4>{{ campaign.name }}</h4>

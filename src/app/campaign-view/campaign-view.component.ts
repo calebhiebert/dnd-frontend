@@ -34,7 +34,7 @@ export class CampaignViewComponent implements OnInit {
     this.campaign = null;
 
     this.loading = true;
-    this.apollo.query({
+    this.apollo.watchQuery({
       query: gql`
         query GetCampaignForViewScreen($id: ID!) {
           getCampaign(id: $id) {
@@ -58,7 +58,7 @@ export class CampaignViewComponent implements OnInit {
       variables: {
         id
       }
-    })
+    }).valueChanges
     .map((resp: any) => resp.data.getCampaign)
     .subscribe(campaign => {
       this.loading = false;
@@ -87,6 +87,28 @@ export class CampaignViewComponent implements OnInit {
         positionClass: 'toast-bottom-right'
       });
     });
+  }
+
+  delete() {
+    this.apollo.mutate({
+      mutation: gql`
+        mutation DeleteCampaign($id: ID!) {
+          deleteCampaign(id: $id)
+        }`,
+
+      variables: {
+        id: this.campaign.id
+      },
+
+      update: (store) => {
+        store.writeQuery({query: gql`
+            query RemoveCampaignQuery($id: ID!) {
+              getCampaign(id: $id) {
+                id
+              }
+            }`, variables: {id: this.campaign.id}, data: null});
+      }
+    }).subscribe(() => this.router.navigate(['']));
   }
 
   openModal(template: TemplateRef<any>) {

@@ -7,6 +7,17 @@ const JOIN_REQUEST_OPERATION_MUTATION = gql`
     campaignJoinRequestOperation(campaignJoinRequestId: $id, op: $op)
   }`;
 
+const UPDATE_QUERY = gql`
+  query GetCampaignForUpdate($id: ID!) {
+    getCampaign(id: $id) {
+      id
+      joinRequests(status: [WAITING]) {
+        id
+        status
+      }
+    }
+  }`;
+
 @Component({
   selector: 'app-join-request-row-view',
   templateUrl: './join-request-row-view.component.html',
@@ -16,6 +27,9 @@ export class JoinRequestRowViewComponent implements OnInit {
 
   @Input()
   request: any;
+
+  @Input()
+  campaignId: any;
 
   loading = false;
 
@@ -33,9 +47,42 @@ export class JoinRequestRowViewComponent implements OnInit {
         op: operator
       },
 
-      update: (store, {data}) => {
+      refetchQueries: [
+        {query: gql`
+            query UpdateCampaignCache($id: ID!) {
+              getCampaign(id: $id) {
+                id
+                characters {
+                  id
+                  name
+                  description
+                  hp
+                  maxHp
+                  creator {
+                    username
+                  }
+                }
+              }
+            }
+          `,
 
-      }
+        variables: {
+          id: this.campaignId
+        }},
+        {query: UPDATE_QUERY, variables: {id: this.campaignId}}
+      ],
+
+      // update: (store) => {
+      //   const storeData: any = store.readQuery({query: UPDATE_QUERY, variables: {id: this.campaignId}});
+      //
+      //   if (storeData.joinRequests !== undefined) {
+      //     storeData.joinRequests = storeData.joinRequests.filter((jr: any) => {
+      //       return jr.id != this.request.id;
+      //     });
+      //   }
+      //
+      //   store.writeQuery({query: UPDATE_QUERY, variables: {id: this.campaignId}, data: storeData});
+      // }
     })
       .subscribe(resp => console.log(resp));
   }

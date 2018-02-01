@@ -1,6 +1,11 @@
 <app-spinner *ngIf="loading === true"></app-spinner>
-<div *ngIf="campaign">
+<div *ngIf="campaign && joinRequests.length > 0; else nojoinrequests">
   <div class="list-group">
-    <app-join-request-row-view [request]="req" *ngFor="let req of campaign.joinRequests"></app-join-request-row-view>
+    <app-join-request-row-view [request]="req" [campaignId]="campaign.id"
+                               *ngFor="let req of joinRequests"></app-join-request-row-view>
   </div>
 </div>
+
+<ng-template #nojoinrequests>
+  <span class="text-muted font-italic">No new join requests at this time</span>
+</ng-template>
