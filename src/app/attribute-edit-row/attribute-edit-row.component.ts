@@ -24,6 +24,8 @@ export class AttributeEditRowComponent implements OnInit {
 
   loading = false;
 
+  deleting = false;
+
   constructor(private apollo: Apollo) { }
 
   ngOnInit() {
@@ -33,8 +35,6 @@ export class AttributeEditRowComponent implements OnInit {
   }
 
   save() {
-    console.log(this.attr);
-
     this.loading = true;
 
     this.apollo.mutate({
@@ -69,10 +69,12 @@ export class AttributeEditRowComponent implements OnInit {
         store.writeQuery({query: CHARACTER_ATTR_DATA_QUERY, variables: {charId: this.charId}, data: storeData});
       }
     }).map((resp: any) => resp.data.editAttribute)
-    .subscribe();
+    .subscribe(() => this.loading = false);
   }
 
   delete() {
+    this.deleting = true;
+
     this.apollo.mutate({
       mutation: gql`
         mutation DeleteAttribute($id: ID!) {
@@ -94,6 +96,8 @@ export class AttributeEditRowComponent implements OnInit {
 
         store.writeQuery({query: CHARACTER_ATTR_DATA_QUERY, variables: {charId: this.charId}, data: storeData});
       }
-    }).subscribe(() => {});
+    }).subscribe(() => {
+      this.deleting = false;
+    });
   }
 }

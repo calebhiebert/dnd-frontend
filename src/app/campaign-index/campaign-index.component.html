@@ -1,0 +1,17 @@
+<div class="input-group">
+  <input type="text" class="form-control" placeholder="Search" [(ngModel)]="searchTerm" (keyup)="onSearchType($event)">
+  <div class="input-group-append">
+    <span class="input-group-text">
+      <span *ngIf="loading === false">Search</span>
+      <app-spinner *ngIf="loading === true"></app-spinner>
+    </span>
+  </div>
+</div>
+<div class="card-columns mt-3">
+  <div routerLink="/campaign/{{ c.id }}" class="card border-dark" *ngFor="let c of campaigns">
+    <div class="card-body">
+      <h5>{{ c.name }}</h5>
+      <p class="card-text">{{ c.description | words: 25}}</p>
+    </div>
+  </div>
+</div>

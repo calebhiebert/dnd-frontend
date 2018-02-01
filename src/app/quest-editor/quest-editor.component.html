@@ -2,6 +2,7 @@
   <app-spinner *ngIf="loading === true"></app-spinner>
   <div class="row">
     <div class="col-lg-6 col-sm-8">
+      <app-spinner *ngIf="loading === true"></app-spinner>
       <div class="list-group" *ngIf="quests">
         <button class="list-group-item list-group-item-action" [ngClass]="{ active: (editingQuest && editingQuest.id) === quest.id }"
                 *ngFor="let quest of quests" (click)="selectQuest(quest)">
@@ -16,8 +17,9 @@
 
   <div class="card mt-2">
     <div class="card-body" *ngIf="editingQuest; else noqselected">
+      <app-spinner *ngIf="editorLoading === true"></app-spinner>
       <form (ngsubmit)="save()">
-        <fieldset>
+        <fieldset [disabled]="editorLoading === true">
           <div class="form-group">
             <label>Name</label>
             <input class="form-control" type="text" [(ngModel)]="editingQuest.name" name="name" placeholder="Name">

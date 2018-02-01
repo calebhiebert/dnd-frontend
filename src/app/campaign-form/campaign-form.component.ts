@@ -48,15 +48,19 @@ export class CampaignFormComponent implements OnInit, OnDestroy {
   }
 
   save() {
+    this.loading = true;
+
     if (this.editId !== undefined) {
       this.campService.editCampaign(this.campaign)
         .subscribe((campaign: Campaign) => {
           this.router.navigate(['campaign', campaign.id]);
+          this.loading = false;
         });
     } else {
       this.campService.createCampaign(this.campaign)
         .subscribe(() => {
           this.router.navigate(['']);
+          this.loading = false;
         });
     }
   }

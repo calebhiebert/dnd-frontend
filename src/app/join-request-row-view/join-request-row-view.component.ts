@@ -1,6 +1,7 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {Apollo} from 'apollo-angular';
 import gql from 'graphql-tag';
+import {Router} from '@angular/router';
 
 const JOIN_REQUEST_OPERATION_MUTATION = gql`
   mutation JoinRequestOperation($id: ID!, $op: CampaignJoinRequestOperation!) {
@@ -29,13 +30,17 @@ export class JoinRequestRowViewComponent implements OnInit {
   request: any;
 
   @Input()
-  campaignId: any;
+  campaignId: number;
 
   loading = false;
 
-  constructor(private apollo: Apollo) { }
+  constructor(private apollo: Apollo, private router: Router) { }
 
   ngOnInit() {
+  }
+
+  viewCharacter() {
+    this.router.navigate(['character', this.request.character.id]);
   }
 
   operate(operator) {
@@ -63,26 +68,14 @@ export class JoinRequestRowViewComponent implements OnInit {
                   }
                 }
               }
-            }
-          `,
+            }`,
 
         variables: {
           id: this.campaignId
         }},
-        {query: UPDATE_QUERY, variables: {id: this.campaignId}}
-      ],
 
-      // update: (store) => {
-      //   const storeData: any = store.readQuery({query: UPDATE_QUERY, variables: {id: this.campaignId}});
-      //
-      //   if (storeData.joinRequests !== undefined) {
-      //     storeData.joinRequests = storeData.joinRequests.filter((jr: any) => {
-      //       return jr.id != this.request.id;
-      //     });
-      //   }
-      //
-      //   store.writeQuery({query: UPDATE_QUERY, variables: {id: this.campaignId}, data: storeData});
-      // }
+        {query: UPDATE_QUERY, variables: {id: this.campaignId}}
+      ]
     })
       .subscribe(resp => console.log(resp));
   }

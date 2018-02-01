@@ -1,12 +1,13 @@
 import {Component, OnDestroy, OnInit, TemplateRef} from '@angular/core';
-import {CampaignService} from '../campaign.service';
+import {CampaignService, MY_CAMPAIGNS_QUERY} from '../campaign.service';
 import {ActivatedRoute, Router} from '@angular/router';
-import {Campaign} from '../types';
+import {Campaign, CharacterCampaignOperationResponse} from '../types';
 import {Subscription} from 'rxjs/Subscription';
 import {BsModalRef, BsModalService} from 'ngx-bootstrap';
 import {ToastrService} from 'ngx-toastr';
 import {Apollo} from 'apollo-angular';
 import gql from 'graphql-tag';
+import {AuthService} from '../auth.service';
 
 @Component({
   selector: 'app-campaign-view',
@@ -22,7 +23,7 @@ export class CampaignViewComponent implements OnInit {
 
   constructor(private campService: CampaignService, private router: Router,
               private route: ActivatedRoute, private modalService: BsModalService,
-              private toast: ToastrService, private apollo: Apollo) { }
+              private toast: ToastrService, private apollo: Apollo, private auth: AuthService) { }
 
   ngOnInit() {
     this.route.params.subscribe(params => {
@@ -69,7 +70,7 @@ export class CampaignViewComponent implements OnInit {
   onCharacterSelected(character) {
     this.characterSelectionModalRef.hide();
 
-    this.apollo.mutate({
+    this.apollo.mutate<CharacterCampaignOperationResponse>({
       mutation: gql`
         mutation CharacterJoinCampaign($charId: ID!, $campId: ID!, $op: CharacterCampaignOperation!) {
           characterCampaignOperation(characterId: $charId, campaignId: $campId, op: $op)
@@ -80,12 +81,15 @@ export class CampaignViewComponent implements OnInit {
         campId: this.campaign.id,
         op: 'JOIN',
       }
-    })
-    .subscribe(() => {
-      this.toast.info(`Sent request for ${character.name} to join ${this.campaign.name}`, null, {
-        progressBar: true,
-        positionClass: 'toast-bottom-right'
-      });
+    }).map(resp => resp.data.characterCampaignOperation)
+    .subscribe(addedImmediately => {
+      if (addedImmediately) {
+        this.toast.success(`Character added`, null, { positionClass: 'toast-bottom-right' });
+      } else {
+        this.toast.info(`Sent request for ${character.name} to join ${this.campaign.name}`, null, {
+          positionClass: 'toast-bottom-right'
+        });
+      }
     });
   }
 
@@ -107,11 +111,19 @@ export class CampaignViewComponent implements OnInit {
                 id
               }
             }`, variables: {id: this.campaign.id}, data: null});
-      }
+      },
+
+      refetchQueries: [
+        {query: MY_CAMPAIGNS_QUERY}
+      ]
     }).subscribe(() => this.router.navigate(['']));
   }
 
   openModal(template: TemplateRef<any>) {
     this.characterSelectionModalRef = this.modalService.show(template);
+  }
+
+  get loggedIn() {
+    return this.auth.loggedIn;
   }
 }

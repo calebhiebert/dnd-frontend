@@ -3,8 +3,17 @@
     <input placeholder="Type" type="text" class="form-control" [(ngModel)]="attr.key">
     <input placeholder="{{ (attr.key || 'Value') }}" type="text" class="form-control" [(ngModel)]="attr.value">
     <div class="input-group-append">
-      <button type="button" class="btn btn-outline-dark btn-sm" (click)="save()">💾</button>
-      <button type="button" class="btn btn-outline-dark btn-sm" (click)="delete()">❌</button>
+      <button type="button" class="btn btn-outline-dark btn-sm" (click)="save()">
+        <span *ngIf="loading === false">💾</span>
+        <app-spinner *ngIf="loading === true"></app-spinner>
+      </button>
+      <button type="button" class="btn btn-outline-dark btn-sm" (click)="delete()">
+        <span *ngIf="deleting === false; else deletingspinner">❌</span>
+      </button>
     </div>
   </div>
 </fieldset>
+
+<ng-template #deletingspinner>
+  <app-spinner></app-spinner>
+</ng-template>

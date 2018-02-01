@@ -1,6 +1,6 @@
 import {BrowserModule} from '@angular/platform-browser';
 import {NgModule} from '@angular/core';
-
+import {TruncateModule} from 'ng2-truncate';
 import {AppComponent} from './app.component';
 import {AlertModule, BsDropdownModule, ModalModule, PopoverModule, TooltipModule} from 'ngx-bootstrap';
 import {LoginComponent} from './login/login.component';
@@ -36,9 +36,10 @@ import {AttributeEditRowComponent} from './attribute-edit-row/attribute-edit-row
 import {NotificationBubbleComponent} from './notification-bubble/notification-bubble.component';
 import {CampaignJoinRequestViewComponent} from './campaign-join-request-view/campaign-join-request-view.component';
 import {environment} from '../environments/environment';
-import { JoinRequestRowViewComponent } from './join-request-row-view/join-request-row-view.component';
-import { QuestViewComponent } from './quest-view/quest-view.component';
-import { QuestEditorComponent } from './quest-editor/quest-editor.component';
+import {JoinRequestRowViewComponent} from './join-request-row-view/join-request-row-view.component';
+import {QuestViewComponent} from './quest-view/quest-view.component';
+import {QuestEditorComponent} from './quest-editor/quest-editor.component';
+import {CampaignIndexComponent} from './campaign-index/campaign-index.component';
 
 
 @NgModule({
@@ -64,7 +65,8 @@ import { QuestEditorComponent } from './quest-editor/quest-editor.component';
     CampaignJoinRequestViewComponent,
     JoinRequestRowViewComponent,
     QuestViewComponent,
-    QuestEditorComponent
+    QuestEditorComponent,
+    CampaignIndexComponent
   ],
   imports: [
     BrowserModule,
@@ -79,7 +81,8 @@ import { QuestEditorComponent } from './quest-editor/quest-editor.component';
     ModalModule.forRoot(),
     BsDropdownModule.forRoot(),
     PopoverModule.forRoot(),
-    TooltipModule.forRoot()
+    TooltipModule.forRoot(),
+    TruncateModule
   ],
   providers: [AuthService, AuthGuard, TokenService, CharacterService, CampaignService, NotificationService],
   bootstrap: [AppComponent]

@@ -1,8 +1,8 @@
 <div class="card mt-2">
-  <h5 class="card-header">
+  <span class="card-header">
     Quests
     <button class="btn btn-outline-dark btn-sm float-right" *ngIf="editable" (click)="lgModal.show()">Edit</button>
-  </h5>
+  </span>
   <app-spinner *ngIf="loading === true"></app-spinner>
   <div class="list-group list-group-flush" *ngIf="quests && quests.length > 0; else noquests">
     <button class="list-group-item list-group-item-action" *ngFor="let quest of quests">

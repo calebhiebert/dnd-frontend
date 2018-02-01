@@ -3,17 +3,22 @@
   <button routerLink="/campaign/edit/{{ campaign.id }}" *ngIf="campaign.mine === true"
           class="btn btn-outline-primary btn-sm float-right ml-2">Edit
   </button>
-  <button *ngIf="campaign.mine === true" class="btn btn-outline-danger btn-sm float-right ml-2" (click)="delete()">Delete</button>
-  <button type="button" class="btn btn-outline-dark btn-sm float-right" (click)="openModal(characterSelector)">Join
+  <button *ngIf="campaign.mine === true" class="btn btn-outline-danger btn-sm float-right ml-2" (click)="delete()">
+    Delete
+  </button>
+  <button type="button" class="btn btn-outline-dark btn-sm float-right"
+          (click)="openModal(characterSelector)" *ngIf="loggedIn === true">
+    Join
   </button>
   <h4>{{ campaign.name }}</h4>
-  <p *ngIf="campaign.description && campaign.description.trim().length > 0; else nodescription">{{ campaign.description }}</p>
+  <p *ngIf="campaign.description && campaign.description.trim().length > 0; else nodescription">{{ campaign.description
+    }}</p>
 
   <div class="card">
     <span class="card-header">Characters</span>
-    <div class="list-group list-group-flush">
+    <div class="list-group list-group-flush" *ngIf="campaign.characters.length > 0; else nocharacters">
       <a routerLink="/character/{{ character.id }}" *ngFor="let character of campaign.characters"
-              class="list-group-item list-group-item-action flex-column align-items-start">
+         class="list-group-item list-group-item-action flex-column align-items-start">
 
         <div class="d-flex w-100 justify-content-between">
           <h5 class="mb-1">{{character.name}} ({{ character.hp }}/{{ character.maxHp }})</h5>
@@ -29,9 +34,7 @@
 
   <div class="card mt-2" *ngIf="campaign.mine === true">
     <span class="card-header">Join Requests</span>
-    <div class="card-body">
-      <app-campaign-join-request-view [campaignId]="campaign.id"></app-campaign-join-request-view>
-    </div>
+    <app-campaign-join-request-view [campaignId]="campaign.id"></app-campaign-join-request-view>
   </div>
 
 </div>
@@ -45,4 +48,10 @@
 
 <ng-template #nodescription>
   <p class="text-muted font-italic">This campaign has no description.</p>
+</ng-template>
+
+<ng-template #nocharacters>
+  <div class="card-body text-muted font-italic text-center">
+    There doesn't seem to be any characters here
+  </div>
 </ng-template>

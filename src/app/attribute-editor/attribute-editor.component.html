@@ -1,16 +1,21 @@
+<div class="text-center" *ngIf="loading === true">
+  <app-spinner></app-spinner>
+</div>
 <div class="list-group list-group-flush" *ngIf="character !== undefined">
   <div class="list-group-item" *ngFor="let attr of character.attributes">
     <app-attribute-edit-row [attribute]="attr" [charId]="characterId"></app-attribute-edit-row>
   </div>
   <div class="list-group-item" *ngIf="showCreationBox === true">
     <fieldset [disabled]="editorLoading === true">
-      <app-spinner *ngIf="editorLoading === true"></app-spinner>
       <div class="input-group">
         <input type="text" placeholder="Key" class="form-control" [(ngModel)]="newAttr.key">
         <input type="text" placeholder="{{ (newAttr.key || 'Value') }}" class="form-control"
                [(ngModel)]="newAttr.value">
         <div class="input-group-append">
-          <button type="button" class="btn btn-outline-dark btn-sm" (click)="saveNewAttribute()">💾️</button>
+          <button type="button" class="btn btn-outline-dark btn-sm" (click)="saveNewAttribute()">
+            <span *ngIf="editorLoading === false">💾</span>
+            ️<app-spinner *ngIf="editorLoading === true"></app-spinner>
+          </button>
           <button type="button" class="btn btn-outline-dark btn-sm" (click)="showCreationBox = false">Cancel</button>
         </div>
       </div>

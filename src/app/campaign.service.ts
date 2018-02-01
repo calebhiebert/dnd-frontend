@@ -3,7 +3,7 @@ import {Apollo} from 'apollo-angular';
 import {Campaign} from './types';
 import gql from 'graphql-tag';
 
-const CAMPAIGN_FRAGMENT = gql`
+export const CAMPAIGN_FRAGMENT = gql`
   fragment CampaignFields on Campaign {
     id
     name
@@ -12,7 +12,7 @@ const CAMPAIGN_FRAGMENT = gql`
   }
 `;
 
-const MY_CAMPAIGNS_QUERY = gql`
+export const MY_CAMPAIGNS_QUERY = gql`
   query GetMyCampaigns {
     me {
       campaigns {
@@ -59,8 +59,6 @@ export class CampaignService {
   getMyCampaigns() {
     return this.apollo.watchQuery<MyCampaignsResponse>({
       query: MY_CAMPAIGNS_QUERY,
-
-      fetchPolicy: 'network-only',
     }).valueChanges.map(resp => resp.data.me.campaigns);
   }
 
@@ -84,7 +82,11 @@ export class CampaignService {
 
       update(store, {data}) {
         store.writeQuery({query: GET_CAMPAIGN_QUERY, data: {getCampaign: data.createCampaign}, variables: {id: data.createCampaign.id}});
-      }
+      },
+
+      refetchQueries: [
+        {query: MY_CAMPAIGNS_QUERY}
+      ]
     })
       .map(resp => resp.data.createCampaign);
   }
@@ -99,7 +101,11 @@ export class CampaignService {
           name: campaign.name,
           description: campaign.description
         }
-      }
+      },
+
+      refetchQueries: [
+        {query: MY_CAMPAIGNS_QUERY}
+      ]
     })
       .map(resp => resp.data.editCampaign);
   }

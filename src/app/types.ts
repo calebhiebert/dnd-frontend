@@ -62,3 +62,11 @@ export interface GetCharacterResponse {
 export interface CreateAttributeResponse {
   createAttribute: Attribute;
 }
+
+export interface CharacterCampaignOperationResponse {
+  characterCampaignOperation: boolean;
+}
+
+export interface GetCampaignsResponse {
+  getCampaigns: Campaign[];
+}

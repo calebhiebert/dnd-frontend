@@ -1,7 +1,7 @@
 import {Component, Input, OnInit} from '@angular/core';
 import gql from 'graphql-tag';
 import {Apollo} from 'apollo-angular';
-import {CreateQuestResponse, EditQuestResponse, GetCampaignResponse, Quest} from '../types';
+import {CreateQuestResponse, DeleteQuestResponse, EditQuestResponse, GetCampaignResponse, Quest} from '../types';
 
 @Component({
   selector: 'app-quest-editor',
@@ -16,6 +16,8 @@ export class QuestEditorComponent implements OnInit {
   quests: Array<Quest>;
 
   loading = false;
+
+  editorLoading = false;
 
   editingQuest: Quest = null;
 
@@ -51,7 +53,7 @@ export class QuestEditorComponent implements OnInit {
   }
 
   save() {
-    console.log('Edit Quest:', this.editingQuest);
+    this.editorLoading = true;
 
     if (this.editingQuest.id !== undefined) {
       this.apollo.mutate<EditQuestResponse>({
@@ -66,6 +68,7 @@ export class QuestEditorComponent implements OnInit {
         }
       }).subscribe(resp => {
         this.editingQuest = null;
+        this.editorLoading = false;
       });
     } else {
       this.apollo.mutate<CreateQuestResponse>({
@@ -89,8 +92,32 @@ export class QuestEditorComponent implements OnInit {
       }).map(resp => resp.data.createQuest)
         .subscribe(quest => {
           this.editingQuest = null;
+          this.editorLoading = false;
         });
     }
+  }
+
+  delete() {
+    this.editorLoading = true;
+
+    this.apollo.mutate<DeleteQuestResponse>({
+      mutation: DELETE_QUEST_MUTATION,
+
+      variables: {
+        id: this.editingQuest.id
+      },
+
+      update: (store, {data}) => {
+        const storeData = store.readQuery<GetCampaignResponse>({query: GET_QUESTS_QUERY, variables: {id: this.campaignId}});
+
+        storeData.getCampaign.quests = storeData.getCampaign.quests.filter(quest => quest.id !== this.editingQuest.id);
+
+        store.writeQuery({query: GET_QUESTS_QUERY, variables: {id: this.campaignId}, data: storeData});
+      }
+    }).subscribe(resp => {
+      this.editingQuest = null;
+      this.editorLoading = false;
+    });
   }
 }
 
