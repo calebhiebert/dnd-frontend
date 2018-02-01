@@ -2,6 +2,7 @@ import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {Apollo} from 'apollo-angular';
 import gql from 'graphql-tag';
 import {Character, CreateAttributeResponse, GetCharacterResponse} from '../types';
+import * as terms from './dnd-terms.json';
 
 export const CHARACTER_ATTR_DATA_QUERY = gql`
   query AttributeEditorQuery($charId: ID!) {
@@ -33,6 +34,9 @@ export class AttributeEditorComponent implements OnInit {
 
   character: Character;
 
+  dndKeys = terms.keys;
+  dndValues = terms.values;
+
   loading = false;
   editorLoading = false;
 
@@ -43,8 +47,7 @@ export class AttributeEditorComponent implements OnInit {
 
   showCreationBox = false;
 
-  constructor(private apollo: Apollo) {
-  }
+  constructor(private apollo: Apollo) { }
 
   ngOnInit() {
     this.loadData();

@@ -28,7 +28,7 @@ export class CharacterViewComponent implements OnInit {
   }
 
   openModal(template: TemplateRef<any>) {
-    this.attrModalRef = this.modalService.show(template);
+    this.attrModalRef = this.modalService.show(template, {keyboard: false});
   }
 
   loadCharacter(id: number) {

@@ -2,7 +2,7 @@ import {BrowserModule} from '@angular/platform-browser';
 import {NgModule} from '@angular/core';
 import {TruncateModule} from 'ng2-truncate';
 import {AppComponent} from './app.component';
-import {AlertModule, BsDropdownModule, ModalModule, PopoverModule, TooltipModule} from 'ngx-bootstrap';
+import {AlertModule, BsDropdownModule, ModalModule, PopoverModule, TooltipModule, TypeaheadModule} from 'ngx-bootstrap';
 import {LoginComponent} from './login/login.component';
 import {RegisterComponent} from './register/register.component';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
@@ -82,7 +82,8 @@ import {CampaignIndexComponent} from './campaign-index/campaign-index.component'
     BsDropdownModule.forRoot(),
     PopoverModule.forRoot(),
     TooltipModule.forRoot(),
-    TruncateModule
+    TruncateModule,
+    TypeaheadModule.forRoot()
   ],
   providers: [AuthService, AuthGuard, TokenService, CharacterService, CampaignService, NotificationService],
   bootstrap: [AppComponent]

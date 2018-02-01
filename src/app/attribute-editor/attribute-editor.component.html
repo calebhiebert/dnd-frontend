@@ -8,9 +8,9 @@
   <div class="list-group-item" *ngIf="showCreationBox === true">
     <fieldset [disabled]="editorLoading === true">
       <div class="input-group">
-        <input type="text" placeholder="Key" class="form-control" [(ngModel)]="newAttr.key">
+        <input type="text" placeholder="Key" [typeahead]="dndKeys" class="form-control" [(ngModel)]="newAttr.key">
         <input type="text" placeholder="{{ (newAttr.key || 'Value') }}" class="form-control"
-               [(ngModel)]="newAttr.value">
+               [(ngModel)]="newAttr.value" [typeahead]="dndValues">
         <div class="input-group-append">
           <button type="button" class="btn btn-outline-dark btn-sm" (click)="saveNewAttribute()">
             <span *ngIf="editorLoading === false">💾</span>
