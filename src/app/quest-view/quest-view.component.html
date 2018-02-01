@@ -1,11 +1,26 @@
 <div class="card mt-2">
   <h5 class="card-header">
     Quests
-    <button class="btn btn-outline-dark btn-sm float-right" *ngIf="editable">Edit</button>
+    <button class="btn btn-outline-dark btn-sm float-right" *ngIf="editable" (click)="lgModal.show()">Edit</button>
   </h5>
   <app-spinner *ngIf="loading === true"></app-spinner>
   <div class="list-group list-group-flush" *ngIf="quests && quests.length > 0; else noquests">
-    These are quests
+    <button class="list-group-item list-group-item-action" *ngFor="let quest of quests">
+      {{ quest.name }}
+    </button>
+  </div>
+</div>
+
+<div bsModal #lgModal="bs-modal" class="modal fade" tabindex="-1" role="dialog">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        Quest Editor
+      </div>
+      <div class="modal-body">
+        <app-quest-editor [campaignId]="campaignId"></app-quest-editor>
+      </div>
+    </div>
   </div>
 </div>
 

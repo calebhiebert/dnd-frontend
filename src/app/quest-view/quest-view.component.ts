@@ -1,7 +1,9 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, Input, OnInit, TemplateRef} from '@angular/core';
 import {Apollo} from 'apollo-angular';
 import gql from 'graphql-tag';
 import {GET_QUESTS_QUERY} from '../quest-editor/quest-editor.component';
+import {GetCampaignResponse, Quest} from '../types';
+import {BsModalRef, BsModalService} from 'ngx-bootstrap';
 
 @Component({
   selector: 'app-quest-view',
@@ -16,31 +18,36 @@ export class QuestViewComponent implements OnInit {
   @Input()
   editable: boolean;
 
-  quests: Array<any>;
+  quests: Array<Quest>;
+
+  questEditorModalRef: BsModalRef;
 
   loading = false;
 
-  constructor(private apollo: Apollo) { }
+  constructor(private apollo: Apollo, private modalService: BsModalService) { }
 
   ngOnInit() {
     this.loadData();
   }
 
+  openModal(template: TemplateRef<any>) {
+    this.questEditorModalRef = this.modalService.show(template);
+  }
+
   loadData() {
     this.loading = true;
 
-    this.apollo.watchQuery({
+    this.apollo.watchQuery<GetCampaignResponse>({
       query: GET_QUESTS_QUERY,
 
       variables: {
         id: this.campaignId
       }
     }).valueChanges
-    .map((resp: any) => resp.data.getCampaign.quests)
+    .map(resp => resp.data.getCampaign.quests)
     .subscribe(quests => {
       this.quests = quests;
       this.loading = false;
     });
   }
-
 }

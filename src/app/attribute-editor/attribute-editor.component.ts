@@ -1,7 +1,7 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {Apollo} from 'apollo-angular';
 import gql from 'graphql-tag';
-import {Character} from '../types';
+import {Character, CreateAttributeResponse, GetCharacterResponse} from '../types';
 
 export const CHARACTER_ATTR_DATA_QUERY = gql`
   query AttributeEditorQuery($charId: ID!) {
@@ -53,13 +53,13 @@ export class AttributeEditorComponent implements OnInit {
   loadData() {
     this.loading = true;
 
-    this.apollo.watchQuery({
+    this.apollo.watchQuery<GetCharacterResponse>({
       query: CHARACTER_ATTR_DATA_QUERY,
 
       variables: {
         charId: this.characterId
       }
-    }).valueChanges.map((resp: any) => resp.data.getCharacter)
+    }).valueChanges.map(resp => resp.data.getCharacter)
     .subscribe(character => {
       this.character = character;
       this.loading = false;
@@ -69,7 +69,7 @@ export class AttributeEditorComponent implements OnInit {
   saveNewAttribute() {
     this.editorLoading = true;
 
-    this.apollo.mutate({
+    this.apollo.mutate<CreateAttributeResponse>({
       mutation: gql`
         mutation CreateAttribute($charId: ID!, $input: AttributeInput!) {
           createAttribute(characterId: $charId, input: $input) {

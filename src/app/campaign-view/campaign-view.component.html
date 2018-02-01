@@ -7,7 +7,7 @@
   <button type="button" class="btn btn-outline-dark btn-sm float-right" (click)="openModal(characterSelector)">Join
   </button>
   <h4>{{ campaign.name }}</h4>
-  <p>{{ campaign.description }}</p>
+  <p *ngIf="campaign.description && campaign.description.trim().length > 0; else nodescription">{{ campaign.description }}</p>
 
   <div class="card">
     <span class="card-header">Characters</span>
@@ -25,6 +25,8 @@
     </div>
   </div>
 
+  <app-quest-view [campaignId]="campaign.id" [editable]="campaign.mine"></app-quest-view>
+
   <div class="card mt-2" *ngIf="campaign.mine === true">
     <span class="card-header">Join Requests</span>
     <div class="card-body">
@@ -32,9 +34,6 @@
     </div>
   </div>
 
-  <app-quest-view [campaignId]="campaign.id" [editable]="campaign.mine"></app-quest-view>
-
-  <app-quest-editor [campaignId]="campaign.id"></app-quest-editor>
 </div>
 
 <ng-template #characterSelector>
@@ -42,4 +41,8 @@
   <div class="modal-body">
     <app-character-selection-list (selection)="onCharacterSelected($event)"></app-character-selection-list>
   </div>
+</ng-template>
+
+<ng-template #nodescription>
+  <p class="text-muted font-italic">This campaign has no description.</p>
 </ng-template>

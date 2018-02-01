@@ -1,8 +1,7 @@
 import {Component, Input, OnInit} from '@angular/core';
 import gql from 'graphql-tag';
 import {Apollo} from 'apollo-angular';
-import {Campaign, CreateQuestResponse, EditQuestResponse, GetCampaignResponse, Quest} from '../types';
-import {variable} from '@angular/compiler/src/output/output_ast';
+import {CreateQuestResponse, EditQuestResponse, GetCampaignResponse, Quest} from '../types';
 
 @Component({
   selector: 'app-quest-editor',

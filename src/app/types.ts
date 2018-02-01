@@ -58,3 +58,7 @@ export interface DeleteQuestResponse {
 export interface GetCharacterResponse {
   getCharacter: Character;
 }
+
+export interface CreateAttributeResponse {
+  createAttribute: Attribute;
+}
