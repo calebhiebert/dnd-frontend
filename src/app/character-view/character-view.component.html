@@ -1,13 +1,21 @@
 <div *ngIf="loading === false">
   <app-character-form class="float-right ml-2" [edit]="true" [editId]="character.id"
                       *ngIf="character.mine"></app-character-form>
-  <button class="btn btn-outline-dark btn-sm float-right" routerLink="/campaign/{{ character.campaign.id }}"
-          *ngIf="character.campaign !== null">{{ character.campaign.name }}</button>
+  <button class="btn btn-outline-dark btn-sm float-right ml-2" (click)="openModal(attrModal)" *ngIf="character.mine">
+    Edit Attributes
+  </button>
+
+  <button class="btn btn-outline-dark btn-sm float-right ml-2" routerLink="/campaign/{{ character.campaign.id }}"
+          *ngIf="character.campaign !== null" tooltip="{{ character.campaign.name }}" placement="top">View Campaign
+  </button>
+
   <h4>{{ character.name }}</h4>
-  <p>{{ character.description }}</p>
-  <h5 class="mt-3">Attributes
-    <button class="btn btn-outline-dark btn-sm" (click)="openModal(attrModal)" *ngIf="character.mine">Edit</button>
-  </h5>
+  <p *ngIf="character.description; else nobackstory">{{ character.description }}</p>
+  <h5 class="mt-3">Attributes</h5>
+  <span class="text-muted font-italic"
+        *ngIf="character.attributes.length === 0">
+    {{ character.name }} doesn't seem to have any attributes
+  </span>
   <div class="list-group">
     <div class="list-group-item" *ngFor="let attr of character.attributes">
       <h6 class="text-muted float-right">{{ (attr.sValue || attr.nValue) }}</h6>
@@ -20,6 +28,10 @@
 <ng-template #attrModal>
   <div class="modal-header">Attributes</div>
   <div class="modal-body">
-    <app-attribute-editor [characterId]="character.id"></app-attribute-editor>
+    <app-attribute-editor [characterId]="character.id" (doneEvent)="attrModalRef.hide()"></app-attribute-editor>
   </div>
+</ng-template>
+
+<ng-template #nobackstory>
+  <span class="text-muted font-italic">{{ character.name }} has no backstory</span>
 </ng-template>

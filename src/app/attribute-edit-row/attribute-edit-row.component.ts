@@ -60,8 +60,6 @@ export class AttributeEditRowComponent implements OnInit {
       update: (store, {data}) => {
         const storeData = store.readQuery({query: CHARACTER_ATTR_DATA_QUERY, variables: {charId: this.charId}});
 
-        console.log(data);
-
         (storeData as any).getCharacter.attributes.forEach((storeAttr: any) => {
           if (storeAttr.id === data.editAttribute.id) {
             Object.assign(storeAttr, data.editAttribute);
@@ -71,7 +69,7 @@ export class AttributeEditRowComponent implements OnInit {
         store.writeQuery({query: CHARACTER_ATTR_DATA_QUERY, variables: {charId: this.charId}, data: storeData});
       }
     }).map((resp: any) => resp.data.editAttribute)
-    .subscribe(resp => console.log(resp));
+    .subscribe();
   }
 
   delete() {

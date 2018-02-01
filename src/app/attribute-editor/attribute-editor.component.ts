@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {Apollo} from 'apollo-angular';
 import gql from 'graphql-tag';
 import {Character} from '../types';
@@ -27,6 +27,9 @@ export class AttributeEditorComponent implements OnInit {
 
   @Input()
   characterId: number;
+
+  @Output()
+  doneEvent = new EventEmitter<boolean>();
 
   character: Character;
 
@@ -98,5 +101,9 @@ export class AttributeEditorComponent implements OnInit {
       this.editorLoading = false;
       this.showCreationBox = false;
     });
+  }
+
+  done() {
+    this.doneEvent.emit(true);
   }
 }

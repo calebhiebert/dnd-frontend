@@ -1,5 +1,4 @@
-<h4 *ngIf="character !== undefined">Edit attributes for {{ character.name }}</h4>
-<div class="list-group" *ngIf="character !== undefined">
+<div class="list-group list-group-flush" *ngIf="character !== undefined">
   <div class="list-group-item" *ngFor="let attr of character.attributes">
     <app-attribute-edit-row [attribute]="attr" [charId]="characterId"></app-attribute-edit-row>
   </div>
@@ -24,3 +23,4 @@
 <button type="button" class="btn btn-outline-dark btn-sm float-right mt-2 ml-2" (click)="saveNewAttribute()"
         *ngIf="showCreationBox === true">Save
 </button>
+<button type="button" class="btn btn-outline-primary btn-sm float-right mt-2 ml-2" (click)="done()">Done</button>

@@ -1,7 +1,7 @@
 <div class="card">
   <div class="card-header">
     <app-character-form class="float-right"></app-character-form>
-    <span class="float-left">Characters</span>
+    <h5>Characters</h5>
   </div>
   <div class="list-group list-group-flush"
        *ngIf="characters !== undefined && characters.length > 0">
@@ -10,8 +10,8 @@
       {{character.name}}
     </button>
   </div>
-  <div class="card-body" *ngIf="characters !== undefined && characters.length === 0">
-    <span class="text-muted">You have no characters!</span>
+  <div class="card-body p-3 text-muted font-italic text-center" *ngIf="characters !== undefined && characters.length === 0">
+    You don't have any characters
   </div>
   <div class="card-body" *ngIf="loading === true">
     <app-spinner></app-spinner>

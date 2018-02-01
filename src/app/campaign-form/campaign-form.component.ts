@@ -50,8 +50,8 @@ export class CampaignFormComponent implements OnInit, OnDestroy {
   save() {
     if (this.editId !== undefined) {
       this.campService.editCampaign(this.campaign)
-        .subscribe(() => {
-          this.router.navigate(['']);
+        .subscribe((campaign: Campaign) => {
+          this.router.navigate(['campaign', campaign.id]);
         });
     } else {
       this.campService.createCampaign(this.campaign)

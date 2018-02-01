@@ -62,7 +62,6 @@ export class CharacterViewComponent implements OnInit {
     }).valueChanges
     .map((resp: any) => resp.data.getCharacter)
     .subscribe(character => {
-      console.log(character);
       this.character = character;
       this.loading = false;
     });

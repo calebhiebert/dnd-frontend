@@ -45,6 +45,9 @@ export class CampaignViewComponent implements OnInit {
             characters {
               id
               name
+              description
+              hp
+              maxHp
               creator {
                 username
               }

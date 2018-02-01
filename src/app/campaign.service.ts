@@ -58,7 +58,9 @@ export class CampaignService {
 
   getMyCampaigns() {
     return this.apollo.watchQuery<MyCampaignsResponse>({
-      query: MY_CAMPAIGNS_QUERY
+      query: MY_CAMPAIGNS_QUERY,
+
+      fetchPolicy: 'network-only',
     }).valueChanges.map(resp => resp.data.me.campaigns);
   }
 

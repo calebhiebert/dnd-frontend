@@ -13,10 +13,13 @@
     <div class="list-group list-group-flush">
       <a routerLink="/character/{{ character.id }}" *ngFor="let character of campaign.characters"
               class="list-group-item list-group-item-action flex-column align-items-start">
+
         <div class="d-flex w-100 justify-content-between">
-          <h5 class="mb-1">{{character.name}}</h5>
+          <h5 class="mb-1">{{character.name}} ({{ character.hp }}/{{ character.maxHp }})</h5>
           <small>{{character.creator.username}}</small>
         </div>
+
+        <p class="mb-1">{{ character.description }}</p>
       </a>
     </div>
   </div>
