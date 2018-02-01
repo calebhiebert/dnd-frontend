@@ -1,0 +1,37 @@
+<div class="card p-3">
+  <app-spinner *ngIf="loading === true"></app-spinner>
+  <div class="list-group" *ngIf="quests">
+    <button class="list-group-item list-group-item-action" [ngClass]="{ active: (editingQuest && editingQuest.id) === quest.id }"
+            *ngFor="let quest of quests" (click)="selectQuest(quest)">
+      {{ quest.name }}
+    </button>
+  </div>
+
+  <button class="btn btn-primary btn-sm mt-2" (click)="newQuest()" *ngIf="!editingQuest">New</button>
+
+  <div class="card mt-2">
+    <div class="card-body" *ngIf="editingQuest; else noqselected">
+      <form (ngsubmit)="save()">
+        <fieldset>
+          <div class="form-group">
+            <label>Name</label>
+            <input class="form-control" type="text" [(ngModel)]="editingQuest.name" name="name" placeholder="Name">
+          </div>
+          <div class="form-group">
+            <label>Description</label>
+            <textarea class="form-control" placeholder="Description" name="description" [(ngModel)]="editingQuest.description"></textarea>
+          </div>
+          <button type="submit" class="btn btn-primary float-right ml-2" (click)="save()">Save</button>
+          <button type="button" class="btn btn-outline-dark float-right ml-2">Cancel</button>
+          <button type="button" class="btn btn-outline-danger float-right" *ngIf="editingQuest.id !== undefined">Delete</button>
+        </fieldset>
+      </form>
+    </div>
+  </div>
+</div>
+
+<ng-template #noqselected>
+  <div class="card-body text-muted font-italic text-center">
+    Please select a quest to edit, or create a new one
+  </div>
+</ng-template>

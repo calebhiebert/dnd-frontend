@@ -1,0 +1,16 @@
+<div class="card mt-2">
+  <h5 class="card-header">
+    Quests
+    <button class="btn btn-outline-dark btn-sm float-right" *ngIf="editable">Edit</button>
+  </h5>
+  <app-spinner *ngIf="loading === true"></app-spinner>
+  <div class="list-group list-group-flush" *ngIf="quests && quests.length > 0; else noquests">
+    These are quests
+  </div>
+</div>
+
+<ng-template #noquests>
+  <div class="card-body text-muted font-italic text-center" *ngIf="quests && quests.length === 0">
+    There don't seem to be any quests here
+  </div>
+</ng-template>

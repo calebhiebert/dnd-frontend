@@ -31,6 +31,10 @@
       <app-campaign-join-request-view [campaignId]="campaign.id"></app-campaign-join-request-view>
     </div>
   </div>
+
+  <app-quest-view [campaignId]="campaign.id" [editable]="campaign.mine"></app-quest-view>
+
+  <app-quest-editor [campaignId]="campaign.id"></app-quest-editor>
 </div>
 
 <ng-template #characterSelector>

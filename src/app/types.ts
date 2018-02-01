@@ -21,6 +21,7 @@ export class Campaign {
   mine: boolean;
   characters: Array<Character>;
   creator: User;
+  quests: Array<Quest>;
 }
 
 export class Attribute {
@@ -29,4 +30,31 @@ export class Attribute {
   key: string;
   sValue: string;
   nValue: number;
+}
+
+export class Quest {
+  id: number;
+  name: string;
+  description: string;
+  campaign: Campaign;
+}
+
+export interface GetCampaignResponse {
+  getCampaign: Campaign;
+}
+
+export interface CreateQuestResponse {
+  createQuest: Quest;
+}
+
+export interface EditQuestResponse {
+  editQuest: Quest;
+}
+
+export interface DeleteQuestResponse {
+  deleteQuest: Boolean;
+}
+
+export interface GetCharacterResponse {
+  getCharacter: Character;
 }

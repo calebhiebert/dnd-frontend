@@ -4,7 +4,7 @@ import gql from 'graphql-tag';
 import {Character} from '../types';
 
 export const CHARACTER_ATTR_DATA_QUERY = gql`
-  query AttributeEditorQuery($charId: Int!) {
+  query AttributeEditorQuery($charId: ID!) {
     getCharacter(id: $charId) {
       id
       name

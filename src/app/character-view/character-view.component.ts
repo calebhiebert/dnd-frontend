@@ -1,7 +1,7 @@
 import {Component, OnInit, TemplateRef} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
 import {CharacterService} from '../character.service';
-import {Character} from '../types';
+import {Character, GetCharacterResponse} from '../types';
 import {Apollo} from 'apollo-angular';
 import gql from 'graphql-tag';
 import {BsModalRef, BsModalService} from 'ngx-bootstrap';
@@ -34,9 +34,9 @@ export class CharacterViewComponent implements OnInit {
   loadCharacter(id: number) {
     this.loading = true;
 
-    this.apollo.watchQuery({
+    this.apollo.watchQuery<GetCharacterResponse>({
       query: gql`
-        query GetCharacterView($id: Int!) {
+        query GetCharacterView($id: ID!) {
           getCharacter(id: $id) {
             id
             name
@@ -60,10 +60,10 @@ export class CharacterViewComponent implements OnInit {
         id
       }
     }).valueChanges
-    .map((resp: any) => resp.data.getCharacter)
+    .map(resp => resp.data.getCharacter)
     .subscribe(character => {
       this.character = character;
       this.loading = false;
-    });
+    }, err => console.error('This is an error', err));
   }
 }

@@ -37,6 +37,8 @@ import {NotificationBubbleComponent} from './notification-bubble/notification-bu
 import {CampaignJoinRequestViewComponent} from './campaign-join-request-view/campaign-join-request-view.component';
 import {environment} from '../environments/environment';
 import { JoinRequestRowViewComponent } from './join-request-row-view/join-request-row-view.component';
+import { QuestViewComponent } from './quest-view/quest-view.component';
+import { QuestEditorComponent } from './quest-editor/quest-editor.component';
 
 
 @NgModule({
@@ -60,7 +62,9 @@ import { JoinRequestRowViewComponent } from './join-request-row-view/join-reques
     AttributeEditRowComponent,
     NotificationBubbleComponent,
     CampaignJoinRequestViewComponent,
-    JoinRequestRowViewComponent
+    JoinRequestRowViewComponent,
+    QuestViewComponent,
+    QuestEditorComponent
   ],
   imports: [
     BrowserModule,

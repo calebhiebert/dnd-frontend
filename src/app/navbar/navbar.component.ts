@@ -9,7 +9,7 @@ import {NotificationService} from '../notification.service';
 })
 export class NavbarComponent implements OnInit {
 
-  constructor(private auth: AuthService, private notifService: NotificationService) {
+  constructor(private auth: AuthService) {
   }
 
   ngOnInit() {

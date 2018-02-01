@@ -29,7 +29,7 @@ const CREATE_CHARACTER_MUTATION = gql`
   } ${CHARACTER_FRAGMENT}`;
 
 const GET_CHARACTER_QUERY = gql`
-  query GetCharacter($id: Int!) {
+  query GetCharacter($id: ID!) {
     getCharacter(id: $id) {
       ...CharacterFields
     }
@@ -43,7 +43,7 @@ const EDIT_CHARACTER_MUTATION = gql`
   } ${CHARACTER_FRAGMENT}`;
 
 const USER_CHARACTERS_QUERY = gql`
-  query UserCharacters($userId: Int!) {
+  query UserCharacters($userId: ID!) {
     user(id: $userId) {
       characters {
         ...CharacterFields

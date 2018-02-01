@@ -26,6 +26,9 @@ export class CharacterFormComponent implements OnInit {
   }
 
   ngOnInit() {
+  }
+
+  init() {
     this.character = new Character();
 
     if (this.edit) {
@@ -39,6 +42,7 @@ export class CharacterFormComponent implements OnInit {
   }
 
   openModal(template: TemplateRef<any>) {
+    this.init();
     this.modalRef = this.modalService.show(template);
   }
 
