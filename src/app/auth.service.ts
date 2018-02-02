@@ -1,8 +1,8 @@
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 import {Apollo} from 'apollo-angular';
 import gql from 'graphql-tag';
-import {User} from './types';
-import {BehaviorSubject} from 'rxjs/BehaviorSubject';
+import {SocketService} from './socket.service';
+import {Socket} from 'ng-socket-io';
 
 const LOGIN_MUTATION = gql`
   mutation LogIn($username: String!, $password: String!) {
@@ -32,10 +32,32 @@ const IS_LOGGED_IN_QUERY = gql`
 @Injectable()
 export class AuthService {
 
-  loggedIn$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
-  loggedIn = false;
+  _loggedIn = false;
+  private _token = '';
 
-  constructor(private apollo: Apollo) { }
+  set loggedIn(loggedIn: boolean) {
+    this._loggedIn = loggedIn;
+  }
+
+  get loggedIn() {
+    return this._loggedIn;
+  }
+
+  set token(value: string) {
+    this.socket.supplyToken(value);
+
+    if (value.trim() !== '') {
+      localStorage.setItem('auth-token', value);
+    } else {
+      localStorage.removeItem('auth-token');
+    }
+
+    this._token = value;
+  }
+
+  constructor(private apollo: Apollo, private socket: SocketService,
+              private skt: Socket) {
+  }
 
   public login(username: string, password: string) {
     return this.apollo.mutate<LoginResponse>({
@@ -45,7 +67,12 @@ export class AuthService {
         username, password
       }
     })
-      .map(resp => resp.data.login);
+      .map(resp => resp.data.login)
+      .map(login => {
+        this.loggedIn = true;
+        this.token = login.token;
+        return login;
+      });
   }
 
   public register(username: string, password: string) {
@@ -55,13 +82,23 @@ export class AuthService {
       variables: {
         username, password
       }
-    }).map(resp => resp.data.register);
+    }).map(resp => resp.data.register)
+      .map(register => {
+        this.loggedIn = true;
+        this.token = register.token;
+        return register;
+      });
   }
 
   public logout() {
     return this.apollo.mutate({
       mutation: LOGOUT_MUTATION
-    }).map(resp => resp.data.logout);
+    }).map(resp => resp.data.logout)
+      .map(logout => {
+        this.loggedIn = false;
+        this.token = '';
+        return logout;
+      });
   }
 
   public isLoggedIn() {
@@ -70,12 +107,11 @@ export class AuthService {
 
       fetchPolicy: 'network-only'
     })
-      .map(resp => resp.data.isLoggedIn);
-  }
-
-  public setLoginStatus(loggedIn: boolean) {
-    this.loggedIn = loggedIn;
-    this.loggedIn$.next(loggedIn);
+      .map(resp => resp.data.isLoggedIn)
+      .map(isLoggedIn => {
+        this.loggedIn = isLoggedIn;
+        return isLoggedIn;
+      });
   }
 }
 

@@ -18,7 +18,6 @@ export class LogoutComponent implements OnInit {
       .then(() => {
         this.apollo.getClient().resetStore();
         this.router.navigate(['']);
-        this.auth.setLoginStatus(false);
       });
   }
 }

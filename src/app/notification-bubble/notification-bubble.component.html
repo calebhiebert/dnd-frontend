@@ -1,5 +1,5 @@
 <button type="button" class="btn float-right btn-sm" [ngClass]="{'btn-primary': notificationCount > 0}"
-        [popover]="notifications" popoverTitle="Notifications" placement="bottom" triggers="focus">
+        [popover]="notifications" popoverTitle="Notifications" placement="bottom" [outsideClick]="true">
   🔔 <span class="badge badge-pill badge-light" *ngIf="notificationCount > 0">{{ notificationCount }}</span>
 </button>
 

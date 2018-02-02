@@ -3,6 +3,26 @@ import {Campaign, Character, MeResponse} from './types';
 import gql from 'graphql-tag';
 import {Apollo} from 'apollo-angular';
 
+const NOTIFICATION_QUERY = gql`
+  query NotificationQuery {
+    me {
+      campaigns {
+        id
+        name
+        joinRequests(status: [WAITING]) {
+          id
+          status
+          character {
+            name
+            creator {
+              username
+            }
+          }
+        }
+      }
+    }
+  }`;
+
 @Injectable()
 export class NotificationService {
 
@@ -10,25 +30,7 @@ export class NotificationService {
 
   loadNotifications() {
     return this.apollo.watchQuery<MeResponse>({
-      query: gql`
-        query NotificationQuery {
-          me {
-            campaigns {
-              id
-              name
-              joinRequests(status: [WAITING]) {
-                id
-                status
-                character {
-                  name
-                  creator {
-                    username
-                  }
-                }
-              }
-            }
-          }
-        }`
+      query: NOTIFICATION_QUERY
     }).valueChanges
     .map(resp => resp.data.me.campaigns)
     .map(campaigns => {

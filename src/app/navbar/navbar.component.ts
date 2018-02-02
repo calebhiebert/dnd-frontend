@@ -13,8 +13,7 @@ export class NavbarComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.auth.isLoggedIn().toPromise()
-      .then(isLoggedIn => this.auth.setLoginStatus(isLoggedIn));
+    this.auth.isLoggedIn().toPromise();
   }
 
   get loggedIn() {

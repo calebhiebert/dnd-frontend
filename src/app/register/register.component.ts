@@ -1,7 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {AuthService} from '../auth.service';
 import {Router} from '@angular/router';
-import {TokenService} from '../token.service';
 
 @Component({
   selector: 'app-register',
@@ -15,7 +14,7 @@ export class RegisterComponent implements OnInit {
   loading = false;
   error: any = null;
 
-  constructor(private auth: AuthService, private router: Router, private token: TokenService) {
+  constructor(private auth: AuthService, private router: Router) {
   }
 
   ngOnInit() {
@@ -28,9 +27,7 @@ export class RegisterComponent implements OnInit {
     this.auth.register(this.username, this.password).toPromise()
       .then(register => {
         this.loading = false;
-        TokenService.save(register.token);
         this.router.navigate(['home']);
-        this.auth.setLoginStatus(true);
 
       }, e => {
         this.loading = false;

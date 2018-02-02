@@ -1,9 +1,9 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
-import {Apollo} from 'apollo-angular';
-import gql from 'graphql-tag';
 import {Campaign, Character} from '../types';
 import {NotificationService} from '../notification.service';
+import {Socket} from 'ng-socket-io';
 import {Subscription} from 'rxjs/Subscription';
+import 'rxjs/add/operator/take';
 
 @Component({
   selector: 'app-notifications',
@@ -17,7 +17,13 @@ export class NotificationsComponent implements OnInit, OnDestroy {
 
   sub: Subscription;
 
-  constructor(private notifService: NotificationService) {
+  constructor(private notifService: NotificationService, private socket: Socket) {
+    this.socket.fromEvent('nn')
+      .subscribe(() => {
+        console.log('Received new notification socket message');
+        this.notifService.loadNotifications().take(1)
+          .subscribe(notifications => this.notifications = notifications);
+      });
   }
 
   ngOnInit() {

@@ -17,7 +17,6 @@ import {FormsModule} from '@angular/forms';
 import {AuthService} from './auth.service';
 import {AuthGuard} from './auth.guard';
 import {IndexComponent} from './index/index.component';
-import {TokenService} from './token.service';
 import {LogoutComponent} from './logout/logout.component';
 import {NavbarComponent} from './navbar/navbar.component';
 import {IndexCharacterListComponent} from './index-character-list/index-character-list.component';
@@ -41,7 +40,11 @@ import {QuestViewComponent} from './quest-view/quest-view.component';
 import {QuestEditorComponent} from './quest-editor/quest-editor.component';
 import {CampaignIndexComponent} from './campaign-index/campaign-index.component';
 import { HomeComponent } from './home/home.component';
+import { SocketService } from './socket.service';
+import {SocketIoConfig, SocketIoModule} from 'ng-socket-io';
 
+
+const SOCKET_CONFIG: SocketIoConfig = {url: 'http://localhost:5200'};
 
 @NgModule({
   declarations: [
@@ -85,9 +88,10 @@ import { HomeComponent } from './home/home.component';
     PopoverModule.forRoot(),
     TooltipModule.forRoot(),
     TruncateModule,
-    TypeaheadModule.forRoot()
+    TypeaheadModule.forRoot(),
+    SocketIoModule.forRoot(SOCKET_CONFIG)
   ],
-  providers: [AuthService, AuthGuard, TokenService, CharacterService, CampaignService, NotificationService],
+  providers: [AuthService, AuthGuard, CharacterService, CampaignService, NotificationService, SocketService],
   bootstrap: [AppComponent]
 })
 export class AppModule {

@@ -1,7 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import {ToastrService} from 'ngx-toastr';
 import {AuthService} from '../auth.service';
-import {TokenService} from '../token.service';
 import {Router} from '@angular/router';
 
 @Component({
@@ -17,7 +15,7 @@ export class LoginComponent implements OnInit {
 
   error: any = null;
 
-  constructor(private auth: AuthService, private token: TokenService, private router: Router) { }
+  constructor(private auth: AuthService, private router: Router) { }
 
   ngOnInit() {
   }
@@ -29,13 +27,10 @@ export class LoginComponent implements OnInit {
 
     this.auth.login(this.username, this.password).toPromise()
       .then(login => {
-        this.auth.setLoginStatus(true);
         this.router.navigate(['home']);
-        TokenService.save(login.token);
         this.loading = false;
       }, err => {
         this.error = err;
-        this.auth.setLoginStatus(false);
         this.loading = false;
       });
   }
