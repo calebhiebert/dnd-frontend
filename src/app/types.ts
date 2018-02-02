@@ -70,3 +70,7 @@ export interface CharacterCampaignOperationResponse {
 export interface GetCampaignsResponse {
   getCampaigns: Campaign[];
 }
+
+export interface MeResponse {
+  me: User;
+}

@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import {Campaign, Character} from './types';
+import {Campaign, Character, MeResponse} from './types';
 import gql from 'graphql-tag';
 import {Apollo} from 'apollo-angular';
 
@@ -9,7 +9,7 @@ export class NotificationService {
   constructor(private apollo: Apollo) { }
 
   loadNotifications() {
-    return this.apollo.query({
+    return this.apollo.watchQuery<MeResponse>({
       query: gql`
         query NotificationQuery {
           me {
@@ -29,8 +29,8 @@ export class NotificationService {
             }
           }
         }`
-    })
-    .map((resp: any) => resp.data.me.campaigns)
+    }).valueChanges
+    .map(resp => resp.data.me.campaigns)
     .map(campaigns => {
       const notifs = [];
 

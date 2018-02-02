@@ -19,13 +19,14 @@ export class CharacterViewComponent implements OnInit, OnDestroy {
   attrModalRef: BsModalRef;
 
   chrSub: Subscription;
+  routeSub: Subscription;
 
   constructor(private route: ActivatedRoute, private charService: CharacterService,
               private apollo: Apollo, private modalService: BsModalService) {
   }
 
   ngOnInit() {
-    this.route.params.subscribe(params => {
+    this.routeSub = this.route.params.subscribe(params => {
       this.loadCharacter(+params['id']);
     });
   }
@@ -33,6 +34,10 @@ export class CharacterViewComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     if (this.chrSub) {
       this.chrSub.unsubscribe();
+    }
+
+    if (this.routeSub) {
+      this.routeSub.unsubscribe();
     }
   }
 

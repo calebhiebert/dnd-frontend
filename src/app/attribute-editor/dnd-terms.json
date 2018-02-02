@@ -14,6 +14,7 @@
   "Class",
   "Alignment",
   "Species",
+  "Race",
   "Acrobatics",
   "Animal Handling",
   "Arcana",
@@ -33,7 +34,8 @@
   "Stealth",
   "Survival",
   "Initiative",
-  "Speed"
+  "Speed",
+  "Monster Type"
 ],
 "values": [
   "Barbarian",
@@ -63,5 +65,13 @@
   "Half-Orc",
   "Goliath",
   "Halfling",
-  "Tiefling"
+  "Tiefling",
+  "Humanoid",
+  "Aberration",
+  "Celestial",
+  "Fiend",
+  "Giant",
+  "Elemental",
+  "Beast",
+  "Abomination"
 ]}
