@@ -28,7 +28,7 @@ export const CHARACTER_ATTR_DATA_QUERY = gql`
 export class AttributeEditorComponent implements OnInit, OnDestroy {
 
   @Input()
-  characterId: number;
+  characterId: string;
 
   @Output()
   doneEvent = new EventEmitter<boolean>();

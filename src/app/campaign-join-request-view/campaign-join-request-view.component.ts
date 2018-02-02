@@ -29,7 +29,7 @@ const JOIN_REQUEST_QUERY = gql`
 export class CampaignJoinRequestViewComponent implements OnInit, OnDestroy {
 
   @Input()
-  campaignId: number;
+  campaignId: string;
 
   joinRequests: Array<any>;
 

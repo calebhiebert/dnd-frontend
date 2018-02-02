@@ -30,7 +30,7 @@ export class JoinRequestRowViewComponent implements OnInit {
   request: any;
 
   @Input()
-  campaignId: number;
+  campaignId: string;
 
   loading = false;
 

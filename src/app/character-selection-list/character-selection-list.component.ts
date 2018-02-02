@@ -15,7 +15,7 @@ export class CharacterSelectionListComponent implements OnInit {
   selection = new EventEmitter<Character>();
 
   @Input()
-  campaignId: number;
+  campaignId: string;
 
   characters: Array<Character>;
   loading = false;

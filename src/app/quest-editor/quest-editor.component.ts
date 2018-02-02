@@ -12,7 +12,7 @@ import {Subscription} from 'rxjs/Subscription';
 export class QuestEditorComponent implements OnInit, OnDestroy {
 
   @Input()
-  campaignId: number;
+  campaignId: string;
 
   quests: Array<Quest>;
 

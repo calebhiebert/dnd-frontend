@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import {Apollo} from 'apollo-angular';
 import gql from 'graphql-tag';
 import {Character} from './types';
+import {Socket} from 'ng-socket-io';
 
 const CHARACTER_FRAGMENT = gql`
   fragment CharacterFields on Character {
@@ -51,10 +52,40 @@ const USER_CHARACTERS_QUERY = gql`
     }
   } ${CHARACTER_FRAGMENT}`;
 
+const CHARACTER_VIEW_QUERY = gql`
+  query GetCharacterView($id: ID!) {
+    getCharacter(id: $id) {
+      id
+      name
+      description
+      mine
+      attributes {
+        id
+        key
+        dataType
+        nValue
+        sValue
+      }
+      campaign {
+        id
+        name
+      }
+    }
+  }`;
+
 @Injectable()
 export class CharacterService {
 
-  constructor(private apollo: Apollo) { }
+  constructor(private apollo: Apollo, private socket: Socket) {
+    socket.fromEvent('character-update')
+      .subscribe(characterId => {
+        apollo.query({
+          query: CHARACTER_VIEW_QUERY,
+          variables: {id: characterId},
+          fetchPolicy: 'network-only'
+        }).toPromise().then(resp => {});
+      });
+  }
 
   getMyCharacters() {
     return this.apollo.watchQuery<MyCharactersResponse>({
@@ -62,7 +93,20 @@ export class CharacterService {
     }).valueChanges.map(resp => resp.data.me.characters);
   }
 
-  getCharacter(id: number) {
+  getCharacterForView(id: string) {
+    this.apollo.watchQuery<GetCharacterResponse>({
+      query: CHARACTER_VIEW_QUERY,
+
+      variables: {
+        id
+      }
+    }).valueChanges
+    .map(resp => resp.data.getCharacter);
+  }
+
+  getCharacter(id: string) {
+    this.socket.emit('sub', `character-update-${id}`);
+
     return this.apollo.watchQuery<GetCharacterResponse>({
       query: GET_CHARACTER_QUERY,
 
@@ -102,7 +146,7 @@ export class CharacterService {
     }).map(resp => resp.data.editCharacter);
   }
 
-  getCharactersForUser(userId: number) {
+  getCharactersForUser(userId: string) {
     return this.apollo.query<UserCharactersResponse>({
       query: USER_CHARACTERS_QUERY,
 

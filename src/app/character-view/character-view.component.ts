@@ -27,7 +27,7 @@ export class CharacterViewComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.routeSub = this.route.params.subscribe(params => {
-      this.loadCharacter(+params['id']);
+      this.loadCharacter(params['id']);
     });
   }
 
@@ -45,7 +45,7 @@ export class CharacterViewComponent implements OnInit, OnDestroy {
     this.attrModalRef = this.modalService.show(template, {keyboard: false});
   }
 
-  loadCharacter(id: number) {
+  loadCharacter(id: string) {
     this.loading = true;
 
     this.chrSub = this.apollo.watchQuery<GetCharacterResponse>({

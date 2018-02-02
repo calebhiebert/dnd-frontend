@@ -42,7 +42,7 @@ export class NotificationsComponent implements OnInit, OnDestroy {
 }
 
 interface JoinRequestNotification {
-  id: number;
+  id: string;
   status: string;
   campaign: Campaign;
   character: Character;

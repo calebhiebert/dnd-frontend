@@ -1,7 +1,8 @@
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 import {Apollo} from 'apollo-angular';
-import {Campaign} from './types';
+import {Campaign, CharacterCampaignOperationResponse, GetCampaignResponse} from './types';
 import gql from 'graphql-tag';
+import {Socket} from 'ng-socket-io';
 
 export const CAMPAIGN_FRAGMENT = gql`
   fragment CampaignFields on Campaign {
@@ -21,7 +22,7 @@ export const MY_CAMPAIGNS_QUERY = gql`
     }
   }
 
-  ${CAMPAIGN_FRAGMENT}`;
+${CAMPAIGN_FRAGMENT}`;
 
 const GET_CAMPAIGN_QUERY = gql`
   query GetCampaign($id: ID!) {
@@ -30,7 +31,7 @@ const GET_CAMPAIGN_QUERY = gql`
     }
   }
 
-  ${CAMPAIGN_FRAGMENT}`;
+${CAMPAIGN_FRAGMENT}`;
 
 const CREATE_CAMPAIGN_MUTATION = gql`
   mutation CreateCampaign($input: CampaignInput!) {
@@ -39,7 +40,7 @@ const CREATE_CAMPAIGN_MUTATION = gql`
     }
   }
 
-  ${CAMPAIGN_FRAGMENT}`;
+${CAMPAIGN_FRAGMENT}`;
 
 const EDIT_CAMPAIGN_MUTATION = gql`
   mutation EditCampaign($id: ID!, $input: CampaignInput!) {
@@ -48,13 +49,38 @@ const EDIT_CAMPAIGN_MUTATION = gql`
     }
   }
 
-  ${CAMPAIGN_FRAGMENT}`;
+${CAMPAIGN_FRAGMENT}`;
+
+const CAMPAIGN_VIEW_QUERY = gql`
+  query GetCampaignForViewScreen($id: ID!) {
+    getCampaign(id: $id) {
+      id
+      name
+      description
+      mine
+      characters {
+        id
+        name
+        description
+        hp
+        maxHp
+        creator {
+          username
+        }
+      }
+    }
+  }`;
 
 @Injectable()
 export class CampaignService {
 
-  constructor(private apollo: Apollo) { }
-
+  constructor(private apollo: Apollo, private socket: Socket) {
+    socket.fromEvent('campaign-update')
+      .subscribe(campaignId => {
+        apollo.query({query: CAMPAIGN_VIEW_QUERY, variables: {id: campaignId}, fetchPolicy: 'network-only'})
+          .toPromise().then(() => {});
+      });
+  }
 
   getMyCampaigns() {
     return this.apollo.watchQuery<MyCampaignsResponse>({
@@ -62,9 +88,23 @@ export class CampaignService {
     }).valueChanges.map(resp => resp.data.me.campaigns);
   }
 
-  getCampaign(id: number) {
+  getCampaign(id: string) {
+    this.socket.emit('sub', `campaign-update-${id}`);
+
     return this.apollo.watchQuery<GetCampaignResponse>({
       query: GET_CAMPAIGN_QUERY,
+
+      variables: {
+        id
+      }
+    }).valueChanges.map(resp => resp.data.getCampaign);
+  }
+
+  getCampaignForView(id: string) {
+    this.socket.emit('sub', `campaign-update-${id}`);
+
+    return this.apollo.watchQuery<GetCampaignResponse>({
+      query: CAMPAIGN_VIEW_QUERY,
 
       variables: {
         id
@@ -109,10 +149,26 @@ export class CampaignService {
     })
       .map(resp => resp.data.editCampaign);
   }
-}
 
-interface GetCampaignResponse {
-  getCampaign: Campaign;
+  characterJoinCampaign(characterId: string, campaignId: string) {
+    return this.apollo.mutate<CharacterCampaignOperationResponse>({
+      mutation: gql`
+        mutation CharacterJoinCampaign($charId: ID!, $campId: ID!, $op: CharacterCampaignOperation!) {
+          characterCampaignOperation(characterId: $charId, campaignId: $campId, op: $op)
+        }`,
+
+      variables: {
+        charId: characterId,
+        campId: campaignId,
+        op: 'JOIN',
+      },
+
+      refetchQueries: [
+        {query: CAMPAIGN_VIEW_QUERY, variables: {id: campaignId}}
+      ]
+    }).map(resp => resp.data.characterCampaignOperation)
+    .toPromise();
+  }
 }
 
 interface MyCampaignsResponse {

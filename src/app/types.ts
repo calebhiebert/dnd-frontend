@@ -1,12 +1,12 @@
 export class User {
-  id: number;
+  id: string;
   username: string;
   characters: Array<any>;
   campaigns: Array<any>;
 }
 
 export class Character {
-  id: number;
+  id: string;
   name: string;
   description: string;
   campaign: Campaign;
@@ -15,7 +15,7 @@ export class Character {
 }
 
 export class Campaign {
-  id: number;
+  id: string;
   name: string;
   description: string;
   mine: boolean;
@@ -25,7 +25,7 @@ export class Campaign {
 }
 
 export class Attribute {
-  id: number;
+  id: string;
   dataType: string;
   key: string;
   sValue: string;
@@ -33,7 +33,7 @@ export class Attribute {
 }
 
 export class Quest {
-  id: number;
+  id: string;
   name: string;
   description: string;
   campaign: Campaign;

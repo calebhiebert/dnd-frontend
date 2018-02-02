@@ -11,7 +11,7 @@ import {Subscription} from 'rxjs/Subscription';
 })
 export class CampaignFormComponent implements OnInit, OnDestroy {
 
-  editId: number;
+  editId: string;
 
   campaign: Campaign;
   loading = false;

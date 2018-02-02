@@ -9,41 +9,24 @@ import {Apollo} from 'apollo-angular';
 import gql from 'graphql-tag';
 import {AuthService} from '../auth.service';
 
-const LOAD_CAMPAIGN_QUERY = gql`
-  query GetCampaignForViewScreen($id: ID!) {
-    getCampaign(id: $id) {
-      id
-      name
-      description
-      mine
-      characters {
-        id
-        name
-        description
-        hp
-        maxHp
-        creator {
-          username
-        }
-      }
-    }
-  }`;
-
 @Component({
   selector: 'app-campaign-view',
   templateUrl: './campaign-view.component.html',
   styleUrls: ['./campaign-view.component.css']
 })
-export class CampaignViewComponent implements OnInit {
+export class CampaignViewComponent implements OnInit, OnDestroy {
 
   campaign: Campaign;
   loading = false;
 
   characterSelectionModalRef: BsModalRef;
 
+  campaignSub: Subscription;
+
   constructor(private campService: CampaignService, private router: Router,
               private route: ActivatedRoute, private modalService: BsModalService,
-              private toast: ToastrService, private apollo: Apollo, private auth: AuthService) { }
+              private toast: ToastrService, private apollo: Apollo, private auth: AuthService) {
+  }
 
   ngOnInit() {
     this.route.params.subscribe(params => {
@@ -51,52 +34,41 @@ export class CampaignViewComponent implements OnInit {
     });
   }
 
-  loadCampaign(id: number) {
+  ngOnDestroy(): void {
+    if (this.campaignSub) {
+      this.campaignSub.unsubscribe();
+    }
+  }
+
+  loadCampaign(id: string) {
     this.campaign = null;
-
     this.loading = true;
-    this.apollo.watchQuery({
-      query: LOAD_CAMPAIGN_QUERY,
 
-      variables: {
-        id
-      }
-    }).valueChanges
-    .map((resp: any) => resp.data.getCampaign)
-    .subscribe(campaign => {
-      this.loading = false;
-      this.campaign = campaign;
-    });
+    if (this.campaignSub) {
+      this.campaignSub.unsubscribe();
+    }
+
+    this.campaignSub = this.campService.getCampaignForView(id)
+      .subscribe(campaign => {
+        console.log('Campaign Updated');
+        this.loading = false;
+        this.campaign = campaign;
+      });
   }
 
   onCharacterSelected(character) {
     this.characterSelectionModalRef.hide();
 
-    this.apollo.mutate<CharacterCampaignOperationResponse>({
-      mutation: gql`
-        mutation CharacterJoinCampaign($charId: ID!, $campId: ID!, $op: CharacterCampaignOperation!) {
-          characterCampaignOperation(characterId: $charId, campaignId: $campId, op: $op)
-        }`,
-
-      variables: {
-        charId: character.id,
-        campId: this.campaign.id,
-        op: 'JOIN',
-      },
-
-      refetchQueries: [
-        {query: LOAD_CAMPAIGN_QUERY, variables: {id: this.campaign.id}}
-      ]
-    }).map(resp => resp.data.characterCampaignOperation)
-    .subscribe(addedImmediately => {
-      if (addedImmediately) {
-        this.toast.success(`Character added`, null, { positionClass: 'toast-bottom-right' });
-      } else {
-        this.toast.info(`Sent request for ${character.name} to join ${this.campaign.name}`, null, {
-          positionClass: 'toast-bottom-right'
-        });
-      }
-    });
+    this.campService.characterJoinCampaign(character.id, this.campaign.id)
+      .then(addedImmediately => {
+        if (addedImmediately) {
+          this.toast.success(`Character added`, null, {positionClass: 'toast-bottom-right'});
+        } else {
+          this.toast.info(`Sent request for ${character.name} to join ${this.campaign.name}`, null, {
+            positionClass: 'toast-bottom-right'
+          });
+        }
+      });
   }
 
   delete() {
@@ -111,12 +83,14 @@ export class CampaignViewComponent implements OnInit {
       },
 
       update: (store) => {
-        store.writeQuery({query: gql`
+        store.writeQuery({
+          query: gql`
             query RemoveCampaignQuery($id: ID!) {
               getCampaign(id: $id) {
                 id
               }
-            }`, variables: {id: this.campaign.id}, data: null});
+            }`, variables: {id: this.campaign.id}, data: null
+        });
       },
 
       refetchQueries: [

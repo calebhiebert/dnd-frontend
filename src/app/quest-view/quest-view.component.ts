@@ -14,7 +14,7 @@ import {Subscription} from 'rxjs/Subscription';
 export class QuestViewComponent implements OnInit, OnDestroy {
 
   @Input()
-  campaignId: number;
+  campaignId: string;
 
   @Input()
   editable: boolean;

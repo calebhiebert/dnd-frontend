@@ -21,7 +21,7 @@ export class CharacterFormComponent implements OnInit, OnDestroy {
   edit: boolean;
 
   @Input()
-  editId: number;
+  editId: string;
 
   sub: Subscription;
 
