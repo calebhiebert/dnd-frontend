@@ -9,6 +9,26 @@ import {Apollo} from 'apollo-angular';
 import gql from 'graphql-tag';
 import {AuthService} from '../auth.service';
 
+const LOAD_CAMPAIGN_QUERY = gql`
+  query GetCampaignForViewScreen($id: ID!) {
+    getCampaign(id: $id) {
+      id
+      name
+      description
+      mine
+      characters {
+        id
+        name
+        description
+        hp
+        maxHp
+        creator {
+          username
+        }
+      }
+    }
+  }`;
+
 @Component({
   selector: 'app-campaign-view',
   templateUrl: './campaign-view.component.html',
@@ -36,25 +56,7 @@ export class CampaignViewComponent implements OnInit {
 
     this.loading = true;
     this.apollo.watchQuery({
-      query: gql`
-        query GetCampaignForViewScreen($id: ID!) {
-          getCampaign(id: $id) {
-            id
-            name
-            description
-            mine
-            characters {
-              id
-              name
-              description
-              hp
-              maxHp
-              creator {
-                username
-              }
-            }
-          }
-        }`,
+      query: LOAD_CAMPAIGN_QUERY,
 
       variables: {
         id
@@ -80,7 +82,11 @@ export class CampaignViewComponent implements OnInit {
         charId: character.id,
         campId: this.campaign.id,
         op: 'JOIN',
-      }
+      },
+
+      refetchQueries: [
+        {query: LOAD_CAMPAIGN_QUERY, variables: {id: this.campaign.id}}
+      ]
     }).map(resp => resp.data.characterCampaignOperation)
     .subscribe(addedImmediately => {
       if (addedImmediately) {
@@ -116,7 +122,7 @@ export class CampaignViewComponent implements OnInit {
       refetchQueries: [
         {query: MY_CAMPAIGNS_QUERY}
       ]
-    }).subscribe(() => this.router.navigate(['']));
+    }).subscribe(() => this.router.navigate(['home']));
   }
 
   openModal(template: TemplateRef<any>) {

@@ -59,7 +59,7 @@ export class CampaignFormComponent implements OnInit, OnDestroy {
     } else {
       this.campService.createCampaign(this.campaign)
         .subscribe(() => {
-          this.router.navigate(['']);
+          this.router.navigate(['home']);
           this.loading = false;
         });
     }

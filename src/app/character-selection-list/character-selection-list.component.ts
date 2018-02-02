@@ -14,6 +14,9 @@ export class CharacterSelectionListComponent implements OnInit {
   @Output()
   selection = new EventEmitter<Character>();
 
+  @Input()
+  campaignId: number;
+
   characters: Array<Character>;
   loading = false;
 
@@ -26,35 +29,26 @@ export class CharacterSelectionListComponent implements OnInit {
 
   loadCharacters() {
     this.loading = true;
-    //
-    // this.charService.getMyCharacters()
-    //   .subscribe(characters => {
-    //     this.loading = false;
-    //     this.characters = characters;
-    //   });
 
     this.apollo.query({
       query: gql`
-        query GetMyCharactersWithCampaigns {
-          me {
-            characters {
-              id
-              name
-              campaign {
-                id
-              }
-            }
+        query GetMyCharactersWithCampaigns($campaignId: ID!) {
+          getCampaignJoinableCharacters(campaignId: $campaignId) {
+            id
+            name
           }
-        }`
+        }`,
+
+      fetchPolicy: 'network-only',
+
+      variables: {
+        campaignId: this.campaignId
+      }
     })
-    .map((resp: any) => resp.data.me.characters)
+    .map((resp: any) => resp.data.getCampaignJoinableCharacters)
     .subscribe(characters => {
       this.loading = false;
       this.characters = characters;
     });
-  }
-
-  get selectableCharacters() {
-    return this.characters.filter(character => character.campaign === null);
   }
 }

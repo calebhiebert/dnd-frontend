@@ -10,8 +10,10 @@ import {CharacterViewComponent} from './character-view/character-view.component'
 import {CampaignFormComponent} from './campaign-form/campaign-form.component';
 import {CampaignViewComponent} from './campaign-view/campaign-view.component';
 import {CampaignIndexComponent} from './campaign-index/campaign-index.component';
+import {HomeComponent} from './home/home.component';
 
 const routes = [
+  {path: 'home', component: HomeComponent, canActivate: [AuthGuard]},
   {path: 'login', component: LoginComponent},
   {path: 'register', component: RegisterComponent},
   {path: 'logout', component: LogoutComponent},

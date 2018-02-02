@@ -42,7 +42,7 @@
 <ng-template #characterSelector>
   <div class="modal-header">Select a Character</div>
   <div class="modal-body">
-    <app-character-selection-list (selection)="onCharacterSelected($event)"></app-character-selection-list>
+    <app-character-selection-list [campaignId]="campaign.id" (selection)="onCharacterSelected($event)"></app-character-selection-list>
   </div>
 </ng-template>
 

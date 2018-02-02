@@ -1,15 +1,17 @@
 <div>
   <app-spinner *ngIf="loading === true"></app-spinner>
-  <fieldset [disabled]="loading === true">
-    <div class="form-group">
-      <label>Name</label>
-      <input type="text" class="form-control" placeholder="Campaign Name" [(ngModel)]="campaign.name">
-    </div>
-    <div class="form-group">
-      <label>Description</label>
-      <textarea class="form-control" placeholder="Campaign description" [(ngModel)]="campaign.description"></textarea>
-    </div>
-    <button routerLink="/" class="btn btn-outline-dark">Cancel</button>
-    <button class="btn btn-primary" (click)="save()">Save</button>
-  </fieldset>
+  <form (ngSubmit)="save()">
+    <fieldset [disabled]="loading === true">
+      <div class="form-group">
+        <label>Name</label>
+        <input type="text" class="form-control" placeholder="Campaign Name" name="name" [(ngModel)]="campaign.name">
+      </div>
+      <div class="form-group">
+        <label>Description</label>
+        <textarea class="form-control" name="description" placeholder="Campaign description" [(ngModel)]="campaign.description"></textarea>
+      </div>
+      <button routerLink="/home" class="btn btn-outline-dark">Cancel</button>
+      <button class="btn btn-primary" (click)="save()">Save</button>
+    </fieldset>
+  </form>
 </div>

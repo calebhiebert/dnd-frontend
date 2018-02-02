@@ -29,7 +29,7 @@ export class RegisterComponent implements OnInit {
       .subscribe(register => {
         this.loading = false;
         TokenService.save(register.token);
-        this.router.navigate(['']);
+        this.router.navigate(['home']);
         this.auth.setLoginStatus(true);
 
       }, e => {

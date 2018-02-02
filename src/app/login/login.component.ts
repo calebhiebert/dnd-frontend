@@ -30,7 +30,7 @@ export class LoginComponent implements OnInit {
     this.auth.login(this.username, this.password)
       .subscribe(login => {
         this.auth.setLoginStatus(true);
-        this.router.navigate(['']);
+        this.router.navigate(['home']);
         TokenService.save(login.token);
         this.loading = false;
       }, err => {

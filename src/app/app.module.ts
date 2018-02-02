@@ -40,6 +40,7 @@ import {JoinRequestRowViewComponent} from './join-request-row-view/join-request-
 import {QuestViewComponent} from './quest-view/quest-view.component';
 import {QuestEditorComponent} from './quest-editor/quest-editor.component';
 import {CampaignIndexComponent} from './campaign-index/campaign-index.component';
+import { HomeComponent } from './home/home.component';
 
 
 @NgModule({
@@ -66,7 +67,8 @@ import {CampaignIndexComponent} from './campaign-index/campaign-index.component'
     JoinRequestRowViewComponent,
     QuestViewComponent,
     QuestEditorComponent,
-    CampaignIndexComponent
+    CampaignIndexComponent,
+    HomeComponent
   ],
   imports: [
     BrowserModule.withServerTransition({appId: 'dnd'}),
