@@ -1,8 +1,9 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {Component, EventEmitter, Input, OnDestroy, OnInit, Output} from '@angular/core';
 import {Apollo} from 'apollo-angular';
 import gql from 'graphql-tag';
 import {Character, CreateAttributeResponse, GetCharacterResponse} from '../types';
 import * as terms from './dnd-terms.json';
+import {Subscription} from 'rxjs/Subscription';
 
 export const CHARACTER_ATTR_DATA_QUERY = gql`
   query AttributeEditorQuery($charId: ID!) {
@@ -24,7 +25,7 @@ export const CHARACTER_ATTR_DATA_QUERY = gql`
   templateUrl: './attribute-editor.component.html',
   styleUrls: ['./attribute-editor.component.css']
 })
-export class AttributeEditorComponent implements OnInit {
+export class AttributeEditorComponent implements OnInit, OnDestroy {
 
   @Input()
   characterId: number;
@@ -47,16 +48,22 @@ export class AttributeEditorComponent implements OnInit {
 
   showCreationBox = false;
 
+  charSub: Subscription;
+
   constructor(private apollo: Apollo) { }
 
   ngOnInit() {
     this.loadData();
   }
 
+  ngOnDestroy(): void {
+    this.charSub.unsubscribe();
+  }
+
   loadData() {
     this.loading = true;
 
-    this.apollo.watchQuery<GetCharacterResponse>({
+    this.charSub = this.apollo.watchQuery<GetCharacterResponse>({
       query: CHARACTER_ATTR_DATA_QUERY,
 
       variables: {

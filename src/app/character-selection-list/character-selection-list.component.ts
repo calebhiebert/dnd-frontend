@@ -20,7 +20,7 @@ export class CharacterSelectionListComponent implements OnInit {
   characters: Array<Character>;
   loading = false;
 
-  constructor(private charService: CharacterService, private apollo: Apollo) {
+  constructor(private apollo: Apollo) {
   }
 
   ngOnInit() {
@@ -45,8 +45,8 @@ export class CharacterSelectionListComponent implements OnInit {
         campaignId: this.campaignId
       }
     })
-    .map((resp: any) => resp.data.getCampaignJoinableCharacters)
-    .subscribe(characters => {
+    .map((resp: any) => resp.data.getCampaignJoinableCharacters).toPromise()
+    .then(characters => {
       this.loading = false;
       this.characters = characters;
     });

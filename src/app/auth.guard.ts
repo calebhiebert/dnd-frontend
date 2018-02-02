@@ -11,7 +11,6 @@ export class AuthGuard implements CanActivate {
 
   canActivate(next: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean> | Promise<boolean> | boolean {
     return new Promise((resolve, reject) => {
-
       this.auth.isLoggedIn()
         .subscribe(loggedIn => {
 
@@ -24,7 +23,6 @@ export class AuthGuard implements CanActivate {
           resolve(loggedIn);
 
         }, e => reject(e));
-      resolve(true);
     });
   }
 }

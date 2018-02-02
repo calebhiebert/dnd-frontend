@@ -1,14 +1,15 @@
-import {Component, Input, OnInit, TemplateRef} from '@angular/core';
+import {Component, Input, OnDestroy, OnInit, TemplateRef} from '@angular/core';
 import {BsModalRef, BsModalService} from 'ngx-bootstrap';
 import {Character} from '../types';
 import {CharacterService} from '../character.service';
+import {Subscription} from 'rxjs/Subscription';
 
 @Component({
   selector: 'app-character-form',
   templateUrl: './character-form.component.html',
   styleUrls: ['./character-form.component.css']
 })
-export class CharacterFormComponent implements OnInit {
+export class CharacterFormComponent implements OnInit, OnDestroy {
 
   modalRef: BsModalRef;
 
@@ -22,10 +23,18 @@ export class CharacterFormComponent implements OnInit {
   @Input()
   editId: number;
 
+  sub: Subscription;
+
   constructor(private modalService: BsModalService, private charService: CharacterService) {
   }
 
   ngOnInit() {
+  }
+
+  ngOnDestroy(): void {
+    if (this.sub) {
+      this.sub.unsubscribe();
+    }
   }
 
   init() {
@@ -33,7 +42,7 @@ export class CharacterFormComponent implements OnInit {
 
     if (this.edit) {
       this.loading = true;
-      this.charService.getCharacter(this.editId)
+      this.sub = this.charService.getCharacter(this.editId)
         .subscribe(character => {
           Object.assign(this.character, character);
           this.loading = false;

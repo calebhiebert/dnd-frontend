@@ -1,14 +1,15 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, Input, OnDestroy, OnInit} from '@angular/core';
 import gql from 'graphql-tag';
 import {Apollo} from 'apollo-angular';
 import {CreateQuestResponse, DeleteQuestResponse, EditQuestResponse, GetCampaignResponse, Quest} from '../types';
+import {Subscription} from 'rxjs/Subscription';
 
 @Component({
   selector: 'app-quest-editor',
   templateUrl: './quest-editor.component.html',
   styleUrls: ['./quest-editor.component.css']
 })
-export class QuestEditorComponent implements OnInit {
+export class QuestEditorComponent implements OnInit, OnDestroy {
 
   @Input()
   campaignId: number;
@@ -21,16 +22,24 @@ export class QuestEditorComponent implements OnInit {
 
   editingQuest: Quest = null;
 
+  questSub: Subscription;
+
   constructor(private apollo: Apollo) { }
 
   ngOnInit() {
     this.getQuests();
   }
 
+  ngOnDestroy(): void {
+    if(this.questSub) {
+      this.questSub.unsubscribe();
+    }
+  }
+
   getQuests() {
     this.loading = true;
 
-    this.apollo.watchQuery({
+    this.questSub = this.apollo.watchQuery({
       query: GET_QUESTS_QUERY,
 
       variables: {

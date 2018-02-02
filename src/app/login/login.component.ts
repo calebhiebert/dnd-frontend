@@ -27,8 +27,8 @@ export class LoginComponent implements OnInit {
 
     this.loading = true;
 
-    this.auth.login(this.username, this.password)
-      .subscribe(login => {
+    this.auth.login(this.username, this.password).toPromise()
+      .then(login => {
         this.auth.setLoginStatus(true);
         this.router.navigate(['home']);
         TokenService.save(login.token);

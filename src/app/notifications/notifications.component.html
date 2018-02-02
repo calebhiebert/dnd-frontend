@@ -1,3 +1,6 @@
+<p *ngIf="notifications === undefined || notifications.length === 0" class="text-muted text-center font-italic">
+  Nothing here
+</p>
 <div class="list-group list-group-flush">
   <a routerLink="/campaign/{{ notif.campaign.id }}" class="list-group-item list-group-item-action p-1"
      *ngFor="let notif of notifications">

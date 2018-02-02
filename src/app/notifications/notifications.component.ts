@@ -23,8 +23,8 @@ export class NotificationsComponent implements OnInit {
   loadNotifications() {
     this.loading = true;
 
-    this.notifService.loadNotifications()
-    .subscribe(notifications => {
+    this.notifService.loadNotifications().toPromise()
+    .then(notifications => {
       this.notifications = notifications;
       this.loading = false;
     });

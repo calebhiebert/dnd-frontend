@@ -2,7 +2,7 @@ import {Component, Input, OnDestroy, OnInit} from '@angular/core';
 import {Campaign} from '../types';
 import {CampaignService} from '../campaign.service';
 import {ActivatedRoute, Router} from '@angular/router';
-import {Subject} from 'rxjs/Subject';
+import {Subscription} from 'rxjs/Subscription';
 
 @Component({
   selector: 'app-campaign-form',
@@ -16,7 +16,8 @@ export class CampaignFormComponent implements OnInit, OnDestroy {
   campaign: Campaign;
   loading = false;
 
-  private ngUnsubscribe = new Subject();
+  paramSub: Subscription;
+  campSub: Subscription;
 
   constructor(private campService: CampaignService, private router: Router, private route: ActivatedRoute) {
   }
@@ -33,14 +34,19 @@ export class CampaignFormComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    this.ngUnsubscribe.next();
-    this.ngUnsubscribe.complete();
+    if (this.paramSub) {
+      this.paramSub.unsubscribe();
+    }
+
+    if (this.campSub) {
+      this.campSub.unsubscribe();
+    }
   }
 
   loadCampaign() {
     this.loading = true;
 
-    this.campService.getCampaign(this.editId)
+    this.campSub = this.campService.getCampaign(this.editId)
       .subscribe(campaign => {
         this.loading = false;
         Object.assign(this.campaign, campaign);

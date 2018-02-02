@@ -13,12 +13,11 @@ export class NotificationBubbleComponent implements OnInit {
   constructor(private notifService: NotificationService) { }
 
   ngOnInit() {
-    console.log('Loading notifications');
     this.loadNotificationCount();
   }
 
   loadNotificationCount() {
-    this.notifService.loadNotifications()
-      .subscribe(notifications => this.notificationCount = notifications.length);
+    this.notifService.loadNotifications().toPromise()
+      .then(notifications => this.notificationCount = notifications.length);
   }
 }

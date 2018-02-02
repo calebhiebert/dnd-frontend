@@ -1,6 +1,7 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, Input, OnDestroy, OnInit} from '@angular/core';
 import gql from 'graphql-tag';
 import {Apollo} from 'apollo-angular';
+import {Subscription} from 'rxjs/Subscription';
 
 const JOIN_REQUEST_QUERY = gql`
   query GetJoinRequests($id: ID!) {
@@ -25,7 +26,7 @@ const JOIN_REQUEST_QUERY = gql`
   templateUrl: './campaign-join-request-view.component.html',
   styleUrls: ['./campaign-join-request-view.component.css']
 })
-export class CampaignJoinRequestViewComponent implements OnInit {
+export class CampaignJoinRequestViewComponent implements OnInit, OnDestroy {
 
   @Input()
   campaignId: number;
@@ -36,16 +37,24 @@ export class CampaignJoinRequestViewComponent implements OnInit {
 
   loading = false;
 
+  sub: Subscription;
+
   constructor(private apollo: Apollo) { }
 
   ngOnInit() {
     this.loadData();
   }
 
+  ngOnDestroy(): void {
+    if (this.sub) {
+      this.sub.unsubscribe();
+    }
+  }
+
   loadData() {
     this.loading = true;
 
-    this.apollo.watchQuery({
+    this.sub = this.apollo.watchQuery({
       query: JOIN_REQUEST_QUERY,
 
       variables: {

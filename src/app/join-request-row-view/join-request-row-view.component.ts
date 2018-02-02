@@ -76,7 +76,7 @@ export class JoinRequestRowViewComponent implements OnInit {
 
         {query: UPDATE_QUERY, variables: {id: this.campaignId}}
       ]
-    })
-      .subscribe(resp => console.log(resp));
+    }).toPromise()
+      .then(resp => console.log(resp));
   }
 }

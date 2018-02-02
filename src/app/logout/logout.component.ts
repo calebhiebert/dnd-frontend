@@ -14,8 +14,8 @@ export class LogoutComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.auth.logout()
-      .subscribe(() => {
+    this.auth.logout().toPromise()
+      .then(() => {
         this.apollo.getClient().resetStore();
         this.router.navigate(['']);
         this.auth.setLoginStatus(false);

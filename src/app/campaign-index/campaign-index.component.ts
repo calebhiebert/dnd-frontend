@@ -5,6 +5,7 @@ import gql from 'graphql-tag';
 import {Campaign, GetCampaignsResponse} from '../types';
 import {Subject} from 'rxjs/Subject';
 import 'rxjs/add/operator/distinctUntilChanged';
+import {Subscription} from 'rxjs/Subscription';
 
 const CAMPAIGN_SEARCH_QUERY = gql`
   query GetCampaignsQuery($searchTerm: String) {
@@ -28,12 +29,14 @@ export class CampaignIndexComponent implements OnInit {
 
   searchUpdated: Subject<string> = new Subject<string>();
 
+  searchSub: Subscription;
+
   constructor(private apollo: Apollo, private router: Router) { }
 
   ngOnInit() {
     this.loadCampaigns(null);
 
-    this.searchUpdated.asObservable()
+    this.searchSub = this.searchUpdated.asObservable()
       .debounceTime(200)
       .distinctUntilChanged()
       .subscribe(searchTerm => this.loadCampaigns(searchTerm));
@@ -49,7 +52,8 @@ export class CampaignIndexComponent implements OnInit {
         searchTerm: searchTerm
       }
     }).map(resp => resp.data.getCampaigns)
-      .subscribe(campaigns => {
+      .toPromise()
+      .then(campaigns => {
         this.campaigns = campaigns;
         this.loading = false;
       });
