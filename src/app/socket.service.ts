@@ -8,7 +8,6 @@ export class SocketService {
   elevated = false;
 
   constructor(private toast: ToastrService, private socket: Socket) {
-
     socket.on('connect', () => {
       toast.success('Socket connection established', null, {
         positionClass: 'toast-bottom-right'
@@ -17,16 +16,12 @@ export class SocketService {
       if (localStorage.getItem('auth-token') !== null) {
         this.elevateConnection(localStorage.getItem('auth-token'))
           .then(userId => {
-            toast.success('Successfully elevated _socket connection', null, {positionClass: 'toast-bottom-right'});
+            toast.success('Successfully elevated socket connection', null, {positionClass: 'toast-bottom-right'});
           })
           .catch(err => {
             toast.error(err, null, {positionClass: 'toast-bottom-right'});
           });
       }
-    });
-
-    socket.on('nn', () => {
-      console.log('GOT NOTIFICATIONS');
     });
   }
 

@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import {Campaign, Character, MeResponse} from './types';
 import gql from 'graphql-tag';
 import {Apollo} from 'apollo-angular';
+import {Socket} from 'ng-socket-io';
 
 const NOTIFICATION_QUERY = gql`
   query NotificationQuery {
@@ -26,7 +27,14 @@ const NOTIFICATION_QUERY = gql`
 @Injectable()
 export class NotificationService {
 
-  constructor(private apollo: Apollo) { }
+  constructor(private apollo: Apollo, private socket: Socket) {
+    this.socket.fromEvent('nn')
+      .subscribe(() => {
+        console.log('Received new notification socket message');
+        // this.notifService.loadNotifications().take(1)
+        //   .subscribe(notifications => this.notifications = notifications);
+      });
+  }
 
   loadNotifications() {
     return this.apollo.watchQuery<MeResponse>({

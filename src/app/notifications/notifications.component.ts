@@ -17,13 +17,7 @@ export class NotificationsComponent implements OnInit, OnDestroy {
 
   sub: Subscription;
 
-  constructor(private notifService: NotificationService, private socket: Socket) {
-    this.socket.fromEvent('nn')
-      .subscribe(() => {
-        console.log('Received new notification socket message');
-        this.notifService.loadNotifications().take(1)
-          .subscribe(notifications => this.notifications = notifications);
-      });
+  constructor(private notifService: NotificationService) {
   }
 
   ngOnInit() {
