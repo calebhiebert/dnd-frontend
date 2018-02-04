@@ -74,6 +74,8 @@ const CAMPAIGN_VIEW_QUERY = gql`
 @Injectable()
 export class CampaignService {
 
+  private _campaignSubscribeList: string[] = [];
+
   constructor(private apollo: Apollo, private socket: Socket) {
     socket.fromEvent('campaign-update')
       .subscribe(campaignId => {
@@ -89,8 +91,6 @@ export class CampaignService {
   }
 
   getCampaign(id: string) {
-    this.socket.emit('sub', `campaign-update-${id}`);
-
     return this.apollo.watchQuery<GetCampaignResponse>({
       query: GET_CAMPAIGN_QUERY,
 
@@ -98,6 +98,23 @@ export class CampaignService {
         id
       }
     }).valueChanges.map(resp => resp.data.getCampaign);
+  }
+
+  subscribeCampaign(id: string) {
+    const channel = `campaign-update-${id}`;
+
+    this._campaignSubscribeList.push(channel);
+    this.socket.emit('sub', channel);
+  }
+
+  unSubscribeCampaign(id: string) {
+    this.socket.emit('unsub', `campaign-update-${id}`);
+  }
+
+  unSubscribeAllCampaigns() {
+    this._campaignSubscribeList.forEach(channel => {
+      this.socket.emit('unsub', channel);
+    });
   }
 
   getCampaignForView(id: string) {

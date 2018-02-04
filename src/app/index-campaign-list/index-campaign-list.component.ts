@@ -22,6 +22,7 @@ export class IndexCampaignListComponent implements OnInit, OnDestroy {
     this.loading = true;
     this.subscription = this.campService.getMyCampaigns()
       .subscribe(campaigns => {
+        this.campaigns.forEach(c => this.campService.subscribeCampaign(c.id));
         this.campaigns = campaigns;
         this.loading = false;
       });

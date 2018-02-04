@@ -1,7 +1,6 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {Campaign, Character} from '../types';
 import {NotificationService} from '../notification.service';
-import {Socket} from 'ng-socket-io';
 import {Subscription} from 'rxjs/Subscription';
 import 'rxjs/add/operator/take';
 
