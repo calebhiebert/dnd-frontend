@@ -4,6 +4,10 @@
       <div class="form-group">
         <label>Hitpoints</label>
         <div class="input-group">
+          <input type="text" name="operation" class="form-control" placeholder="Operation" [(ngModel)]="hpOperator" (keyup)="parseHpOperator()" #hpoperation>
+          <div class="input-group-append input-group-prepend">
+            <span class="input-group-text">=</span>
+          </div>
           <input type="number" name="hp" [(ngModel)]="character.hp" class="form-control" placeholder="hp" #hpinput>
           <div class="input-group-prepend input-group-append">
             <span class="input-group-text">/</span>

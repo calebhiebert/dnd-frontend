@@ -2,7 +2,7 @@ import {Component, Input, OnDestroy, OnInit} from '@angular/core';
 import {SessionService} from '../session.service';
 import {Session} from '../types';
 import {Subscription} from 'rxjs/Subscription';
-import {ActivatedRoute} from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 import {CampaignService} from '../campaign.service';
 
 @Component({
@@ -20,7 +20,8 @@ export class SessionViewComponent implements OnInit, OnDestroy {
   sessSub: Subscription;
   routeSub: Subscription;
 
-  constructor(private sessionService: SessionService, private route: ActivatedRoute, private campService: CampaignService) {
+  constructor(private sessionService: SessionService, private route: ActivatedRoute, private campService: CampaignService,
+              private router: Router) {
   }
 
   ngOnInit() {
@@ -56,7 +57,7 @@ export class SessionViewComponent implements OnInit, OnDestroy {
   finishSession() {
     this.sessionService.finishSession(this.session.id)
       .then((session: Session) => {
-        console.log(session);
+        this.router.navigate(['campaign', this.campaignId]);
       });
   }
 }

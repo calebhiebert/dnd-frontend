@@ -16,10 +16,14 @@ export class SessionQuickeditFormComponent implements OnInit, AfterViewInit {
   @Output()
   done = new EventEmitter<any>();
 
-  @ViewChild('hpinput')
-  hpInputRef: ElementRef;
+  hpOperator = '';
+
+  @ViewChild('hpoperation')
+  hpOperation: ElementRef;
 
   character: Character;
+  originalCharacterHp: number;
+
   loading = false;
 
   constructor(private sessionService: SessionService, private charService: CharacterService) {
@@ -31,7 +35,7 @@ export class SessionQuickeditFormComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit() {
-    const el = this.hpInputRef.nativeElement;
+    const el = this.hpOperation.nativeElement;
     el.focus();
   }
 
@@ -41,6 +45,7 @@ export class SessionQuickeditFormComponent implements OnInit, AfterViewInit {
     this.sessionService.getSessionCharacter(this.characterId)
       .then(character => {
         Object.assign(this.character, character);
+        this.originalCharacterHp = character.hp;
         this.loading = false;
       });
   }
@@ -50,5 +55,24 @@ export class SessionQuickeditFormComponent implements OnInit, AfterViewInit {
       .then(character => {
         this.done.emit();
       });
+  }
+
+  parseHpOperator() {
+    const operator = this.hpOperator[0];
+    const number = isNaN(Number(operator)) ? Number(this.hpOperator.substring(1)) : Number(this.hpOperator);
+
+    if (!isNaN(number)) {
+      switch (operator) {
+        case '+':
+          this.character.hp = this.originalCharacterHp + number;
+          break;
+        case '-':
+          this.character.hp = this.originalCharacterHp - number;
+          break;
+        default:
+          this.character.hp = number;
+          break;
+      }
+    }
   }
 }

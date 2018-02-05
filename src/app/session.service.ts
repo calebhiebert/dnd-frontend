@@ -81,6 +81,17 @@ export class SessionService {
 
       variables: {
         campaignId: campaignId
+      },
+
+      update: (store, {data}) => {
+        const storeData = store.readQuery<GetCampaignResponse>({
+          query: CAMPAIGN_SESSION_RESPONSE,
+          variables: {campaignId, includeAll: false, chr: false}
+        });
+
+        storeData.getCampaign.session = data.createSession;
+
+        store.writeQuery({query: CAMPAIGN_SESSION_RESPONSE, variables: {campaignId, includeAll: false, chr: false}, data: storeData});
       }
     }).map(resp => resp.data.createSession)
       .toPromise();
