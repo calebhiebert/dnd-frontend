@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 import {Apollo} from 'apollo-angular';
 import gql from 'graphql-tag';
 import {Character} from './types';
@@ -10,6 +10,8 @@ const CHARACTER_FRAGMENT = gql`
     name
     description
     mine
+    hp
+    maxHp
   }
 `;
 
@@ -39,6 +41,13 @@ const GET_CHARACTER_QUERY = gql`
 const EDIT_CHARACTER_MUTATION = gql`
   mutation EditCharacter($id: ID!, $input: CharacterInput!) {
     editCharacter(id: $id, input: $input) {
+      ...CharacterFields
+    }
+  } ${CHARACTER_FRAGMENT}`;
+
+const MOD_HP_MUTATION = gql`
+  mutation ModHp($id: ID!, $input: HPInput!) {
+    modCharacterHp(id: $id, input: $input) {
       ...CharacterFields
     }
   } ${CHARACTER_FRAGMENT}`;
@@ -83,7 +92,8 @@ export class CharacterService {
           query: CHARACTER_VIEW_QUERY,
           variables: {id: characterId},
           fetchPolicy: 'network-only'
-        }).toPromise().then(resp => {});
+        }).toPromise().then(resp => {
+        });
       });
   }
 
@@ -101,7 +111,7 @@ export class CharacterService {
         id
       }
     }).valueChanges
-    .map(resp => resp.data.getCharacter);
+      .map(resp => resp.data.getCharacter);
   }
 
   getCharacter(id: string) {
@@ -129,7 +139,8 @@ export class CharacterService {
         existingStuffs.me.characters.push(data.createCharacter);
         store.writeQuery({query: MY_CHARACTERS_QUERY, data: existingStuffs});
       }
-    }).map(resp => resp.data.createCharacter);
+    }).map(resp => resp.data.createCharacter)
+      .toPromise();
   }
 
   editCharacter(character: Character) {
@@ -140,10 +151,26 @@ export class CharacterService {
         id: character.id,
         input: {
           name: character.name,
-          description: character.description
+          description: character.description,
+          hp: character.hp,
+          maxHp: character.maxHp
         }
       }
-    }).map(resp => resp.data.editCharacter);
+    }).map(resp => resp.data.editCharacter).toPromise();
+  }
+
+  editCharacterHp(character: Character) {
+    return this.apollo.mutate<ModHpResponse>({
+      mutation: MOD_HP_MUTATION,
+
+      variables: {
+        id: character.id,
+        input: {
+          hp: character.hp,
+          maxHp: character.maxHp
+        }
+      }
+    }).map(resp => resp.data.modCharacterHp).toPromise();
   }
 
   getCharactersForUser(userId: string) {
@@ -179,4 +206,8 @@ interface UserCharactersResponse {
   user: {
     characters: Array<Character>
   };
+}
+
+interface ModHpResponse {
+  modCharacterHp: Character;
 }

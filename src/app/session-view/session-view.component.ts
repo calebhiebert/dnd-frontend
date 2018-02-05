@@ -3,6 +3,7 @@ import {SessionService} from '../session.service';
 import {Session} from '../types';
 import {Subscription} from 'rxjs/Subscription';
 import {ActivatedRoute} from '@angular/router';
+import {CampaignService} from '../campaign.service';
 
 @Component({
   selector: 'app-session-view',
@@ -19,7 +20,7 @@ export class SessionViewComponent implements OnInit, OnDestroy {
   sessSub: Subscription;
   routeSub: Subscription;
 
-  constructor(private sessionService: SessionService, private route: ActivatedRoute) {
+  constructor(private sessionService: SessionService, private route: ActivatedRoute, private campService: CampaignService) {
   }
 
   ngOnInit() {
@@ -28,6 +29,7 @@ export class SessionViewComponent implements OnInit, OnDestroy {
       this.loadData();
     });
 
+    this.campService.subscribeCampaign(this.campaignId);
     this.loadData();
   }
 
@@ -45,9 +47,9 @@ export class SessionViewComponent implements OnInit, OnDestroy {
     this.loading = true;
 
     this.sessionService.getCampaignSession(this.campaignId)
-      .subscribe(session => {
+      .subscribe(campaign => {
         this.loading = false;
-        this.session = session;
+        this.session = campaign.session;
       });
   }
 

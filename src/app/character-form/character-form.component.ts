@@ -60,14 +60,14 @@ export class CharacterFormComponent implements OnInit, OnDestroy {
 
     if ((this.edit || false) === false) {
       this.charService.createCharacter(this.character)
-        .subscribe(() => {
+        .then(() => {
           this.modalRef.hide();
           this.loading = false;
         }, e => console.log(e));
     } else {
 
       this.charService.editCharacter(this.character)
-        .subscribe(() => {
+        .then(() => {
           this.modalRef.hide();
           this.loading = false;
         }, console.error);

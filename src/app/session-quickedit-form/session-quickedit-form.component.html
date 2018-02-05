@@ -1,0 +1,19 @@
+<div *ngIf="character">
+  <form (ngsubmit)="saveHp()">
+    <fieldset>
+      <div class="form-group">
+        <label>Hitpoints</label>
+        <div class="input-group">
+          <input type="number" name="hp" [(ngModel)]="character.hp" class="form-control" placeholder="hp" #hpinput>
+          <div class="input-group-prepend input-group-append">
+            <span class="input-group-text">/</span>
+          </div>
+          <input type="number" name="max_hp" [(ngModel)]="character.maxHp" class="form-control" placeholder="maxHp">
+          <div class="input-group-append">
+            <button type="submit" class="btn btn-outline-primary" (click)="saveHp()">Save</button>
+          </div>
+        </div>
+      </div>
+    </fieldset>
+  </form>
+</div>

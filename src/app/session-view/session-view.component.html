@@ -8,6 +8,10 @@
   </p>
   <h6>Notes</h6>
   <p [innerHtml]="session.notes" *ngIf="session.notes; else nonotes"></p>
+
+  <div class="card mt-3">
+    <app-session-character-view [campaignId]="campaignId"></app-session-character-view>
+  </div>
 </div>
 
 <ng-template #nonotes>

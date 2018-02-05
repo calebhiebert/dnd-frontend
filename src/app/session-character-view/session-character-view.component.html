@@ -1,0 +1,18 @@
+<div class="list-group list-group-flush" *ngIf="characters">
+  <button class="list-group-item list-group-item-action" *ngFor="let c of characters" (click)="select(c)">
+    {{c.name}} [{{ c.attributes | attribute : 'ac' }}]
+    <progressbar [max]="c.maxHp" [value]="c.hp">{{ c.hp }}/{{ c.maxHp }} ({{ (c.hp / c.maxHp) | percent }})</progressbar>
+  </button>
+</div>
+
+<ng-template #quickedit>
+  <div class="modal-header">
+    <h5 class="modal-title">{{ selectedCharacter.name }}</h5>
+    <button type="button" class="close float-right" (click)="modalRef.hide()">
+      <span>&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <app-session-quickedit-form [characterId]="selectedCharacter.id" (done)="modalRef.hide()"></app-session-quickedit-form>
+  </div>
+</ng-template>

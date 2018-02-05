@@ -2,7 +2,7 @@ import {BrowserModule} from '@angular/platform-browser';
 import {NgModule} from '@angular/core';
 import {TruncateModule} from 'ng2-truncate';
 import {AppComponent} from './app.component';
-import {AlertModule, BsDropdownModule, ModalModule, PopoverModule, TooltipModule, TypeaheadModule} from 'ngx-bootstrap';
+import {AlertModule, BsDropdownModule, ModalModule, PopoverModule, ProgressbarModule, TooltipModule, TypeaheadModule} from 'ngx-bootstrap';
 import {LoginComponent} from './login/login.component';
 import {RegisterComponent} from './register/register.component';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
@@ -44,6 +44,9 @@ import {SocketService} from './socket.service';
 import {SocketIoConfig, SocketIoModule} from 'ng-socket-io';
 import {SessionViewComponent} from './session-view/session-view.component';
 import {SessionService} from './session.service';
+import { SessionCharacterViewComponent } from './session-character-view/session-character-view.component';
+import { AttributePipe } from './attribute.pipe';
+import { SessionQuickeditFormComponent } from './session-quickedit-form/session-quickedit-form.component';
 
 
 const SOCKET_CONFIG: SocketIoConfig = {url: 'http://localhost:5200'};
@@ -74,7 +77,10 @@ const SOCKET_CONFIG: SocketIoConfig = {url: 'http://localhost:5200'};
     QuestEditorComponent,
     CampaignIndexComponent,
     HomeComponent,
-    SessionViewComponent
+    SessionViewComponent,
+    SessionCharacterViewComponent,
+    AttributePipe,
+    SessionQuickeditFormComponent
   ],
   imports: [
     BrowserModule.withServerTransition({appId: 'dnd'}),
@@ -92,7 +98,8 @@ const SOCKET_CONFIG: SocketIoConfig = {url: 'http://localhost:5200'};
     TooltipModule.forRoot(),
     TruncateModule,
     TypeaheadModule.forRoot(),
-    SocketIoModule.forRoot(SOCKET_CONFIG)
+    SocketIoModule.forRoot(SOCKET_CONFIG),
+    ProgressbarModule.forRoot()
   ],
   providers: [AuthService, AuthGuard, CharacterService, CampaignService, NotificationService, SocketService, SessionService],
   bootstrap: [AppComponent]
