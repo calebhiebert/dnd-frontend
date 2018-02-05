@@ -11,6 +11,7 @@ import {CampaignFormComponent} from './campaign-form/campaign-form.component';
 import {CampaignViewComponent} from './campaign-view/campaign-view.component';
 import {CampaignIndexComponent} from './campaign-index/campaign-index.component';
 import {HomeComponent} from './home/home.component';
+import {SessionViewComponent} from './session-view/session-view.component';
 
 const routes = [
   {path: 'home', component: HomeComponent, canActivate: [AuthGuard]},
@@ -21,6 +22,7 @@ const routes = [
   {path: 'character/:id', component: CharacterViewComponent},
   {path: 'campaign/create', component: CampaignFormComponent, canActivate: [AuthGuard]},
   {path: 'campaign/:id', component: CampaignViewComponent},
+  {path: 'campaign/:id/session', component: SessionViewComponent},
   {path: 'campaign/edit/:id', component: CampaignFormComponent, canActivate: [AuthGuard]},
   {path: '', component: IndexComponent, canActivate: [AuthGuard]},
 ];

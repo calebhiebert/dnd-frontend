@@ -10,6 +10,9 @@ export const CAMPAIGN_FRAGMENT = gql`
     name
     description
     mine
+    session {
+      id
+    }
   }
 `;
 
@@ -58,6 +61,9 @@ const CAMPAIGN_VIEW_QUERY = gql`
       name
       description
       mine
+      session {
+        id
+      }
       characters {
         id
         name

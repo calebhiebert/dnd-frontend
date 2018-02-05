@@ -39,9 +39,11 @@ import {JoinRequestRowViewComponent} from './join-request-row-view/join-request-
 import {QuestViewComponent} from './quest-view/quest-view.component';
 import {QuestEditorComponent} from './quest-editor/quest-editor.component';
 import {CampaignIndexComponent} from './campaign-index/campaign-index.component';
-import { HomeComponent } from './home/home.component';
-import { SocketService } from './socket.service';
+import {HomeComponent} from './home/home.component';
+import {SocketService} from './socket.service';
 import {SocketIoConfig, SocketIoModule} from 'ng-socket-io';
+import {SessionViewComponent} from './session-view/session-view.component';
+import {SessionService} from './session.service';
 
 
 const SOCKET_CONFIG: SocketIoConfig = {url: 'http://localhost:5200'};
@@ -71,7 +73,8 @@ const SOCKET_CONFIG: SocketIoConfig = {url: 'http://localhost:5200'};
     QuestViewComponent,
     QuestEditorComponent,
     CampaignIndexComponent,
-    HomeComponent
+    HomeComponent,
+    SessionViewComponent
   ],
   imports: [
     BrowserModule.withServerTransition({appId: 'dnd'}),
@@ -91,7 +94,7 @@ const SOCKET_CONFIG: SocketIoConfig = {url: 'http://localhost:5200'};
     TypeaheadModule.forRoot(),
     SocketIoModule.forRoot(SOCKET_CONFIG)
   ],
-  providers: [AuthService, AuthGuard, CharacterService, CampaignService, NotificationService, SocketService],
+  providers: [AuthService, AuthGuard, CharacterService, CampaignService, NotificationService, SocketService, SessionService],
   bootstrap: [AppComponent]
 })
 export class AppModule {

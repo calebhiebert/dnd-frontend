@@ -1,0 +1,15 @@
+<app-spinner *ngIf="loading === true"></app-spinner>
+<div *ngIf="session">
+  <button class="btn btn-outline-dark btn-sm float-right" *ngIf="session.status === 'ACTIVE'" (click)="finishSession()">
+    Finish Session
+  </button>
+  <p class="text-muted font-italic">
+    Session started {{ session.createdAt | date }}
+  </p>
+  <h6>Notes</h6>
+  <p [innerHtml]="session.notes" *ngIf="session.notes; else nonotes"></p>
+</div>
+
+<ng-template #nonotes>
+  <span class="text-muted font-italic">No notes were taken for this session</span>
+</ng-template>

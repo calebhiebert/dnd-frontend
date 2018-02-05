@@ -8,6 +8,7 @@ import {ToastrService} from 'ngx-toastr';
 import {Apollo} from 'apollo-angular';
 import gql from 'graphql-tag';
 import {AuthService} from '../auth.service';
+import {SessionService} from '../session.service';
 
 @Component({
   selector: 'app-campaign-view',
@@ -25,7 +26,8 @@ export class CampaignViewComponent implements OnInit, OnDestroy {
 
   constructor(private campService: CampaignService, private router: Router,
               private route: ActivatedRoute, private modalService: BsModalService,
-              private toast: ToastrService, private apollo: Apollo, private auth: AuthService) {
+              private toast: ToastrService, private apollo: Apollo, private auth: AuthService,
+              private sessionService: SessionService) {
   }
 
   ngOnInit() {
@@ -97,6 +99,13 @@ export class CampaignViewComponent implements OnInit, OnDestroy {
         {query: MY_CAMPAIGNS_QUERY}
       ]
     }).subscribe(() => this.router.navigate(['home']));
+  }
+
+  startSession() {
+    this.sessionService.startSession(this.campaign.id)
+      .then(session => {
+        this.router.navigate(['campaign', this.campaign.id, 'session']);
+      });
   }
 
   openModal(template: TemplateRef<any>) {

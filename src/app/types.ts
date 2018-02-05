@@ -11,6 +11,8 @@ export class Character {
   description: string;
   campaign: Campaign;
   creator: User;
+  hp: number;
+  maxHp: number;
   attributes: Array<Attribute>;
 }
 
@@ -22,6 +24,8 @@ export class Campaign {
   characters: Array<Character>;
   creator: User;
   quests: Array<Quest>;
+  session: Session;
+  sessions: Session[];
 }
 
 export class Attribute {
@@ -37,6 +41,15 @@ export class Quest {
   name: string;
   description: string;
   campaign: Campaign;
+}
+
+export class Session {
+  id: string;
+  notes: string;
+  createdAt: string;
+  finishedAt: string;
+  campaign: Campaign;
+  status: string;
 }
 
 export interface GetCampaignResponse {
@@ -73,4 +86,12 @@ export interface GetCampaignsResponse {
 
 export interface MeResponse {
   me: User;
+}
+
+export interface CreateSessionResponse {
+  createSession: Session;
+}
+
+export interface FinishSessionResponse {
+  finishSession: Session;
 }
