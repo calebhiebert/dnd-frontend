@@ -12,7 +12,7 @@ import {AttributePipe} from './attribute.pipe';
     CommonModule,
     FormsModule,
     SpinnerModule,
-    TypeaheadModule
+    TypeaheadModule.forRoot()
   ],
   declarations: [AttributeEditRowComponent, AttributeEditorComponent, AttributePipe],
   exports: [AttributeEditRowComponent, AttributeEditorComponent, AttributePipe]

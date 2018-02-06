@@ -15,8 +15,8 @@ import {AttributesModule} from '../attributes/attributes.module';
     CommonModule,
     SpinnerModule,
     FormsModule,
-    AlertModule,
-    TooltipModule,
+    AlertModule.forRoot(),
+    TooltipModule.forRoot(),
     AppRoutingModule,
     AttributesModule
   ],

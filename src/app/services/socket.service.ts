@@ -31,7 +31,7 @@ export class SocketService {
       this.socket.emit('de-elevate-me');
     } else {
       this.elevateConnection(token).then(userId => {
-        this.toast.success('Successfully elevated _socket connection', null, {positionClass: 'toast-bottom-right'});
+        this.toast.success('Successfully elevated socket connection', null, {positionClass: 'toast-bottom-right'});
       })
         .catch(err => {
           this.toast.error(err, null, {positionClass: 'toast-bottom-right'});

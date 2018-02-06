@@ -22,7 +22,7 @@ import {AlertModule} from 'ngx-bootstrap';
     AppRoutingModule,
     TruncateModule,
     QuestModule,
-    AlertModule
+    AlertModule.forRoot()
   ],
   declarations: [
     CampaignFormComponent,

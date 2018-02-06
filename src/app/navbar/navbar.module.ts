@@ -10,7 +10,7 @@ import {BsDropdownModule} from 'ngx-bootstrap';
     CommonModule,
     NotificationModule,
     AppRoutingModule,
-    BsDropdownModule
+    BsDropdownModule.forRoot()
   ],
   declarations: [NavbarComponent],
   exports: [NavbarComponent]

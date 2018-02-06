@@ -12,10 +12,10 @@ import {AttributesModule} from '../attributes/attributes.module';
   imports: [
     CommonModule,
     FormsModule,
-    ModalModule,
+    ModalModule.forRoot(),
     SpinnerModule,
     AttributesModule,
-    ProgressbarModule
+    ProgressbarModule.forRoot()
   ],
   declarations: [SessionCharacterViewComponent, SessionQuickeditFormComponent, SessionViewComponent],
   exports: [SessionViewComponent]

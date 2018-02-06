@@ -11,7 +11,7 @@ import {ModalModule} from 'ngx-bootstrap';
     CommonModule,
     SpinnerModule,
     FormsModule,
-    ModalModule
+    ModalModule.forRoot()
   ],
   declarations: [QuestEditorComponent, QuestViewComponent],
   exports: [QuestEditorComponent, QuestViewComponent]

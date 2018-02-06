@@ -9,7 +9,7 @@ import {PopoverModule} from 'ngx-bootstrap';
   imports: [
     CommonModule,
     AppRoutingModule,
-    PopoverModule
+    PopoverModule.forRoot()
   ],
   declarations: [NotificationsComponent, NotificationBubbleComponent],
   exports: [NotificationBubbleComponent]

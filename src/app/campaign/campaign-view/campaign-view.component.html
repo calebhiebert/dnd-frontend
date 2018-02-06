@@ -6,7 +6,7 @@
   <button *ngIf="campaign.mine === true && campaign.session === null" (click)="startSession()"
           class="btn btn-outline-primary btn-sm float-right ml-2">Start Session
   </button>
-  <button *ngIf="campaign.mine === true && campaign.session !== null" routerLink="/campaign/{{campaign.id}}/session"
+  <button *ngIf="campaign.session !== null" routerLink="/campaign/{{campaign.id}}/session"
           class="btn btn-outline-primary btn-sm float-right ml-2">Current Session
   </button>
   <button *ngIf="campaign.mine === true" class="btn btn-outline-danger btn-sm float-right ml-2" (click)="delete()">

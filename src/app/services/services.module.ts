@@ -13,6 +13,7 @@ import {HttpLink, HttpLinkModule} from 'apollo-angular-link-http';
 import {environment} from '../../environments/environment';
 import {InMemoryCache} from 'apollo-cache-inmemory';
 import {HttpClientModule} from '@angular/common/http';
+import {ToastrModule, ToastrService} from 'ngx-toastr';
 
 const SOCKET_CONFIG: SocketIoConfig = {url: 'http://localhost:5200'};
 
@@ -23,9 +24,10 @@ const SOCKET_CONFIG: SocketIoConfig = {url: 'http://localhost:5200'};
     ApolloModule,
     HttpLinkModule,
     SocketIoModule.forRoot(SOCKET_CONFIG),
+    ToastrModule.forRoot()
   ],
   declarations: [],
-  providers: [AuthService, AuthGuard, CharacterService, CampaignService, NotificationService, SocketService, SessionService]
+  providers: [AuthService, AuthGuard, CharacterService, CampaignService, NotificationService, ToastrService, SocketService, SessionService]
 })
 export class ServicesModule {
   constructor(apollo: Apollo, httpLink: HttpLink) {

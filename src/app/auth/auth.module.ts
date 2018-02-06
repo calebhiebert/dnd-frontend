@@ -13,7 +13,7 @@ import {AppRoutingModule} from '../app-routing.module';
     CommonModule,
     FormsModule,
     SpinnerModule,
-    AlertModule,
+    AlertModule.forRoot(),
     AppRoutingModule
   ],
   declarations: [LoginComponent, LogoutComponent, RegisterComponent],
