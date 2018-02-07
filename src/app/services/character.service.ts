@@ -12,8 +12,7 @@ const CHARACTER_FRAGMENT = gql`
     mine
     hp
     maxHp
-  }
-`;
+  }`;
 
 const MY_CHARACTERS_QUERY = gql`
   query GetMyCharacters {
@@ -27,13 +26,6 @@ const MY_CHARACTERS_QUERY = gql`
 const CREATE_CHARACTER_MUTATION = gql`
   mutation CreateCharacter($input: CharacterInput!) {
     createCharacter(input: $input) {
-      ...CharacterFields
-    }
-  } ${CHARACTER_FRAGMENT}`;
-
-const GET_CHARACTER_QUERY = gql`
-  query GetCharacter($id: ID!) {
-    getCharacter(id: $id) {
       ...CharacterFields
     }
   } ${CHARACTER_FRAGMENT}`;
@@ -61,26 +53,25 @@ const USER_CHARACTERS_QUERY = gql`
     }
   } ${CHARACTER_FRAGMENT}`;
 
-const CHARACTER_VIEW_QUERY = gql`
-  query GetCharacterView($id: ID!) {
+const GET_QUERY = gql`
+  query GetCharacterView($id: ID!, $attributes: Boolean!, $campaign: Boolean!) {
     getCharacter(id: $id) {
-      id
-      name
-      description
-      mine
-      attributes {
+      ...CharacterFields
+
+      attributes @include(if: $attributes) {
         id
         key
         dataType
         nValue
         sValue
       }
-      campaign {
+
+      campaign @include(if: $campaign) {
         id
         name
       }
     }
-  }`;
+  } ${CHARACTER_FRAGMENT}`;
 
 @Injectable()
 export class CharacterService {
@@ -89,8 +80,8 @@ export class CharacterService {
     socket.fromEvent('character-update')
       .subscribe(characterId => {
         apollo.query({
-          query: CHARACTER_VIEW_QUERY,
-          variables: {id: characterId},
+          query: GET_QUERY,
+          variables: {id: characterId, attributes: true, campaign: true},
           fetchPolicy: 'network-only'
         }).toPromise().then(resp => {
         });
@@ -103,30 +94,21 @@ export class CharacterService {
     }).valueChanges.map(resp => resp.data.me.characters);
   }
 
-  getCharacterForView(id: string) {
-    this.apollo.watchQuery<GetCharacterResponse>({
-      query: CHARACTER_VIEW_QUERY,
-
-      variables: {
-        id
-      }
-    }).valueChanges
-      .map(resp => resp.data.getCharacter);
-  }
-
-  getCharacter(id: string) {
+  get(id: string, {attributes = false, campaign = false}: { attributes?: boolean, campaign?: boolean } = {}) {
     this.socket.emit('sub', `character-update-${id}`);
 
     return this.apollo.watchQuery<GetCharacterResponse>({
-      query: GET_CHARACTER_QUERY,
+      query: GET_QUERY,
 
       variables: {
-        id
+        id,
+        attributes,
+        campaign
       }
     }).valueChanges.map(resp => resp.data.getCharacter);
   }
 
-  createCharacter(character: any) {
+  create(character: any) {
     return this.apollo.mutate<CreateCharacterResponse>({
       mutation: CREATE_CHARACTER_MUTATION,
 
@@ -143,7 +125,7 @@ export class CharacterService {
       .toPromise();
   }
 
-  editCharacter(character: Character) {
+  edit(character: Character) {
     return this.apollo.mutate<EditCharacterResponse>({
       mutation: EDIT_CHARACTER_MUTATION,
 
@@ -159,7 +141,7 @@ export class CharacterService {
     }).map(resp => resp.data.editCharacter).toPromise();
   }
 
-  editCharacterHp(character: Character) {
+  editHP(character: Character) {
     return this.apollo.mutate<ModHpResponse>({
       mutation: MOD_HP_MUTATION,
 

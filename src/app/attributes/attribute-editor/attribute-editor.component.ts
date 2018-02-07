@@ -1,24 +1,9 @@
 import {Component, EventEmitter, Input, OnDestroy, OnInit, Output} from '@angular/core';
-import {Apollo} from 'apollo-angular';
-import gql from 'graphql-tag';
-import {Character, CreateAttributeResponse, GetCharacterResponse} from '../../types';
+import {Character} from '../../types';
 import * as terms from './dnd-terms.json';
 import {Subscription} from 'rxjs/Subscription';
-
-export const CHARACTER_ATTR_DATA_QUERY = gql`
-  query AttributeEditorQuery($charId: ID!) {
-    getCharacter(id: $charId) {
-      id
-      name
-      attributes {
-        id
-        key
-        dataType
-        nValue
-        sValue
-      }
-    }
-  }`;
+import {AttributeService, NewAttribute} from '../../services/attribute.service';
+import {CharacterService} from '../../services/character.service';
 
 @Component({
   selector: 'app-attribute-editor',
@@ -41,7 +26,7 @@ export class AttributeEditorComponent implements OnInit, OnDestroy {
   loading = false;
   editorLoading = false;
 
-  newAttr: any = {
+  newAttr: NewAttribute = {
     key: '',
     value: ''
   };
@@ -50,67 +35,39 @@ export class AttributeEditorComponent implements OnInit, OnDestroy {
 
   charSub: Subscription;
 
-  constructor(private apollo: Apollo) { }
+  constructor(private charService: CharacterService, private attrService: AttributeService) {
+  }
 
   ngOnInit() {
     this.loadData();
   }
 
   ngOnDestroy(): void {
-    this.charSub.unsubscribe();
+    if (this.charSub) {
+      this.charSub.unsubscribe();
+    }
   }
 
   loadData() {
     this.loading = true;
 
-    this.charSub = this.apollo.watchQuery<GetCharacterResponse>({
-      query: CHARACTER_ATTR_DATA_QUERY,
-
-      variables: {
-        charId: this.characterId
-      }
-    }).valueChanges.map(resp => resp.data.getCharacter)
-    .subscribe(character => {
-      this.character = character;
-      this.loading = false;
-    });
+    this.charSub = this.charService.get(this.characterId, {attributes: true})
+      .subscribe(character => {
+        this.character = character;
+        this.loading = false;
+      });
   }
 
   saveNewAttribute() {
     this.editorLoading = true;
 
-    this.apollo.mutate<CreateAttributeResponse>({
-      mutation: gql`
-        mutation CreateAttribute($charId: ID!, $input: AttributeInput!) {
-          createAttribute(characterId: $charId, input: $input) {
-            id
-            key
-            dataType
-            sValue
-            nValue
-          }
-        }`,
+    this.attrService.create(this.newAttr, this.characterId)
+      .then(() => {
+        this.newAttr = new NewAttribute();
 
-      variables: {
-        charId: this.characterId,
-        input: this.newAttr
-      },
-
-      update: (store, {data: {createAttribute}}) => {
-        const storeData: any = store.readQuery({query: CHARACTER_ATTR_DATA_QUERY, variables: {charId: this.characterId}});
-
-        storeData.getCharacter.attributes.push(createAttribute);
-
-        store.writeQuery({query: CHARACTER_ATTR_DATA_QUERY, variables: {charId: this.characterId}, data: storeData});
-      }
-    }).subscribe(resp => {
-      this.newAttr = {
-        key: '',
-        value: ''
-      };
-      this.editorLoading = false;
-      this.showCreationBox = false;
-    });
+        this.editorLoading = false;
+        this.showCreationBox = false;
+      });
   }
 
   done() {

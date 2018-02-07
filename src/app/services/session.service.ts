@@ -45,6 +45,7 @@ const CAMPAIGN_SESSION_RESPONSE = gql`
     getCampaign(id: $campaignId) {
       id
       name
+      mine
       session {
         ...SessionFields
       }
@@ -54,6 +55,7 @@ const CAMPAIGN_SESSION_RESPONSE = gql`
         name
         hp
         maxHp
+        mine
         attributes {
           key
           dataType

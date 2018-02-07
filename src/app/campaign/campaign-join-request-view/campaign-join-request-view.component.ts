@@ -1,25 +1,7 @@
 import {Component, Input, OnDestroy, OnInit} from '@angular/core';
 import gql from 'graphql-tag';
-import {Apollo} from 'apollo-angular';
 import {Subscription} from 'rxjs/Subscription';
-
-const JOIN_REQUEST_QUERY = gql`
-  query GetJoinRequests($id: ID!) {
-    getCampaign(id: $id) {
-      id
-      joinRequests(status: [WAITING]) {
-        id
-        status
-        character {
-          id
-          name
-          creator {
-            username
-          }
-        }
-      }
-    }
-  }`;
+import {CampaignService} from '../../services/campaign.service';
 
 @Component({
   selector: 'app-campaign-join-request-view',
@@ -39,7 +21,7 @@ export class CampaignJoinRequestViewComponent implements OnInit, OnDestroy {
 
   sub: Subscription;
 
-  constructor(private apollo: Apollo) { }
+  constructor(private campService: CampaignService) { }
 
   ngOnInit() {
     this.loadData();
@@ -54,13 +36,7 @@ export class CampaignJoinRequestViewComponent implements OnInit, OnDestroy {
   loadData() {
     this.loading = true;
 
-    this.sub = this.apollo.watchQuery({
-      query: JOIN_REQUEST_QUERY,
-
-      variables: {
-        id: this.campaignId
-      }
-    }).valueChanges.map((resp: any) => resp.data.getCampaign)
+    this.sub = this.campService.get(this.campaignId, {joinRequests: true})
       .subscribe(campaign => {
         this.campaign = campaign;
         this.joinRequests = campaign.joinRequests;

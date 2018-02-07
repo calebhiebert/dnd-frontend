@@ -4,13 +4,15 @@ import {NavbarComponent} from './navbar.component';
 import {NotificationModule} from '../notification/notification.module';
 import {AppRoutingModule} from '../app-routing.module';
 import {BsDropdownModule} from 'ngx-bootstrap';
+import {ServicesModule} from '../services/services.module';
 
 @NgModule({
   imports: [
     CommonModule,
     NotificationModule,
     AppRoutingModule,
-    BsDropdownModule.forRoot()
+    BsDropdownModule.forRoot(),
+    ServicesModule
   ],
   declarations: [NavbarComponent],
   exports: [NavbarComponent]

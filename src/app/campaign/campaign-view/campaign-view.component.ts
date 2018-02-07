@@ -1,12 +1,10 @@
 import {Component, OnDestroy, OnInit, TemplateRef} from '@angular/core';
-import {CampaignService, MY_CAMPAIGNS_QUERY} from '../../services/campaign.service';
+import {CampaignService} from '../../services/campaign.service';
 import {ActivatedRoute, Router} from '@angular/router';
-import {Campaign, CharacterCampaignOperationResponse} from '../../types';
+import {Campaign} from '../../types';
 import {Subscription} from 'rxjs/Subscription';
 import {BsModalRef, BsModalService} from 'ngx-bootstrap';
 import {ToastrService} from 'ngx-toastr';
-import {Apollo} from 'apollo-angular';
-import gql from 'graphql-tag';
 import {AuthService} from '../../services/auth.service';
 import {SessionService} from '../../services/session.service';
 
@@ -26,7 +24,7 @@ export class CampaignViewComponent implements OnInit, OnDestroy {
 
   constructor(private campService: CampaignService, private router: Router,
               private route: ActivatedRoute, private modalService: BsModalService,
-              private toast: ToastrService, private apollo: Apollo, private auth: AuthService,
+              private toast: ToastrService, private auth: AuthService,
               private sessionService: SessionService) {
   }
 
@@ -50,9 +48,8 @@ export class CampaignViewComponent implements OnInit, OnDestroy {
       this.campaignSub.unsubscribe();
     }
 
-    this.campaignSub = this.campService.getCampaignForView(id)
+    this.campaignSub = this.campService.get(id, {characters: true, subscribe: true})
       .subscribe(campaign => {
-        console.log('Campaign Updated');
         this.loading = false;
         this.campaign = campaign;
       });
@@ -74,36 +71,13 @@ export class CampaignViewComponent implements OnInit, OnDestroy {
   }
 
   delete() {
-    this.apollo.mutate({
-      mutation: gql`
-        mutation DeleteCampaign($id: ID!) {
-          deleteCampaign(id: $id)
-        }`,
-
-      variables: {
-        id: this.campaign.id
-      },
-
-      update: (store) => {
-        store.writeQuery({
-          query: gql`
-            query RemoveCampaignQuery($id: ID!) {
-              getCampaign(id: $id) {
-                id
-              }
-            }`, variables: {id: this.campaign.id}, data: null
-        });
-      },
-
-      refetchQueries: [
-        {query: MY_CAMPAIGNS_QUERY}
-      ]
-    }).subscribe(() => this.router.navigate(['home']));
+    this.campService.delete(this.campaign.id)
+      .then(() => this.router.navigate(['home']));
   }
 
   startSession() {
     this.sessionService.startSession(this.campaign.id)
-      .then(session => {
+      .then(() => {
         this.router.navigate(['campaign', this.campaign.id, 'session']);
       });
   }

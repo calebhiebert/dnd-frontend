@@ -1,7 +1,6 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {Campaign} from '../../types';
 import {CampaignService} from '../../services/campaign.service';
-import {Router} from '@angular/router';
 import {Subscription} from 'rxjs/Subscription';
 
 @Component({
@@ -16,13 +15,13 @@ export class IndexCampaignListComponent implements OnInit, OnDestroy {
 
   subscription: Subscription;
 
-  constructor(private campService: CampaignService, private router: Router) { }
+  constructor(private campService: CampaignService) { }
 
   ngOnInit() {
     this.loading = true;
-    this.subscription = this.campService.getMyCampaigns()
+    this.subscription = this.campService.getMine()
       .subscribe(campaigns => {
-        campaigns.forEach(c => this.campService.subscribeCampaign(c.id));
+        campaigns.forEach(c => this.campService.subscribe(c.id));
         this.campaigns = campaigns;
         this.loading = false;
       });

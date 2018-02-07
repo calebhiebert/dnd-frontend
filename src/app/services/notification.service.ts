@@ -87,10 +87,3 @@ export class NotificationService {
       });
   }
 }
-
-export interface JoinRequestNotification {
-  id: string;
-  status: string;
-  campaign: Campaign;
-  character: Character;
-}

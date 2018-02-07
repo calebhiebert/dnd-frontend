@@ -52,7 +52,6 @@ import {NavbarModule} from './navbar/navbar.module';
     BrowserModule.withServerTransition({appId: 'dnd'}),
     BrowserAnimationsModule,
     AppRoutingModule,
-    ServicesModule,
     SpinnerModule,
     CharacterModule,
     CampaignModule,

@@ -13,6 +13,7 @@ export class Character {
   creator: User;
   hp: number;
   maxHp: number;
+  mine: boolean;
   attributes: Array<Attribute>;
 }
 
@@ -25,6 +26,7 @@ export class Campaign {
   creator: User;
   quests: Array<Quest>;
   session: Session;
+  joinRequests: any[];
   sessions: Session[];
 }
 
@@ -34,6 +36,10 @@ export class Attribute {
   key: string;
   sValue: string;
   nValue: number;
+}
+
+export class JoinRequest {
+  // TODO fill out
 }
 
 export class Quest {
@@ -74,6 +80,10 @@ export interface GetCharacterResponse {
 
 export interface CreateAttributeResponse {
   createAttribute: Attribute;
+}
+
+export interface EditAttributeResponse {
+  editAttribute: Attribute;
 }
 
 export interface CharacterCampaignOperationResponse {

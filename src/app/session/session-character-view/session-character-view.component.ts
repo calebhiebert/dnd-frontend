@@ -1,5 +1,5 @@
 import {Component, Input, OnDestroy, OnInit, TemplateRef, ViewChild} from '@angular/core';
-import {Character} from '../../types';
+import {Campaign, Character} from '../../types';
 import {SessionService} from '../../services/session.service';
 import {Subscription} from 'rxjs/Subscription';
 import {BsModalRef, BsModalService} from 'ngx-bootstrap';
@@ -18,6 +18,7 @@ export class SessionCharacterViewComponent implements OnInit, OnDestroy {
   quickEdit: TemplateRef<any>;
 
   characters: Character[];
+  campaign: Campaign;
   loading = false;
 
   selectedCharacter: Character;
@@ -44,16 +45,19 @@ export class SessionCharacterViewComponent implements OnInit, OnDestroy {
 
     this.sub = this.sessionService.getCampaignSession(this.campaignId, false, true)
       .subscribe(campaign => {
+        this.campaign = campaign;
         this.characters = campaign.characters;
         this.loading = false;
       });
   }
 
   select(character: Character | null) {
-    this.selectedCharacter = character;
-    this.modalRef = this.modal.show(this.quickEdit, {
-      keyboard: false,
-      animated: false
-    });
+    if (this.campaign.mine || character.mine) {
+      this.selectedCharacter = character;
+      this.modalRef = this.modal.show(this.quickEdit, {
+        keyboard: false,
+        animated: false
+      });
+    }
   }
 }

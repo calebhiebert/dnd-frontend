@@ -13,7 +13,7 @@ export class CampaignFormComponent implements OnInit, OnDestroy {
 
   editId: string;
 
-  campaign: Campaign;
+  campaign: Campaign = new Campaign();
   loading = false;
 
   paramSub: Subscription;
@@ -23,8 +23,6 @@ export class CampaignFormComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.campaign = new Campaign();
-
     this.route.params.subscribe(params => {
       this.editId = params['id'];
       if (this.editId !== undefined) {
@@ -46,7 +44,7 @@ export class CampaignFormComponent implements OnInit, OnDestroy {
   loadCampaign() {
     this.loading = true;
 
-    this.campSub = this.campService.getCampaign(this.editId)
+    this.campSub = this.campService.get(this.editId)
       .subscribe(campaign => {
         this.loading = false;
         Object.assign(this.campaign, campaign);
@@ -57,14 +55,14 @@ export class CampaignFormComponent implements OnInit, OnDestroy {
     this.loading = true;
 
     if (this.editId !== undefined) {
-      this.campService.editCampaign(this.campaign)
-        .subscribe((campaign: Campaign) => {
+      this.campService.edit(this.campaign)
+        .then(campaign => {
           this.router.navigate(['campaign', campaign.id]);
           this.loading = false;
         });
     } else {
-      this.campService.createCampaign(this.campaign)
-        .subscribe(() => {
+      this.campService.create(this.campaign)
+        .then(() => {
           this.router.navigate(['home']);
           this.loading = false;
         });

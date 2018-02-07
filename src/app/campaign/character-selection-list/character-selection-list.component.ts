@@ -2,6 +2,7 @@ import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {Apollo} from 'apollo-angular';
 import gql from 'graphql-tag';
 import {Character} from '../../types';
+import {CampaignService} from '../../services/campaign.service';
 
 @Component({
   selector: 'app-character-selection-list',
@@ -19,7 +20,7 @@ export class CharacterSelectionListComponent implements OnInit {
   characters: Array<Character>;
   loading = false;
 
-  constructor(private apollo: Apollo) {
+  constructor(private campService: CampaignService) {
   }
 
   ngOnInit() {
@@ -29,22 +30,7 @@ export class CharacterSelectionListComponent implements OnInit {
   loadCharacters() {
     this.loading = true;
 
-    this.apollo.query({
-      query: gql`
-        query GetMyCharactersWithCampaigns($campaignId: ID!) {
-          getCampaignJoinableCharacters(campaignId: $campaignId) {
-            id
-            name
-          }
-        }`,
-
-      fetchPolicy: 'network-only',
-
-      variables: {
-        campaignId: this.campaignId
-      }
-    })
-    .map((resp: any) => resp.data.getCampaignJoinableCharacters).toPromise()
+    this.campService.getCharactersThatCanJoin(this.campaignId)
     .then(characters => {
       this.loading = false;
       this.characters = characters;

@@ -9,5 +9,5 @@ import {SocketService} from './services/socket.service';
 export class AppComponent {
   title = 'app';
 
-  constructor(private io: SocketService) {}
+  constructor() {}
 }

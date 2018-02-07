@@ -1,8 +1,9 @@
 <div class="list-group list-group-flush" *ngIf="characters">
-  <button class="list-group-item list-group-item-action" *ngFor="let c of characters" (click)="select(c)">
+  <a class="list-group-item" *ngFor="let c of characters" (click)="select(c)"
+  [ngClass]="{'list-group-item-action': (c.mine === true || campaign.mine === true)}">
     {{c.name}} [{{ c.attributes | attribute : 'ac' }}]
     <progressbar [max]="c.maxHp" [value]="c.hp">{{ c.hp }}/{{ c.maxHp }} ({{ (c.hp / c.maxHp) | percent }})</progressbar>
-  </button>
+  </a>
 </div>
 
 <ng-template #quickedit>

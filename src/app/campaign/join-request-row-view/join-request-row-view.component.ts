@@ -2,22 +2,7 @@ import {Component, Input, OnInit} from '@angular/core';
 import {Apollo} from 'apollo-angular';
 import gql from 'graphql-tag';
 import {Router} from '@angular/router';
-
-const JOIN_REQUEST_OPERATION_MUTATION = gql`
-  mutation JoinRequestOperation($id: ID!, $op: CampaignJoinRequestOperation!) {
-    campaignJoinRequestOperation(campaignJoinRequestId: $id, op: $op)
-  }`;
-
-const UPDATE_QUERY = gql`
-  query GetCampaignForUpdate($id: ID!) {
-    getCampaign(id: $id) {
-      id
-      joinRequests(status: [WAITING]) {
-        id
-        status
-      }
-    }
-  }`;
+import {CampaignService} from '../../services/campaign.service';
 
 @Component({
   selector: 'app-join-request-row-view',
@@ -34,7 +19,7 @@ export class JoinRequestRowViewComponent implements OnInit {
 
   loading = false;
 
-  constructor(private apollo: Apollo, private router: Router) { }
+  constructor(private campService: CampaignService, private router: Router) { }
 
   ngOnInit() {
   }
@@ -44,39 +29,7 @@ export class JoinRequestRowViewComponent implements OnInit {
   }
 
   operate(operator) {
-    this.apollo.mutate({
-      mutation: JOIN_REQUEST_OPERATION_MUTATION,
-
-      variables: {
-        id: this.request.id,
-        op: operator
-      },
-
-      refetchQueries: [
-        {query: gql`
-            query UpdateCampaignCache($id: ID!) {
-              getCampaign(id: $id) {
-                id
-                characters {
-                  id
-                  name
-                  description
-                  hp
-                  maxHp
-                  creator {
-                    username
-                  }
-                }
-              }
-            }`,
-
-        variables: {
-          id: this.campaignId
-        }},
-
-        {query: UPDATE_QUERY, variables: {id: this.campaignId}}
-      ]
-    }).toPromise()
-      .then(resp => console.log(resp));
+    this.campService.joinRequestOperation(this.request.id, operator, this.campaignId)
+      .then();
   }
 }

@@ -42,7 +42,7 @@ export class CharacterFormComponent implements OnInit, OnDestroy {
 
     if (this.edit) {
       this.loading = true;
-      this.sub = this.charService.getCharacter(this.editId)
+      this.sub = this.charService.get(this.editId)
         .subscribe(character => {
           Object.assign(this.character, character);
           this.loading = false;
@@ -59,14 +59,14 @@ export class CharacterFormComponent implements OnInit, OnDestroy {
     this.loading = true;
 
     if ((this.edit || false) === false) {
-      this.charService.createCharacter(this.character)
+      this.charService.create(this.character)
         .then(() => {
           this.modalRef.hide();
           this.loading = false;
         }, e => console.log(e));
     } else {
 
-      this.charService.editCharacter(this.character)
+      this.charService.edit(this.character)
         .then(() => {
           this.modalRef.hide();
           this.loading = false;

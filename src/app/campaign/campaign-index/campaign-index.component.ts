@@ -1,20 +1,9 @@
 import {Component, OnInit} from '@angular/core';
-import {Apollo} from 'apollo-angular';
-import {Router} from '@angular/router';
-import gql from 'graphql-tag';
-import {Campaign, GetCampaignsResponse} from '../../types';
+import {Campaign} from '../../types';
 import {Subject} from 'rxjs/Subject';
 import 'rxjs/add/operator/distinctUntilChanged';
 import {Subscription} from 'rxjs/Subscription';
-
-const CAMPAIGN_SEARCH_QUERY = gql`
-  query GetCampaignsQuery($searchTerm: String) {
-    getCampaigns(searchTerm: $searchTerm) {
-      id
-      name
-      description
-    }
-  }`;
+import {CampaignService} from '../../services/campaign.service';
 
 @Component({
   selector: 'app-campaign-index',
@@ -31,7 +20,7 @@ export class CampaignIndexComponent implements OnInit {
 
   searchSub: Subscription;
 
-  constructor(private apollo: Apollo, private router: Router) { }
+  constructor(private campService: CampaignService) { }
 
   ngOnInit() {
     this.loadCampaigns(null);
@@ -45,14 +34,7 @@ export class CampaignIndexComponent implements OnInit {
   loadCampaigns(searchTerm) {
     this.loading = true;
 
-    this.apollo.query<GetCampaignsResponse>({
-      query: CAMPAIGN_SEARCH_QUERY,
-
-      variables: {
-        searchTerm: searchTerm
-      }
-    }).map(resp => resp.data.getCampaigns)
-      .toPromise()
+    this.campService.search(searchTerm)
       .then(campaigns => {
         this.campaigns = campaigns;
         this.loading = false;

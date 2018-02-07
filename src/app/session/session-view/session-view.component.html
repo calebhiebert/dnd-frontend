@@ -1,6 +1,6 @@
 <app-spinner *ngIf="loading === true"></app-spinner>
-<div *ngIf="session">
-  <button class="btn btn-outline-dark btn-sm float-right" *ngIf="session.status === 'ACTIVE'" (click)="finishSession()">
+<div *ngIf="campaign">
+  <button class="btn btn-outline-dark btn-sm float-right" *ngIf="session.status === 'ACTIVE' && campaign.mine === true" (click)="finishSession()">
     Finish Session
   </button>
   <p class="text-muted font-italic">

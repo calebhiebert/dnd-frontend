@@ -22,7 +22,7 @@ export class CharacterViewComponent implements OnInit, OnDestroy {
   routeSub: Subscription;
 
   constructor(private route: ActivatedRoute, private charService: CharacterService,
-              private apollo: Apollo, private modalService: BsModalService) {
+              private modalService: BsModalService) {
   }
 
   ngOnInit() {
@@ -48,36 +48,10 @@ export class CharacterViewComponent implements OnInit, OnDestroy {
   loadCharacter(id: string) {
     this.loading = true;
 
-    this.chrSub = this.apollo.watchQuery<GetCharacterResponse>({
-      query: gql`
-        query GetCharacterView($id: ID!) {
-          getCharacter(id: $id) {
-            id
-            name
-            description
-            mine
-            attributes {
-              id
-              key
-              dataType
-              nValue
-              sValue
-            }
-            campaign {
-              id
-              name
-            }
-          }
-        }`,
-
-      variables: {
-        id
-      }
-    }).valueChanges
-    .map(resp => resp.data.getCharacter)
-    .subscribe(character => {
-      this.character = character;
-      this.loading = false;
-    }, err => console.error('This is an error', err));
+    this.chrSub = this.charService.get(id, {attributes: true, campaign: true})
+      .subscribe(character => {
+        this.character = character;
+        this.loading = false;
+      });
   }
 }

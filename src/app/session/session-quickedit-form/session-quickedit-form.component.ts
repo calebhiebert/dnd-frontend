@@ -51,7 +51,7 @@ export class SessionQuickeditFormComponent implements OnInit, AfterViewInit {
   }
 
   saveHp() {
-    this.charService.editCharacterHp(this.character)
+    this.charService.editHP(this.character)
       .then(character => {
         this.done.emit();
       });
