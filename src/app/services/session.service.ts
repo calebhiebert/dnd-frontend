@@ -58,9 +58,7 @@ const CAMPAIGN_SESSION_RESPONSE = gql`
         mine
         attributes {
           key
-          dataType
-          nValue
-          sValue
+          value
         }
       }
 

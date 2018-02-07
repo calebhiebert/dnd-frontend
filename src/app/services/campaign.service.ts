@@ -38,6 +38,8 @@ export const GET_CAMPAIGN_QUERY = gql`
         description
         hp
         maxHp
+        image
+        imageUuid
         creator {
           username
         }

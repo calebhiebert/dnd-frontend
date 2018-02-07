@@ -11,7 +11,7 @@
   <div routerLink="/campaign/{{ c.id }}" class="card border-dark" *ngFor="let c of campaigns">
     <div class="card-body">
       <h5>{{ c.name }}</h5>
-      <p class="card-text">{{ c.description | words: 25}}</p>
+      <p class="card-text">{{ c.description | striphtml | words: 25}}</p>
     </div>
   </div>
 </div>
