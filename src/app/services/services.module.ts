@@ -17,6 +17,7 @@ import {ToastrModule, ToastrService} from 'ngx-toastr';
 import { AttributeService } from './attribute.service';
 import { QuestsService } from './quests.service';
 import { ErrorService } from './error.service';
+import { StriphtmlPipe } from './striphtml.pipe';
 
 const SOCKET_CONFIG: SocketIoConfig = {url: 'http://localhost:5200'};
 
@@ -29,8 +30,9 @@ const SOCKET_CONFIG: SocketIoConfig = {url: 'http://localhost:5200'};
     SocketIoModule.forRoot(SOCKET_CONFIG),
     ToastrModule.forRoot()
   ],
-  declarations: [],
-  providers: [AuthService, AuthGuard, CharacterService, CampaignService, NotificationService, ToastrService, SocketService, SessionService, AttributeService, QuestsService, ErrorService]
+  declarations: [StriphtmlPipe],
+  providers: [AuthService, AuthGuard, CharacterService, CampaignService, NotificationService, ToastrService, SocketService, SessionService, AttributeService, QuestsService, ErrorService],
+  exports: [StriphtmlPipe]
 })
 export class ServicesModule {
   constructor(apollo: Apollo, httpLink: HttpLink) {

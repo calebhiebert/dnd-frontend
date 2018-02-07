@@ -13,6 +13,8 @@ import {JoinRequestRowViewComponent} from './join-request-row-view/join-request-
 import {QuestModule} from '../quest/quest.module';
 import {CharacterSelectionListComponent} from './character-selection-list/character-selection-list.component';
 import {AlertModule} from 'ngx-bootstrap';
+import {ServicesModule} from '../services/services.module';
+import {QuillModule} from 'ngx-quill';
 
 @NgModule({
   imports: [
@@ -22,7 +24,9 @@ import {AlertModule} from 'ngx-bootstrap';
     AppRoutingModule,
     TruncateModule,
     QuestModule,
-    AlertModule.forRoot()
+    AlertModule.forRoot(),
+    ServicesModule,
+    QuillModule
   ],
   declarations: [
     CampaignFormComponent,

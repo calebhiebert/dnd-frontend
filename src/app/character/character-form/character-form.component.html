@@ -13,14 +13,14 @@
     </div>
     <div class="form-group">
       <label>Description</label>
-      <textarea [(ngModel)]="character.description" class="form-control"
-                placeholder="Character Description"></textarea>
+      <quill-editor [(ngModel)]="character.description" [modules]="{toolbar: [['bold', 'italic', 'underline', 'strike'], ['blockquote']]}"></quill-editor>
     </div>
     <div id="image-container">
       <label>Picture</label>
       <input type="hidden" role="uploadcare-uploader" data-crop="128x128 minimum" name="image" #imageupload>
     </div>
-    <button class="btn btn-outline-danger btn-sm" *ngIf="character.imageUuid" (click)="removeImage()">Remove Image</button>
+    <button class="btn btn-outline-danger btn-sm" *ngIf="character.imageUuid" (click)="removeImage()">Remove Image
+    </button>
     <div class="form-group">
       <label>Hitpoints</label>
       <div class="input-group">

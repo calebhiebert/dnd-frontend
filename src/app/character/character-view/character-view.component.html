@@ -18,7 +18,7 @@
     <img *ngIf="character.image" class="mr-3 img-thumbnail" src="{{character.image}}" alt="Character image">
     <div class="media-body">
       <h4>{{ character.name }}</h4>
-      <p *ngIf="character.description; else nobackstory">{{ character.description }}</p>
+      <div *ngIf="character.description; else nobackstory" [innerHTML]="character.description"></div>
     </div>
   </div>
 

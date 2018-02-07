@@ -9,6 +9,7 @@ import {FormsModule} from '@angular/forms';
 import {AlertModule, TooltipModule} from 'ngx-bootstrap';
 import {AppRoutingModule} from '../app-routing.module';
 import {AttributesModule} from '../attributes/attributes.module';
+import {QuillModule} from 'ngx-quill';
 
 @NgModule({
   imports: [
@@ -18,7 +19,8 @@ import {AttributesModule} from '../attributes/attributes.module';
     AlertModule.forRoot(),
     TooltipModule.forRoot(),
     AppRoutingModule,
-    AttributesModule
+    AttributesModule,
+    QuillModule
   ],
   declarations: [
     CharacterFormComponent,

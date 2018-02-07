@@ -40,6 +40,7 @@ export class CharacterFormComponent implements OnInit, OnDestroy, AfterViewInit 
       this.sub = this.charService.get(this.editId)
         .subscribe(character => {
           Object.assign(this.character, character);
+          this.imageUploader.nativeElement.value = (this.character.image || '');
           this.loading = false;
         });
     }
@@ -56,8 +57,6 @@ export class CharacterFormComponent implements OnInit, OnDestroy, AfterViewInit 
   }
 
   init() {
-    this.imageUploader.nativeElement.value = (this.character.imageUuid || '' );
-
     this.fileWidget = uploadcare.SingleWidget(this.imageUploader.nativeElement);
 
     this.fileWidget.onUploadComplete(info => {

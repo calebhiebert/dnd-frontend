@@ -17,8 +17,7 @@
     Join
   </button>
   <h4>{{ campaign.name }}</h4>
-  <p *ngIf="campaign.description && campaign.description.trim().length > 0; else nodescription">{{ campaign.description
-    }}</p>
+  <div *ngIf="campaign.description && campaign.description.trim().length > 0; else nodescription" [innerHTML]="campaign.description"></div>
 
   <div class="card">
     <span class="card-header">Characters</span>
@@ -31,7 +30,7 @@
           <small>{{character.creator.username}}</small>
         </div>
 
-        <p class="mb-1">{{ character.description }}</p>
+        <p class="mb-1">{{ character.description | striphtml | words: 25 }}</p>
       </a>
     </div>
   </div>
