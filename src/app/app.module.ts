@@ -57,7 +57,8 @@ import {NavbarModule} from './navbar/navbar.module';
     CampaignModule,
     AuthModule,
     SessionModule,
-    NavbarModule
+    NavbarModule,
+    ServicesModule
   ],
   providers: [],
   bootstrap: [AppComponent]

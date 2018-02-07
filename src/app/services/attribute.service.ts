@@ -11,9 +11,7 @@ const CHARACTER_ATTR_DATA_QUERY = gql`
       attributes {
         id
         key
-        dataType
-        nValue
-        sValue
+        value
       }
     }
   }`;
@@ -31,9 +29,7 @@ export class AttributeService {
           editAttribute(id: $id, input: $input) {
             id
             key
-            dataType
-            nValue
-            sValue
+            value
           }
         }`,
 
@@ -91,9 +87,7 @@ export class AttributeService {
           createAttribute(characterId: $charId, input: $input) {
             id
             key
-            dataType
-            sValue
-            nValue
+            value
           }
         }`,
 

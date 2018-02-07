@@ -14,6 +14,7 @@ export class Character {
   hp: number;
   maxHp: number;
   mine: boolean;
+  image: string;
   attributes: Array<Attribute>;
 }
 
@@ -32,10 +33,8 @@ export class Campaign {
 
 export class Attribute {
   id: string;
-  dataType: string;
   key: string;
-  sValue: string;
-  nValue: number;
+  value: string;
 }
 
 export class JoinRequest {
@@ -56,6 +55,35 @@ export class Session {
   finishedAt: string;
   campaign: Campaign;
   status: string;
+}
+
+export class AttributeGatherer {
+
+  _attributes: Attribute[];
+  _mappings: { name: string, matches: string[] }[];
+  _result: {[key: string]: Attribute} = {};
+  _allTerms: string[] = [];
+
+  constructor(attributes: Attribute[], mappings: { name: string; matches: string[] }[]) {
+    this._attributes = attributes;
+    this._mappings = mappings;
+
+    attributes.forEach(a => {
+      mappings.forEach(m => {
+        m.matches.forEach(mat => {
+          this._allTerms.push(mat.trim().toLowerCase());
+
+          if (a.key.trim().toLowerCase() === mat.trim().toLowerCase()) {
+            this._result[m.name] = a;
+          }
+        });
+      });
+    });
+  }
+
+  get(key) {
+    return (this._result[key] || null);
+  }
 }
 
 export interface GetCampaignResponse {

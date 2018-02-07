@@ -1,6 +1,7 @@
 <div class="card">
   <div class="card-header">
-    <app-character-form class="float-right"></app-character-form>
+    <!--<app-character-form class="float-right"></app-character-form>-->
+    <button class="btn btn-outline-primary btn-sm float-right" (click)="openModal(createchr)">Create</button>
     <h5>Characters</h5>
   </div>
   <div class="list-group list-group-flush"
@@ -17,3 +18,7 @@
     <app-spinner></app-spinner>
   </div>
 </div>
+
+<ng-template #createchr>
+  <app-character-form [edit]="false"></app-character-form>
+</ng-template>

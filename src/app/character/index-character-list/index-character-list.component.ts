@@ -3,6 +3,7 @@ import {CharacterService} from '../../services/character.service';
 import {Character} from '../../types';
 import {Router} from '@angular/router';
 import {Subscription} from 'rxjs/Subscription';
+import {BsModalRef, BsModalService} from 'ngx-bootstrap';
 
 @Component({
   selector: 'app-index-character-list',
@@ -15,8 +16,9 @@ export class IndexCharacterListComponent implements OnInit, OnDestroy {
   loading = false;
 
   subscription: Subscription;
+  modalRef: BsModalRef;
 
-  constructor(private character: CharacterService, private router: Router) {
+  constructor(private character: CharacterService, private router: Router, private modal: BsModalService) {
   }
 
   ngOnInit() {
@@ -38,5 +40,9 @@ export class IndexCharacterListComponent implements OnInit, OnDestroy {
 
   selectCharacter(character: Character) {
     this.router.navigate(['character', character.id]);
+  }
+
+  openModal(template) {
+    this.modalRef = this.modal.show(template);
   }
 }

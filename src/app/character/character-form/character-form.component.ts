@@ -1,17 +1,15 @@
-import {Component, Input, OnDestroy, OnInit, TemplateRef} from '@angular/core';
-import {BsModalRef, BsModalService} from 'ngx-bootstrap';
+import {AfterViewInit, Component, ElementRef, Input, OnDestroy, OnInit, TemplateRef, ViewChild} from '@angular/core';
 import {Character} from '../../types';
 import {CharacterService} from '../../services/character.service';
 import {Subscription} from 'rxjs/Subscription';
+import * as uploadcare from 'uploadcare-widget';
 
 @Component({
   selector: 'app-character-form',
   templateUrl: './character-form.component.html',
   styleUrls: ['./character-form.component.css']
 })
-export class CharacterFormComponent implements OnInit, OnDestroy {
-
-  modalRef: BsModalRef;
+export class CharacterFormComponent implements OnInit, OnDestroy, AfterViewInit {
 
   character: Character;
 
@@ -23,12 +21,16 @@ export class CharacterFormComponent implements OnInit, OnDestroy {
   @Input()
   editId: string;
 
+  @ViewChild('imageupload')
+  imageUploader: ElementRef;
+
   sub: Subscription;
 
-  constructor(private modalService: BsModalService, private charService: CharacterService) {
+  constructor(private charService: CharacterService) {
   }
 
   ngOnInit() {
+    this.character = new Character();
   }
 
   ngOnDestroy(): void {
@@ -37,9 +39,11 @@ export class CharacterFormComponent implements OnInit, OnDestroy {
     }
   }
 
-  init() {
-    this.character = new Character();
+  ngAfterViewInit(): void {
+    this.init();
+  }
 
+  init() {
     if (this.edit) {
       this.loading = true;
       this.sub = this.charService.get(this.editId)
@@ -48,11 +52,23 @@ export class CharacterFormComponent implements OnInit, OnDestroy {
           this.loading = false;
         });
     }
+
+    this.imageUploader.nativeElement.value = this.character.image;
+
+    const fileWidget = uploadcare.SingleWidget(this.imageUploader.nativeElement);
+
+    fileWidget.onChange(file => {
+      console.log(file);
+    });
+
+    fileWidget.onUploadComplete(info => {
+      console.log(info);
+      this.character.image = info.uuid;
+    });
   }
 
-  openModal(template: TemplateRef<any>) {
-    this.init();
-    this.modalRef = this.modalService.show(template);
+  hide() {
+
   }
 
   save() {
@@ -61,14 +77,14 @@ export class CharacterFormComponent implements OnInit, OnDestroy {
     if ((this.edit || false) === false) {
       this.charService.create(this.character)
         .then(() => {
-          this.modalRef.hide();
+          this.hide();
           this.loading = false;
         }, e => console.log(e));
     } else {
 
       this.charService.edit(this.character)
         .then(() => {
-          this.modalRef.hide();
+          this.hide();
           this.loading = false;
         }, console.error);
     }

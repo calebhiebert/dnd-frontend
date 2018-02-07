@@ -67,7 +67,8 @@ export class AttributeEditorComponent implements OnInit, OnDestroy {
 
         this.editorLoading = false;
         this.showCreationBox = false;
-      });
+      })
+      .catch(err => console.error(err));
   }
 
   done() {

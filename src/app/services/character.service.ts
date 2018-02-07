@@ -12,6 +12,7 @@ const CHARACTER_FRAGMENT = gql`
     mine
     hp
     maxHp
+    image
   }`;
 
 const MY_CHARACTERS_QUERY = gql`
@@ -61,9 +62,7 @@ const GET_QUERY = gql`
       attributes @include(if: $attributes) {
         id
         key
-        dataType
-        nValue
-        sValue
+        value
       }
 
       campaign @include(if: $campaign) {
@@ -135,7 +134,8 @@ export class CharacterService {
           name: character.name,
           description: character.description,
           hp: character.hp,
-          maxHp: character.maxHp
+          maxHp: character.maxHp,
+          image: character.image
         }
       }
     }).map(resp => resp.data.editCharacter).toPromise();

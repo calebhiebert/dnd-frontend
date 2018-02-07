@@ -1,28 +1,74 @@
 <div *ngIf="loading === false">
-  <app-character-form class="float-right ml-2" [edit]="true" [editId]="character.id"
-                      *ngIf="character.mine"></app-character-form>
+  <button type="button" class="btn btn-outline-primary btn-sm float-right" (click)="openChrModal(chreditmodal)" *ngIf="character.mine">Edit</button>
+
+  <!-- Opens attribute editor modal -->
   <button class="btn btn-outline-dark btn-sm float-right ml-2" (click)="openModal(attrModal)" *ngIf="character.mine">
     Edit Attributes
   </button>
 
+  <!-- Shows a button to the character's current campaign (if there is one) with a tooltip of the campaign name -->
   <button class="btn btn-outline-dark btn-sm float-right ml-2" routerLink="/campaign/{{ character.campaign.id }}"
           *ngIf="character.campaign !== null" tooltip="{{ character.campaign.name }}" placement="top">View Campaign
   </button>
 
+  <!-- Basic info -->
   <h4>{{ character.name }}</h4>
   <p *ngIf="character.description; else nobackstory">{{ character.description }}</p>
-  <h5 class="mt-3">Attributes</h5>
+
+  <img src="https://ucarecdn.com/{{character.image}}/" *ngIf="character.image">
+
+  <hr/>
+  <!-- Main attributes -->
+  <div class="d-flex w-100 justify-content-around mt-3">
+    <h4 *ngIf="attr('ac')"><b>AC: </b>{{ attr('ac').value }}</h4>
+    <h4 *ngIf="attr('init')"><b>Initiative: </b>{{ attr('init').value }}</h4>
+    <h4 *ngIf="attr('speed')"><b>Speed: </b>{{ attr('speed').value }}</h4>
+  </div>
+
+  <!-- Secondary attribute tables -->
+  <div class="row">
+    <div class="col-6">
+      <table class="table table-sm">
+        <tbody>
+        <tr *ngFor="let attr of attrs(['strength', 'dexterity', 'constitution', 'intelligence', 'wisdom', 'charisma'])">
+          <th scope="row">{{ attr.key }}</th>
+          <td>{{ attr.value }}</td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="col-6">
+      <table class="table table-sm">
+        <tbody>
+        <tr
+          *ngFor="let attr of attrs(['acrobatics', 'animal handling',
+          'arcana', 'athletics', 'deception', 'history', 'insight',
+          'intimidation', 'investigation', 'medicine', 'nature',
+          'perception', 'performance', 'persuasion', 'religion',
+          'sleight of hand', 'stealth', 'survival'])">
+          <th scope="row">{{ attr.key }}</th>
+          <td>{{ attr.value }}</td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Shows if the character has no attributes -->
   <span class="text-muted font-italic"
         *ngIf="character.attributes.length === 0">
     {{ character.name }} doesn't seem to have any attributes
   </span>
+
+  <!-- Shows the remaining attributes in an ugly table -->
   <div class="list-group">
-    <div class="list-group-item" *ngFor="let attr of character.attributes">
-      <h6 class="text-muted float-right">{{ (attr.sValue || attr.nValue) }}</h6>
+    <div class="list-group-item" *ngFor="let attr of nonReservedAttributes">
+      <h6 class="text-muted float-right">{{ attr.value }}</h6>
       <h5>{{ attr.key }}</h5>
     </div>
   </div>
 </div>
+
 <app-spinner *ngIf="loading === true"></app-spinner>
 
 <ng-template #attrModal>
@@ -34,4 +80,8 @@
 
 <ng-template #nobackstory>
   <span class="text-muted font-italic">{{ character.name }} has no backstory</span>
+</ng-template>
+
+<ng-template #chreditmodal>
+  <app-character-form [edit]="true" [editId]="character.id"></app-character-form>
 </ng-template>

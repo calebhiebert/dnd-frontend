@@ -11,8 +11,7 @@ import {ServicesModule} from '../services/services.module';
     CommonModule,
     NotificationModule,
     AppRoutingModule,
-    BsDropdownModule.forRoot(),
-    ServicesModule
+    BsDropdownModule.forRoot()
   ],
   declarations: [NavbarComponent],
   exports: [NavbarComponent]

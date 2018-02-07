@@ -35,7 +35,13 @@
   "Survival",
   "Initiative",
   "Speed",
-  "Monster Type"
+  "Monster Type",
+  "Armor Class",
+  "AC",
+  "Experience",
+  "EXP",
+  "XP",
+  "Faction"
 ],
 "values": [
   "Barbarian",
