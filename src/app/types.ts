@@ -15,6 +15,7 @@ export class Character {
   maxHp: number;
   mine: boolean;
   image: string;
+  imageUuid: string;
   attributes: Array<Attribute>;
 }
 

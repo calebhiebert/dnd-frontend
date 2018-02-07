@@ -13,6 +13,7 @@ const CHARACTER_FRAGMENT = gql`
     hp
     maxHp
     image
+    imageUuid
   }`;
 
 const MY_CHARACTERS_QUERY = gql`
@@ -107,7 +108,7 @@ export class CharacterService {
     }).valueChanges.map(resp => resp.data.getCharacter);
   }
 
-  create(character: any) {
+  create(character: Character) {
     return this.apollo.mutate<CreateCharacterResponse>({
       mutation: CREATE_CHARACTER_MUTATION,
 
@@ -135,7 +136,8 @@ export class CharacterService {
           description: character.description,
           hp: character.hp,
           maxHp: character.maxHp,
-          image: character.image
+          image: character.image,
+          imageUuid: character.imageUuid
         }
       }
     }).map(resp => resp.data.editCharacter).toPromise();

@@ -3,6 +3,7 @@ import {Character} from '../../types';
 import {CharacterService} from '../../services/character.service';
 import {Subscription} from 'rxjs/Subscription';
 import * as uploadcare from 'uploadcare-widget';
+import {ErrorService} from '../../services/error.service';
 
 @Component({
   selector: 'app-character-form',
@@ -26,11 +27,22 @@ export class CharacterFormComponent implements OnInit, OnDestroy, AfterViewInit 
 
   sub: Subscription;
 
-  constructor(private charService: CharacterService) {
+  fileWidget;
+
+  constructor(private charService: CharacterService, private errService: ErrorService) {
   }
 
   ngOnInit() {
     this.character = new Character();
+
+    if (this.edit) {
+      this.loading = true;
+      this.sub = this.charService.get(this.editId)
+        .subscribe(character => {
+          Object.assign(this.character, character);
+          this.loading = false;
+        });
+    }
   }
 
   ngOnDestroy(): void {
@@ -44,31 +56,24 @@ export class CharacterFormComponent implements OnInit, OnDestroy, AfterViewInit 
   }
 
   init() {
-    if (this.edit) {
-      this.loading = true;
-      this.sub = this.charService.get(this.editId)
-        .subscribe(character => {
-          Object.assign(this.character, character);
-          this.loading = false;
-        });
-    }
+    this.imageUploader.nativeElement.value = (this.character.imageUuid || '' );
 
-    this.imageUploader.nativeElement.value = this.character.image;
+    this.fileWidget = uploadcare.SingleWidget(this.imageUploader.nativeElement);
 
-    const fileWidget = uploadcare.SingleWidget(this.imageUploader.nativeElement);
-
-    fileWidget.onChange(file => {
-      console.log(file);
-    });
-
-    fileWidget.onUploadComplete(info => {
-      console.log(info);
-      this.character.image = info.uuid;
+    this.fileWidget.onUploadComplete(info => {
+      this.character.image = info.cdnUrl;
+      this.character.imageUuid = info.uuid;
     });
   }
 
   hide() {
 
+  }
+
+  removeImage() {
+    this.character.image = null;
+    this.character.imageUuid = null;
+    this.fileWidget.value(null);
   }
 
   save() {
@@ -79,14 +84,20 @@ export class CharacterFormComponent implements OnInit, OnDestroy, AfterViewInit 
         .then(() => {
           this.hide();
           this.loading = false;
-        }, e => console.log(e));
+        })
+        .catch(err => {
+          this.errService.error(err);
+        });
     } else {
 
       this.charService.edit(this.character)
         .then(() => {
           this.hide();
           this.loading = false;
-        }, console.error);
+        })
+        .catch(err => {
+          this.errService.error(err);
+        });
     }
   }
 

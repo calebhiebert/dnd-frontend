@@ -18,8 +18,9 @@
     </div>
     <div id="image-container">
       <label>Picture</label>
-      <input type="hidden" role="uploadcare-uploader" name="image" #imageupload>
+      <input type="hidden" role="uploadcare-uploader" data-crop="128x128 minimum" name="image" #imageupload>
     </div>
+    <button class="btn btn-outline-danger btn-sm" *ngIf="character.imageUuid" (click)="removeImage()">Remove Image</button>
     <div class="form-group">
       <label>Hitpoints</label>
       <div class="input-group">

@@ -1,5 +1,7 @@
 <div *ngIf="loading === false">
-  <button type="button" class="btn btn-outline-primary btn-sm float-right" (click)="openChrModal(chreditmodal)" *ngIf="character.mine">Edit</button>
+  <button type="button" class="btn btn-outline-primary ml-2 btn-sm float-right" (click)="openChrModal(chreditmodal)"
+          *ngIf="character.mine">Edit
+  </button>
 
   <!-- Opens attribute editor modal -->
   <button class="btn btn-outline-dark btn-sm float-right ml-2" (click)="openModal(attrModal)" *ngIf="character.mine">
@@ -11,42 +13,48 @@
           *ngIf="character.campaign !== null" tooltip="{{ character.campaign.name }}" placement="top">View Campaign
   </button>
 
-  <!-- Basic info -->
-  <h4>{{ character.name }}</h4>
-  <p *ngIf="character.description; else nobackstory">{{ character.description }}</p>
 
-  <img src="https://ucarecdn.com/{{character.image}}/" *ngIf="character.image">
+  <div class="media">
+    <img *ngIf="character.image" class="mr-3 img-thumbnail" src="{{character.image}}" alt="Character image">
+    <div class="media-body">
+      <h4>{{ character.name }}</h4>
+      <p *ngIf="character.description; else nobackstory">{{ character.description }}</p>
+    </div>
+  </div>
 
-  <hr/>
-  <!-- Main attributes -->
-  <div class="d-flex w-100 justify-content-around mt-3">
-    <h4 *ngIf="attr('ac')"><b>AC: </b>{{ attr('ac').value }}</h4>
-    <h4 *ngIf="attr('init')"><b>Initiative: </b>{{ attr('init').value }}</h4>
-    <h4 *ngIf="attr('speed')"><b>Speed: </b>{{ attr('speed').value }}</h4>
+  <div *ngIf="attrs(['ac', 'init', 'speed']).length > 0">
+    <hr/>
+
+    <!-- Main attributes -->
+    <div class="d-flex w-100 justify-content-around mt-3">
+      <h4 *ngIf="attr('ac')"><b>AC: </b>{{ attr('ac').value }}</h4>
+      <h4 *ngIf="attr('init')"><b>Initiative: </b>{{ attr('init').value }}</h4>
+      <h4 *ngIf="attr('speed')"><b>Speed: </b>{{ attr('speed').value }}</h4>
+    </div>
+
+    <hr/>
   </div>
 
   <!-- Secondary attribute tables -->
-  <div class="row">
-    <div class="col-6">
+  <div class="row mt-3">
+    <div class="col-6" *ngIf="statAttributes.length > 0">
+      <h5>Stats</h5>
       <table class="table table-sm">
         <tbody>
-        <tr *ngFor="let attr of attrs(['strength', 'dexterity', 'constitution', 'intelligence', 'wisdom', 'charisma'])">
-          <th scope="row">{{ attr.key }}</th>
+        <tr *ngFor="let attr of statAttributes">
+          <td scope="row">{{ attr.key }}</td>
           <td>{{ attr.value }}</td>
         </tr>
         </tbody>
       </table>
     </div>
-    <div class="col-6">
+    <div class="col-6" *ngIf="skillAttributes.length > 0">
+      <h5>Skills</h5>
       <table class="table table-sm">
         <tbody>
         <tr
-          *ngFor="let attr of attrs(['acrobatics', 'animal handling',
-          'arcana', 'athletics', 'deception', 'history', 'insight',
-          'intimidation', 'investigation', 'medicine', 'nature',
-          'perception', 'performance', 'persuasion', 'religion',
-          'sleight of hand', 'stealth', 'survival'])">
-          <th scope="row">{{ attr.key }}</th>
+          *ngFor="let attr of skillAttributes">
+          <td scope="row">{{ attr.key }}</td>
           <td>{{ attr.value }}</td>
         </tr>
         </tbody>
@@ -55,10 +63,10 @@
   </div>
 
   <!-- Shows if the character has no attributes -->
-  <span class="text-muted font-italic"
+  <div class="text-muted font-italic text-center"
         *ngIf="character.attributes.length === 0">
     {{ character.name }} doesn't seem to have any attributes
-  </span>
+  </div>
 
   <!-- Shows the remaining attributes in an ugly table -->
   <div class="list-group">

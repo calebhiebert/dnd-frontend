@@ -16,6 +16,7 @@ import {HttpClientModule} from '@angular/common/http';
 import {ToastrModule, ToastrService} from 'ngx-toastr';
 import { AttributeService } from './attribute.service';
 import { QuestsService } from './quests.service';
+import { ErrorService } from './error.service';
 
 const SOCKET_CONFIG: SocketIoConfig = {url: 'http://localhost:5200'};
 
@@ -29,7 +30,7 @@ const SOCKET_CONFIG: SocketIoConfig = {url: 'http://localhost:5200'};
     ToastrModule.forRoot()
   ],
   declarations: [],
-  providers: [AuthService, AuthGuard, CharacterService, CampaignService, NotificationService, ToastrService, SocketService, SessionService, AttributeService, QuestsService]
+  providers: [AuthService, AuthGuard, CharacterService, CampaignService, NotificationService, ToastrService, SocketService, SessionService, AttributeService, QuestsService, ErrorService]
 })
 export class ServicesModule {
   constructor(apollo: Apollo, httpLink: HttpLink) {

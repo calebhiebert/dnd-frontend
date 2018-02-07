@@ -92,6 +92,18 @@ export class CharacterViewComponent implements OnInit, OnDestroy {
       });
   }
 
+  get statAttributes() {
+    return this.attrs(['strength', 'dexterity', 'constitution', 'intelligence', 'wisdom', 'charisma']);
+  }
+
+  get skillAttributes() {
+    return this.attrs(['acrobatics', 'animal handling',
+      'arcana', 'athletics', 'deception', 'history', 'insight',
+      'intimidation', 'investigation', 'medicine', 'nature',
+      'perception', 'performance', 'persuasion', 'religion',
+      'sleight of hand', 'stealth', 'survival']);
+  }
+
   isReservedAttr(attr: string) {
     return this.attributeGatherer._allTerms.indexOf(attr.trim().toLowerCase()) !== -1;
   }
