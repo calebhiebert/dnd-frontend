@@ -6,15 +6,15 @@ import {Attribute} from '../types';
 })
 export class AttributePipe implements PipeTransform {
 
-  transform(value: Attribute[], key: string[]): any {
+  transform(value: Attribute[], keys: string[]): any {
     let attr: Attribute = null;
 
-    if (value === null || value === undefined) {
+    if (value === null || value === undefined || !Array.isArray(keys)) {
       return null;
     }
 
     value.forEach(a => {
-      key.forEach(k => {
+      keys.forEach(k => {
         if (a.key.trim().toLowerCase() === k.trim().toLowerCase()) {
           attr = a;
         }
